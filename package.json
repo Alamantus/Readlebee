@@ -1,0 +1,29 @@
+{
+  "name": "book-tracker",
+  "version": "0.0.0",
+  "description": "An attempt at a viable alternative to Goodreads",
+  "main": "index.html",
+  "repository": "https://gitlab.com/Alamantus/book-tracker.git",
+  "author": "Robbie Antenesse <dev@alamantus.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "npm run watch-js",
+    "watch-js": "parcel watch src/index.html --no-hmr",
+    "serve-js": "parcel src/index.html",
+    "build": "parcel build src/index.html --no-source-maps",
+    "clear": "npm run clear-dist && npm run clear-cache",
+    "clear-dist": "rimraf dist/{*,.*}",
+    "clear-cache": "rimraf .cache/{*,.*}"
+  },
+  "devDependencies": {
+    "autoprefixer": "^9.6.1",
+    "parcel-bundler": "^1.12.3",
+    "parcel-plugin-goodie-bag": "^2.0.0",
+    "rimraf": "^3.0.0",
+    "sass": "^1.23.0-module.beta.1"
+  },
+  "dependencies": {
+    "choo": "^7.0.0",
+    "picnic": "^6.5.1"
+  }
+}
