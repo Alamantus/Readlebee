@@ -4,6 +4,11 @@ import { viewManager } from './views/manager';
 
 const app = choo();
 
+if (process.env.NODE_ENV !== 'production') {
+  // Only runs in development and will be stripped from production build.
+  app.use(require('choo-devtools')());  // Exposes `choo` to the console for debugging!
+}
+
 // App state and emitters
 app.use((state, emitter) => {
   // Default state variables

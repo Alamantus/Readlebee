@@ -1379,6 +1379,31 @@ chokidar@^2.0.3:
   optionalDependencies:
     fsevents "^1.2.7"
 
+choo-devtools@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/choo-devtools/-/choo-devtools-3.0.1.tgz#65c0865bb853a6d037b52b534f29c42ae16b2776"
+  integrity sha512-85TCpgDA20wf7wjKRjrq9VbGvLeG12u0iNTzs3cuBKO9brGygwQO7vYevW8P56uG7ybGnABB5W0MaCjbaw98pQ==
+  dependencies:
+    choo-hooks "^1.0.0"
+    clone "^2.1.1"
+    nanologger "^2.0.0"
+    nanoscheduler "^1.0.0"
+    object-change-callsite "^1.0.2"
+    on-performance "^1.2.1"
+    plucker "0.0.0"
+    prettier-bytes "^1.0.4"
+    remove-array-items "^1.0.0"
+    state-copy "^1.0.2"
+    wayfarer "^6.6.2"
+
+choo-hooks@^1.0.0:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/choo-hooks/-/choo-hooks-1.1.1.tgz#6da1f491d7f47154e3a021ba3d2c535718697e70"
+  integrity sha1-baH0kdf0cVTjoCG6PSxTVxhpfnA=
+  dependencies:
+    nanoscheduler "^1.0.0"
+    on-performance "^1.0.1"
+
 choo@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/choo/-/choo-7.0.0.tgz#a89687e83a69c9d7d96c8208cfad5ae77b154aa5"
@@ -1576,6 +1601,10 @@ copy-descriptor@^0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/copy-descriptor/-/copy-descriptor-0.1.1.tgz#676f6eb3c39997c2ee1ac3a924fd6124748f578d"
   integrity sha1-Z29us8OZl8LuGsOpJP1hJHSPV40=
+
+"copy-text-to-clipboard@github:deliriousrhino/copy-text-to-clipboard#master":
+  version "1.0.4"
+  resolved "https://codeload.github.com/deliriousrhino/copy-text-to-clipboard/tar.gz/d1305ccfbbaad58d4ad4a3a4a80bbb366eaba582"
 
 core-js@^2.4.0:
   version "2.6.9"
@@ -2349,6 +2378,11 @@ fast-levenshtein@~2.0.4:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/fast-levenshtein/-/fast-levenshtein-2.0.6.tgz#3d8a5c66883a16a30ca8643e851f19baa7797917"
   integrity sha1-PYpcZog6FqMMqGQ+hR8Zuqd5eRc=
+
+fast-safe-stringify@^1.2.0:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/fast-safe-stringify/-/fast-safe-stringify-1.2.3.tgz#9fe22c37fb2f7f86f06b8f004377dbf8f1ee7bc1"
+  integrity sha512-QJYT/i0QYoiZBQ71ivxdyTqkwKkQ0oxACXHYxH2zYHJEgzi2LsbjgvtzTbLi1SZcF190Db2YP7I7eTsU2egOlw==
 
 fastparse@^1.1.1:
   version "1.1.2"
@@ -3534,6 +3568,11 @@ nanohtml@^1.1.0:
     through2 "^2.0.3"
     transform-ast "^2.4.0"
 
+nanologger@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/nanologger/-/nanologger-2.0.0.tgz#c8a0c9d1141ea53a5ce8dbaa98210928a3365da1"
+  integrity sha512-rhP8tksOhv/lGXcioA0IMuRejkzTuMvqFqU3ATKZ22mu2fJ2A7ZKHYILjcyzmSThQzB1GCu3I7ZJ38Cj/WqyrA==
+
 nanolru@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/nanolru/-/nanolru-1.0.0.tgz#0a5679cd4e4578c4ca3741e610b71c4c9b5afaf8"
@@ -3585,7 +3624,7 @@ nanorouter@^4.0.0:
     nanoassert "^1.1.0"
     wayfarer "^7.0.0"
 
-nanoscheduler@^1.0.2:
+nanoscheduler@^1.0.0, nanoscheduler@^1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/nanoscheduler/-/nanoscheduler-1.0.3.tgz#6ca027941bf3e04139ea4bab6227ea6ad803692f"
   integrity sha512-jBbrF3qdU9321r8n9X7yu18DjP31Do2ItJm3mWrt90wJTrnDO+HXpoV7ftaUglAtjgj9s+OaCxGufbvx6pvbEQ==
@@ -3778,6 +3817,11 @@ object-assign@^4.0.1, object-assign@^4.1.0, object-assign@^4.1.1:
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
   integrity sha1-IQmtx5ZYh8/AXLvUQsrIv7s2CGM=
 
+object-change-callsite@^1.0.2:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/object-change-callsite/-/object-change-callsite-1.0.5.tgz#c70a2d086dc0c6a1612ea8416ef7320ac3f5b358"
+  integrity sha512-S3ZCLeAq7p4pVhfWYNH3fIl1sJ8DOexJBQ0EKFQ4hLg33JULbcn4EykgkZGesDbkUZgN0LToivBuiB4tWF76mw==
+
 object-copy@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/object-copy/-/object-copy-0.1.0.tgz#7e7d858b781bd7c991a41ba975ed3812754e998c"
@@ -3858,6 +3902,14 @@ on-load@^3.3.4:
   dependencies:
     global "^4.3.2"
     nanoassert "^1.1.0"
+
+on-performance@^1.0.1, on-performance@^1.2.1:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/on-performance/-/on-performance-1.2.2.tgz#47a1a1cf6b1e1933baaf2e62be3347ed3aa7f641"
+  integrity sha512-Nfa/PYKAy/LuppG2PI7yOIByESfysPOb5e2OARBvVD85CdesiHcKLc3a43G6gjTgTgb88i1PGtW9OxP9BAgJDg==
+  dependencies:
+    nanoassert "^1.1.0"
+    nanoscheduler "^1.0.0"
 
 once@^1.3.0:
   version "1.4.0"
@@ -4106,6 +4158,11 @@ picomatch@^2.0.4:
   version "2.0.7"
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.0.7.tgz#514169d8c7cd0bdbeecc8a2609e34a7163de69f6"
   integrity sha512-oLHIdio3tZ0qH76NybpeneBhYVj0QFTfXEFTc/B3zKQspYfYYkWYgFsmzo+4kvId/bQRcNkVeguI3y+CD22BtA==
+
+plucker@0.0.0:
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/plucker/-/plucker-0.0.0.tgz#2ffa24e03ab2cffa4e75adc1df70f25623c45d09"
+  integrity sha1-L/ok4Dqyz/pOda3B33DyViPEXQk=
 
 pn@^1.1.0:
   version "1.1.0"
@@ -4485,6 +4542,11 @@ prelude-ls@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.1.2.tgz#21932a549f5e52ffd9a827f570e04be62a97da54"
   integrity sha1-IZMqVJ9eUv/ZqCf1cOBL5iqX2lQ=
+
+prettier-bytes@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/prettier-bytes/-/prettier-bytes-1.0.4.tgz#994b02aa46f699c50b6257b5faaa7fe2557e62d6"
+  integrity sha1-mUsCqkb2mcULYle1+qp/4lV+YtY=
 
 pretty-hrtime@^1.0.2:
   version "1.0.3"
@@ -5119,6 +5181,14 @@ stable@^0.1.8:
   resolved "https://registry.yarnpkg.com/stable/-/stable-0.1.8.tgz#836eb3c8382fe2936feaf544631017ce7d47a3cf"
   integrity sha512-ji9qxRnOVfcuLDySj9qzhGSEFVobyt1kIOSkj1qZzYLzq7Tos/oUUWvotUPQLlrsidqsK6tBH89Bc9kL5zHA6w==
 
+state-copy@^1.0.2:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/state-copy/-/state-copy-1.0.4.tgz#9b9d6f2f8945ffc4b40dd19a9f2a91df7cf0aff2"
+  integrity sha512-2mMOXZ3BdTJOSh00l+oSaPnKqwsv4ZCYxLmdFYbc/i1oI0/BSCqCpC33yc1ZUJn1Rxs2J5qUQokKtndnls7ElQ==
+  dependencies:
+    copy-text-to-clipboard "github:deliriousrhino/copy-text-to-clipboard#master"
+    fast-safe-stringify "^1.2.0"
+
 static-eval@^2.0.0:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/static-eval/-/static-eval-2.0.2.tgz#2d1759306b1befa688938454c546b7871f806a42"
@@ -5682,6 +5752,13 @@ w3c-xmlserializer@^1.1.2:
     webidl-conversions "^4.0.2"
     xml-name-validator "^3.0.0"
 
+wayfarer@^6.6.2:
+  version "6.6.4"
+  resolved "https://registry.yarnpkg.com/wayfarer/-/wayfarer-6.6.4.tgz#3f67ddd79068dc7b96830d03d1f5c7423140b429"
+  integrity sha512-5ZRE4iwcIYytikTN9somy5oz/K7hEPK0YfrjCEN6zr5vlqadJ+r+GQmDzsV5zg5aW0qZvctxo443B1YFWSywpw==
+  dependencies:
+    xtend "^4.0.1"
+
 wayfarer@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/wayfarer/-/wayfarer-7.0.0.tgz#ae65e759628e5042bdaa380aa47bb736ca07380c"
@@ -5768,7 +5845,7 @@ xmlchars@^2.1.1:
   resolved "https://registry.yarnpkg.com/xmlchars/-/xmlchars-2.1.1.tgz#ef1a81c05bff629c2280007f12daca21bd6f6c93"
   integrity sha512-7hew1RPJ1iIuje/Y01bGD/mXokXxegAgVS+e+E0wSi2ILHQkYAH1+JXARwTjZSM4Z4Z+c73aKspEcqj+zPPL/w==
 
-xtend@^4.0.0, xtend@^4.0.2, xtend@~4.0.1:
+xtend@^4.0.0, xtend@^4.0.1, xtend@^4.0.2, xtend@~4.0.1:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/xtend/-/xtend-4.0.2.tgz#bb72779f5fa465186b1f438f674fa347fdb5db54"
   integrity sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==
