@@ -7,8 +7,8 @@ import { SearchController } from './controller';  // The controller for this vie
 export const searchView = (state, emit) => {
   const controller = new SearchController(state);
 
-  if (!controller.state.done) {
-    controller.search(state.query.search).then(() => {
+  if (!controller.state.done && controller.hasQuery) {
+    controller.searchOpenLibrary(state.query.for).then(() => {
       emit('render');
     });
   }
