@@ -39,5 +39,7 @@ app.use((state, emitter) => {
 // which is given the app's state from above and the emitter.emit method that
 // triggers the app's emitter listeners.
 app.route('/', viewManager);
+app.route('/:page', viewManager);
+app.route('/404', viewManager);
 
 app.mount('body');  // Overwrite the `<body>` tag with the content of the Choo app
