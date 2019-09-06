@@ -21,6 +21,12 @@ sass.render({ file: 'index.scss' }, function (sassErr, css) {
       console.warn(warn.toString());
     });
 
+    if (!fs.existsSync('public')) {
+      fs.mkdirSync('public');
+    }
+    if (!fs.existsSync('public/css')) {
+      fs.mkdirSync('public/css');
+    }
     fs.writeFile('public/css/index.css', result.css, (fileErr) => {
       if (fileErr) {
         throw fileErr;
