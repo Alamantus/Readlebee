@@ -26,6 +26,7 @@
     "handlebars": "^4.2.0",
     "html-minifier": "^4.0.0",
     "make-promises-safe": "^5.0.0",
+    "node-fetch": "^2.6.0",
     "picnic": "^6.5.1",
     "point-of-view": "^3.5.0"
   }

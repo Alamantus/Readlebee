@@ -24,7 +24,6 @@ fastify.register(require('point-of-view'), {
       removeCommentsFromCDATA: true,
       collapseWhitespace: true,
       collapseBooleanAttributes: true,
-      removeAttributeQuotes: true,
       removeEmptyAttributes: true
     },
     partials: {
@@ -38,6 +37,7 @@ fastify.register(require('point-of-view'), {
 // Routes
 fastify.register(require('./routes/resources'));
 fastify.register(require('./routes/home'));
+fastify.register(require('./routes/search'));
 
 // Start the server
 fastify.listen(3000, function (err, address) {

@@ -11,9 +11,11 @@
     <label for="navMenu" class="burger pseudo button">&#8801;</label>
 
     <div class="menu">
-      <label style="display: inline-block;">
-        <input type="text" id="headerSearchBar" placeholder="Search">
-      </label>
+      <form action="/search" style="display: inline-block;">
+        <label>
+          <input type="text" id="headerSearchBar" name="for" placeholder="Search" value="{{searchTerm}}">
+        </label>
+      </form>
       <a href="https://gitlab.com/Alamantus/book-tracker" class="pseudo button">Repo</a>
       <a href="https://gitter.im/book-tracker/general" class="pseudo button">Chat</a>
     </div>
