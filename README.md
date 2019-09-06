@@ -21,7 +21,9 @@ An attempt at a viable alternative to Goodreads (currently lacking a name—idea
 - [Mirror Repo on GitHub](https://github.com/Alamantus/book-tracker)
   - Gets changes from GitLab pushed to it so people who prefer GitHub can contribute there as well. Pull requests and issues created here will also be addressed.
 
-## Installation
+## Development
+
+### Installation
 
 To develop, you'll need to know how to use a terminal or shell on your computer.
 
@@ -37,14 +39,137 @@ Then run use [Yarn](https://yarnpkg.com) to install the dependencies:
 yarn
 ```
 
+Alternatively, you can use the NPM that's included with Node:
+
+```
+npm install
+```
+
+This install process will compile the sass into CSS at `public/css/index.css` after the dependencies are installed.
+In the future, this postinstall process will also set up the database tables.
+
 ## Usage
 
 After everything's installed, run the "start" NPM script to build and serve the front end:
 
 ```
-npm run start
+npm start
+```
+
+Included in the `start` process is the sass compilation process again, so if you'd like to skip that process each time
+you start the server, you can instead use the `start-server` process like this:
+
+```
+npm run start-server
 ```
 
 Then use your browser to navigate to http://localhost:1234 to view the website.
 
+When you make a change, you need to stop the server with `Ctrl+C` and re-run the script.
+
 It's early days, so this segment will definitely change later as the project gets more complex.
+
+---
+
+## Production
+
+This is totally not yet ready, but I want to use this space to block out what how I would like the installation process
+to go for people installing the app.
+
+### Requirements
+
+- NodeJS v8.14+
+- NPM v6.4.1+
+- NGINX
+- PostgreSQL 11+
+
+### Recommendations
+
+- Use a Debian 9 server for stability. Ubuntu should also work just fine.
+- Use the default apt packages for the requirements
+- Use Git to download the project for installation and easy upgrading
+
+### Installation
+
+Here's a step-by-step installation process so you can get a grasp of what you need to do from a brand new
+Debian 9 installation (not included in steps). Ubuntu installation should be more or less exactly the same.
+
+#### Step 1: Install Requirements
+
+Install the requirements with the following commands (note: you may need to use `sudo` for each of these commands):
+
+```
+sudo apt update
+sudo apt install nodejs nginx postgres-11
+```
+
+And optionally (but recommended):
+```
+sudo apt install git
+```
+
+Follow any instructions during each of the installations to get the programs set up correctly.
+
+NGINX may require additional setup, so check through [this page](https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-debian-9) for different things that might be good to do.
+
+PostgreSQL will need a database created, so do that and make a user that can access it that's not the root user.
+
+#### Step 2: Download the Project
+
+You can set up the project folder in any location on your server, but these instructions will set it up in
+the current user's home folder using Git like so:
+
+```
+cd ~
+git clone https://gitlab.com/Alamantus/book-tracker.git && cd book-tracker
+```
+
+This will download the entire project source code into a `book-tracker` folder.
+
+#### Step 3: Configure the Project
+
+Next, There are some configurations you need to set up. Rename the `config.example.json` to `config.json` like so:
+
+```
+mv config.example.json config.json
+```
+
+And edit its contents with the correct data for your server using your text editor of choice. Here is what
+the `config.example.json` looks like with some explanations of each field:
+
+```
+{
+  "port": 3000  # the port that the server will serve the app from.
+  "dbhost": "localhost" # Where the postgres server is
+  "dbport": 5432  # What port the postgres server uses
+  "dbname": "book-tracker"  # The name of the database book-tracker will use to make tables and store data in
+  "dbuser": "root"  # The username with access to your postgres database
+  "dbpass": "password"  # The password for the username above
+  ... # more to come
+}
+```
+
+#### Step 4: Install the Project
+
+You will then need to install the project.
+
+```
+sudo npm install
+```
+
+This will install all of the dependencies, compile all of the Sass into usable CSS, set up the database and tables in PostgreSQL,
+and do any other things that need to be done to get the project set up and usable.
+
+#### Step 5: Run it!
+
+Run the following to start the server:
+
+```
+sudo npm start
+```
+
+Then it'll be running on your server's localhost at the port you specified in the config!
+
+#### Step 6: Set up an NGINX reverse proxy
+
+Set up a reverse proxy to your localhost:proxy. This'll have to get filled in later.
