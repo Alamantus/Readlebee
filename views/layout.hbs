@@ -12,4 +12,29 @@
   <link rel="stylesheet" href="/styles/index.css">{{!-- This is controlled by the resources router. --}}
   <script src="index.js"></script>
 </head>
+
 <body>
+{{#> header-block }}
+  {{> header }}
+{{/header-block}}
+
+<main class="container">
+{{#> page-content-block }}
+  {{!-- Wrap the actual page content in {{#*inline "page-content-block"}} to insert it here --}}
+{{/page-content-block}}
+</main>
+
+{{#> footer-block }}
+  {{> footer }}
+{{/footer-block}}
+
+{{#> scripts-block }}
+  <script>
+    (function () {
+      alert('test');
+    })();
+  </script>
+{{/scripts-block}}
+</body>
+
+</html>

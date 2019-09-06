@@ -28,9 +28,8 @@ fastify.register(require('point-of-view'), {
       removeEmptyAttributes: true
     },
     partials: {
-      head: 'partials/head.hbs',
+      layout: 'layout.hbs',
       header: 'partials/header.hbs',
-      foot: 'partials/foot.hbs',
       footer: 'partials/footer.hbs',
     }
   },
