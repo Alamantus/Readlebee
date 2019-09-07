@@ -45,7 +45,8 @@ Alternatively, you can use the NPM that's included with Node:
 npm install
 ```
 
-This install process will compile the sass into CSS at `public/css/index.css` after the dependencies are installed.
+This install process will compile the sass into CSS at `public/css/index.css` and turn the svg in `images`
+into PNGs in `public/images` after the dependencies are installed. (Note: This runs even if you install new packages.)
 In the future, this postinstall process will also set up the database tables.
 
 ## Usage
@@ -54,13 +55,6 @@ After everything's installed, run the "start" NPM script to build and serve the 
 
 ```
 npm start
-```
-
-Included in the `start` process is the sass compilation process again, so if you'd like to skip that process each time
-you start the server, you can instead use the `start-server` process like this:
-
-```
-npm run start-server
 ```
 
 Then use your browser to navigate to http://localhost:1234 to view the website.
@@ -165,7 +159,7 @@ and do any other things that need to be done to get the project set up and usabl
 Run the following to start the server:
 
 ```
-sudo npm start
+sudo npm start-production
 ```
 
 Then it'll be running on your server's localhost at the port you specified in the config!
