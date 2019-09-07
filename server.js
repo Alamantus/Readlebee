@@ -21,27 +21,7 @@ fastify.register(require('fastify-formbody'));  // Enable fastify to parse data 
 fastify.register(require('fastify-static'), { // Enable delivering static content efficiently
   root: path.join(__dirname, 'public'), // all static content will be delivered from the public/ folder
 });
-fastify.register(require('point-of-view'), {  // Adds the `view()` function to fastify's `reply` objects
-  engine: {
-    handlebars: require('handlebars'),  // Use handlebar as the render engine for `reply.view()`
-  },
-  templates: 'views', // Search for all files referenced in `reply.view()` within the `views/` folder
-  options: {
-    useHtmlMinifier: require('html-minifier'),  // Add a minifier to the rendered HTML output
-    htmlMinifierOptions: {
-      removeComments: true,
-      removeCommentsFromCDATA: true,
-      collapseWhitespace: true,
-      collapseBooleanAttributes: true,
-      removeEmptyAttributes: true
-    },
-    partials: { // Specifies the Handlebars Partials so `point-of-view` knows where they are within the `views` folder and what they're called when referenced in a `.hbs` file
-      layout: 'layout.hbs',
-      header: 'partials/header.hbs',
-      footer: 'partials/footer.hbs',
-    }
-  },
-});
+fastify.register(require('point-of-view'), require('./views/viewSetup'));  // Adds the `view()` function to fastify's `reply` objects
 fastify.register(require('fastify-cookie'));  // Enable reading and setting http-level cookies for the sole purpose of storing login tokens
 fastify.register(require('fastify-jwt'), {  // Enable creating, parsing, and verifying JSON Web Tokens from the global fastify object
   secret: fastify.siteConfig.jwtSecretKey,  // The secret key used to generate JWTs. Make it big and random!
