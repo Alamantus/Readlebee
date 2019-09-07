@@ -9,8 +9,8 @@ async function routes(fastify, options) {
 
   fastify.get('/manifest.webmanifest', async (request, reply) => {
     const manifest = {
-      name: typeof fastify.siteConfig !== 'undefined' ? fastify.siteConfig.siteName : 'book-tracker',
-      short_name: typeof fastify.siteConfig !== 'undefined' ? fastify.siteConfig.siteName : 'book-tracker',
+      name: typeof fastify.siteConfig !== 'undefined' ? fastify.siteConfig.siteName : 'name not configured',
+      short_name: typeof fastify.siteConfig !== 'undefined' ? fastify.siteConfig.siteName : 'name not configured',
       icons: [
         {
           src: '/images/icon-128.png',
