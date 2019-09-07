@@ -4,7 +4,7 @@ require('make-promises-safe'); // installs an 'unhandledRejection' handler
 
 const path = require('path');
 const fastify = require('fastify')({
-  logger: true,
+  logger: process.env.NODE_ENV !== 'production',
 });
 fastify.register(require('fastify-helmet'));
 fastify.register(require('fastify-compress'));

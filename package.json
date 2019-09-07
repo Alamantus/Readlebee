@@ -8,8 +8,8 @@
   "license": "MIT",
   "scripts": {
     "postinstall": "npm run process-images && npm run compile-sass",
-    "start": "npm run start-server",
-    "start-server": "node server.js",
+    "start": "node server.js",
+    "start-production": "cross-env NODE_ENV=production npm start",
     "compile-sass": "node process-styles.js",
     "process-images": "node process-images.js"
   },
@@ -20,6 +20,7 @@
     "sharp": "^0.23.0"
   },
   "dependencies": {
+    "cross-env": "^5.2.1",
     "fastify": "^2.8.0",
     "fastify-caching": "^5.0.0",
     "fastify-compress": "^0.11.0",
