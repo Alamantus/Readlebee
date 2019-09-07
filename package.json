@@ -7,14 +7,17 @@
   "author": "Robbie Antenesse <dev@alamantus.com>",
   "license": "MIT",
   "scripts": {
-    "start": "npm run compile-sass && npm run start-server",
+    "postinstall": "npm run process-images && npm run compile-sass",
+    "start": "npm run start-server",
     "start-server": "node server.js",
-    "compile-sass": "node process-styles.js"
+    "compile-sass": "node process-styles.js",
+    "process-images": "node process-images.js"
   },
   "devDependencies": {
     "autoprefixer": "^9.6.1",
     "cssnano": "^4.1.10",
-    "sass": "^1.23.0-module.beta.1"
+    "sass": "^1.23.0-module.beta.1",
+    "sharp": "^0.23.0"
   },
   "dependencies": {
     "fastify": "^2.8.0",
