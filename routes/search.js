@@ -6,7 +6,7 @@ async function routes(fastify, options) {
     const search = new SearchController(searchTerm);
     
     const results = await search.searchOpenLibrary();
-    reply.view('search.hbs', { results, searchTerm });
+    reply.view('search.hbs', { results, searchTerm, arbitraryContent: request.isLoggedInUser ? JSON.stringify(fastify.jwt.decode(request.cookies.token)) : 'you are NOT logged in' });
   });
 }
 
