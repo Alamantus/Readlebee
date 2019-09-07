@@ -18,6 +18,13 @@ nav {
   position: relative;
 }
 
+footer nav {
+  .links {
+    @extend .brand;
+    font-weight: unset;
+  }
+}
+
 // External links
 // a[href^="http://"]:not([href*="localhost"]):not([href*="guts.plus"]):after,
 // a[href^="https://"]:not([href*="localhost"]):not([href*="guts.plus"]):after{
