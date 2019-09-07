@@ -2,28 +2,18 @@
 
 {{#*inline "page-content-block" }}
 <section>
-  <h2 class="subtitle">An attempt at a viable alternative to Goodreads</h2>
-
-  <article class="flex two">
-    <div class="half">
-      <div class="card">
-        <header>
-          <p>Still gotta figure out a design.</p>
-        </header>
-      </div>
-    </div>
-    <div class="half">
-      <div class="card">
-        <header>
-          <p>It's early days, my friends!</p>
-        </header>
-      </div>
-    </div>
+  {{#if message }}
+  <article class="card" style="background-color:cornflowerblue;color:white;width:100%;">
+    {{ message }}
   </article>
+  {{/if}}
 
-  <article class="test">
-    {{ text }}
-  </article>
+  {{#if loggedIn }}
+    {{> home-logged-in }}
+  {{ else }}
+    {{> home-logged-out }}
+  {{/if}}
+  
 </section>
 {{/inline}}
 

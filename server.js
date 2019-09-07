@@ -37,6 +37,7 @@ fastify.addHook('onRequest', (request, reply, done) => {
 // Routes
 fastify.register(require('./routes/resources'));
 fastify.register(require('./routes/home'));
+fastify.register(require('./routes/account'));
 fastify.register(require('./routes/search'));
 
 // Start the server
