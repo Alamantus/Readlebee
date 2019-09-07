@@ -3,6 +3,14 @@
 require('make-promises-safe'); // installs an 'unhandledRejection' handler
 
 const path = require('path');
+let siteConfig;
+try {
+  siteConfig = require('./config.json');
+} catch (ex) {
+  console.error('Please copy `config.example.json` to `config.json` and fill it with your server\'s data.');
+  process.exit(1);
+}
+
 const fastify = require('fastify')({
   logger: process.env.NODE_ENV !== 'production',
 });
@@ -34,13 +42,15 @@ fastify.register(require('point-of-view'), {
   },
 });
 
+fastify.decorate('siteConfig', siteConfig);
+
 // Routes
 fastify.register(require('./routes/resources'));
 fastify.register(require('./routes/home'));
 fastify.register(require('./routes/search'));
 
 // Start the server
-fastify.listen(3000, function (err, address) {
+fastify.listen(fastify.siteConfig.port, function (err, address) {
   if (err) {
     fastify.log.error(err);
     process.exit(1);
