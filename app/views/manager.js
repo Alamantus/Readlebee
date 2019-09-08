@@ -13,6 +13,10 @@ export const viewManager = (state, emit) => {
       htmlContent = homeView(state, emit);
       break;
     }
+    case 'login': {
+      htmlContent = loginView(state, emit);
+      break;
+    }
     case 'search': {
       htmlContent = searchView(state, emit);
       break;
@@ -49,6 +53,15 @@ export const viewManager = (state, emit) => {
   <main class="container">
     ${htmlContent}
   </main>
+
+  <footer>
+    <nav>
+      <div class="links">
+        <a href="https://gitlab.com/Alamantus/book-tracker" class="pseudo button">Repo</a>
+        <a href="https://gitter.im/book-tracker/general" class="pseudo button">Chat</a>
+      </div>
+    </nav>
+  </footer>
 </body>`;
 
   return view;

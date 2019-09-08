@@ -27,7 +27,7 @@ app.use((state, emitter) => {
       }
     });
 
-    emitter.on('changeView', newView => {
+    emitter.on('change-view', newView => {
       // Change the view and call render. Makes it easier to call within views.
       state.currentView = newView;
       emitter.emit('render', () => {});
