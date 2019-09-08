@@ -9,9 +9,9 @@
   "scripts": {
     "dev": "npm run watch-js",
     "start": "npm run build && npm run serve",
-    "watch-js": "parcel watch src/index.html --no-hmr",
-    "serve": "node server.js",
-    "build": "parcel build src/index.html --no-source-maps",
+    "watch-js": "parcel watch app/index.html --out-dir public --no-hmr --no-cache",
+    "serve": "node server/index.js",
+    "build": "parcel build app/index.html --out-dir public --no-source-maps",
     "clear": "npm run clear-dist && npm run clear-cache",
     "clear-dist": "rimraf dist/{*,.*}",
     "clear-cache": "rimraf .cache/{*,.*}"

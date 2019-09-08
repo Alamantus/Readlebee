@@ -24,8 +24,8 @@ export const viewManager = (state, emit) => {
   <header>
     <nav>
       <div class="brand">
-        <a href="./">
-          <h1>Unnamed Book Tracker</h1>
+        <a href="/">
+          <span class="title">Unnamed Book Tracker</span>
         </a>
       </div>
     
@@ -40,8 +40,8 @@ export const viewManager = (state, emit) => {
             emit('pushState', '/search?for=' + encodeURIComponent(e.target.value.trim()));
           }}>
         </label>
-        <a href="https://gitlab.com/Alamantus/book-tracker" class="pseudo button">Repo</a>
-        <a href="https://gitter.im/book-tracker/general" class="pseudo button">Chat</a>
+        <a href="/login" class="pseudo button">Log In</a>
+        <a href="/logout" class="pseudo button">Log Out</a>
       </div>
     </nav>
   </header>

@@ -5,7 +5,7 @@ require('make-promises-safe'); // installs an 'unhandledRejection' handler
 const path = require('path');
 let siteConfig;
 try {
-  siteConfig = require('./config.json');
+  siteConfig = require('./config.json.js');
 } catch (ex) {
   console.error('Please copy `config.example.json` to `config.json` and fill it with your server\'s data.');
   process.exit(1);
