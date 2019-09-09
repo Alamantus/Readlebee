@@ -2653,14 +2653,6 @@ fastify-cookie@^3.1.0:
     cookie "^0.3.1"
     fastify-plugin "^1.4.0"
 
-fastify-formbody@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/fastify-formbody/-/fastify-formbody-3.1.0.tgz#604cdafdb9e3af6068e6d9940985baf692d6e922"
-  integrity sha512-GQQtRmI8w07SMcnXiWrk9H8GAMJwheKAkQS4q0FbJ56Qu8bV39GOffiZ8GLHQmvcJ2B65S+4IAtNjsG6vtMEig==
-  dependencies:
-    fastify-plugin "^1.0.0"
-    qs "^6.5.1"
-
 fastify-helmet@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/fastify-helmet/-/fastify-helmet-3.0.1.tgz#799f8b4beddec922805c87cc3c6a3151d8946d9c"
@@ -2693,7 +2685,7 @@ fastify-jwt@^1.0.0:
     jsonwebtoken "^8.3.0"
     steed "^1.1.3"
 
-fastify-plugin@^1.0.0, fastify-plugin@^1.2.0, fastify-plugin@^1.2.1, fastify-plugin@^1.4.0, fastify-plugin@^1.5.0, fastify-plugin@^1.6.0:
+fastify-plugin@^1.0.0, fastify-plugin@^1.2.0, fastify-plugin@^1.2.1, fastify-plugin@^1.4.0, fastify-plugin@^1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/fastify-plugin/-/fastify-plugin-1.6.0.tgz#c8198b08608f20c502b5dad26b36e9ae27206d7c"
   integrity sha512-lFa9txg8LZx4tljj33oG53nUXhVg0baZxtP9Pxi0dJmI0NQxzkDk5DS9kr3D7iMalUAp3mvIq16OQumc7eIvLA==
@@ -3096,11 +3088,6 @@ hash.js@^1.0.0, hash.js@^1.0.3:
   dependencies:
     inherits "^2.0.3"
     minimalistic-assert "^1.0.1"
-
-hashlru@^2.3.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/hashlru/-/hashlru-2.3.0.tgz#5dc15928b3f6961a2056416bb3a4910216fdfb51"
-  integrity sha512-0cMsjjIC8I+D3M44pOQdsy0OHXGLVz6Z0beRuufhKa0KfaD2wGwAev6jILzXsd3/vpnNQJmWyZtIILqM1N+n5A==
 
 he@^1.2.0:
   version "1.2.0"
@@ -4931,14 +4918,6 @@ pn@^1.1.0:
   resolved "https://registry.yarnpkg.com/pn/-/pn-1.1.0.tgz#e2f4cef0e219f463c179ab37463e4e1ecdccbafb"
   integrity sha512-2qHaIQr2VLRFoxe2nASzsV6ef4yOOH+Fi9FBOVH6cqeSgUnoyySPZkxzLuzd+RYOQTRpROA0ztTMqxROKSb/nA==
 
-point-of-view@^3.5.0:
-  version "3.5.0"
-  resolved "https://registry.yarnpkg.com/point-of-view/-/point-of-view-3.5.0.tgz#56ec984e9615f2ddad9b26383f3b73b8f4fab558"
-  integrity sha512-eiv49vaVAUSmrReRKlWgmYJ7wgcr3rGT6eAVuD6HmXTt1AKLY0CgYeu3msGW0n/X4iefdVsfpcPRsttWvS2CGQ==
-  dependencies:
-    fastify-plugin "^1.5.0"
-    hashlru "^2.3.0"
-
 posix-character-classes@^0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/posix-character-classes/-/posix-character-classes-0.1.1.tgz#01eac0fe3b5af71a2a6c02feabb8c1fef7e00eab"
@@ -5439,11 +5418,6 @@ q@^1.1.2:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
   integrity sha1-fjL3W0E4EpHQRhHxvxQQmsAGUdc=
-
-qs@^6.5.1:
-  version "6.8.0"
-  resolved "https://registry.yarnpkg.com/qs/-/qs-6.8.0.tgz#87b763f0d37ca54200334cd57bb2ef8f68a1d081"
-  integrity sha512-tPSkj8y92PfZVbinY1n84i1Qdx75lZjMQYx9WZhnkofyxzw2r7Ho39G3/aEvSUdebxpnnM4LZJCtvE/Aq3+s9w==
 
 qs@~6.5.2:
   version "6.5.2"
