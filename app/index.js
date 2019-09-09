@@ -1,5 +1,6 @@
 import choo from 'choo';
 
+import config from './config.json';
 import { viewManager } from './views/manager';
 
 const app = choo();
@@ -17,6 +18,7 @@ app.use((state, emitter) => {
 
   // Listeners
   emitter.on('DOMContentLoaded', () => {
+    document.title = config.siteName;
     // Emitter listeners
     emitter.on('render', callback => {
       // This is a dirty hack to get the callback to call *after* re-rendering.
