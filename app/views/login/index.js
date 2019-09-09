@@ -1,6 +1,6 @@
 import html from 'choo/html';
 
-export const loginPartial = (state, emit) => {
+export const loginView = (state, emit) => {
   return html`<section>
 
   <article class="card">

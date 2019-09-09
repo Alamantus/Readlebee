@@ -1,6 +1,7 @@
 import html from 'choo/html';
 
 import { homeView } from './home';
+import { loginView } from './login';
 import { searchView } from './search';
 
 export const viewManager = (state, emit) => {
