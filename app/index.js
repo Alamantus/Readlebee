@@ -1,3 +1,5 @@
+import 'babel-polyfill';
+
 import choo from 'choo';
 
 import config from './config.json';
@@ -37,7 +39,7 @@ app.use((state, emitter) => {
 app.use((state, emitter) => {
   // Default state variables
   state.currentView = 'home';
-  state.language = app.getSettingsItem('lang') ? app.getSettingsItem('lang') : (navigator.language || navigator.userLanguage);
+  state.language = app.getSettingsItem('lang') ? app.getSettingsItem('lang') : (navigator.language || navigator.userLanguage).split('-')[0];
   state.viewStates = {};
 
   // Listeners

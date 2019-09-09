@@ -28,6 +28,7 @@
     "sharp": "^0.23.0"
   },
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
     "choo": "^7.0.0",
     "fastify": "^2.8.0",
     "fastify-caching": "^5.0.0",
