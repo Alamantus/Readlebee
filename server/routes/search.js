@@ -1,12 +1,12 @@
 const SearchController = require('../controllers/search');
 
 async function routes(fastify, options) {
-  fastify.get('/search', async (request, reply) => {
+  fastify.get('/api/search', async (request, reply) => {
     const searchTerm = typeof request.query.for !== 'undefined' ? request.query.for.trim() : '';
-    const search = new SearchController(searchTerm);
+    const language = typeof request.query.lang !== 'undefined' ? request.query.lang.trim().split('-')[0] : undefined; // Get base language in cases like 'en-US'
+    const search = new SearchController(searchTerm, language);
     
-    const results = await search.searchOpenLibrary();
-    reply.view('search.hbs', { results, searchTerm, arbitraryContent: request.isLoggedInUser ? JSON.stringify(fastify.jwt.decode(request.cookies.token)) : 'you are NOT logged in' });
+    return await search.searchInventaire();
   });
 }
 

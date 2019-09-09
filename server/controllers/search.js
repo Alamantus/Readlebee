@@ -1,12 +1,144 @@
 const fetch = require('node-fetch');
 
 class SearchController {
-  constructor(searchTerm) {
+  constructor(searchTerm, language = 'en') {
     this.term = searchTerm;
+    this.lang = language;
   }
   
   get hasQuery() {
     return typeof this.term !== 'undefined' && this.term !== '';
+  }
+
+  searchInventaire() {
+    if (this.hasQuery) {
+      const request = fetch(`https://inventaire.io/api/entities?action=search&search=${encodeURIComponent(this.term)}&lang=${encodeURIComponent(this.lang)}`)
+      request.catch(exception => {
+        console.error(exception);
+        return {
+          error: exception,
+          message: 'An error occurred when trying to reach the Inventaire API.',
+        }
+      });
+      const json = request.then(response => response.json());
+      json.catch(exception => {
+        console.error(exception);
+        return {
+          error: exception,
+          message: 'An error occurred when trying read the response from Inventaire as JSON.',
+        }
+      });
+      return json.then(responseJSON => {
+        const humans = responseJSON.humans.map(human => {
+          const hasLabels = typeof human.labels !== 'undefined';
+          const hasDescriptions = typeof human.descriptions !== 'undefined';
+          const hasImage = typeof human.image !== 'undefined';
+          return {
+            name: (
+              hasLabels && typeof human.labels[this.lang] !== 'undefined'
+              ? human.labels[this.lang]
+              : (
+                hasLabels && Object.keys(human.labels).length > 0
+                ? human.labels[Object.keys(human.labels)[0]]
+                : null
+              )
+            ),
+            description: (
+              hasDescriptions && typeof human.descriptions[this.lang] !== 'undefined'
+              ? human.descriptions[this.lang]
+              : (
+                hasDescriptions && Object.keys(human.descriptions).length > 0
+                ? human.descriptions[Object.keys(human.descriptions)[0]]
+                : null
+              )
+            ),
+            link: (
+              typeof human.uri !== 'undefined'
+              ? `https://inventaire.io/entity/${human.uri}`
+              : null
+            ),
+            image: (
+              hasImage && typeof human.image.url !== 'undefined'
+              ? human.image
+              : null
+            ),
+          };
+        });
+        
+        const series = responseJSON.series.map(serie => {
+          const hasLabels = typeof serie.labels !== 'undefined';
+          const hasDescriptions = typeof serie.descriptions !== 'undefined';
+          return {
+            name: (
+              hasLabels && typeof serie.labels[this.lang] !== 'undefined'
+              ? serie.labels[this.lang]
+              : (
+                hasLabels && Object.keys(serie.labels).length > 0
+                ? serie.labels[Object.keys(serie.labels)[0]]
+                : null
+              )
+            ),
+            description: (
+              hasDescriptions && typeof serie.descriptions[this.lang] !== 'undefined'
+              ? serie.descriptions[this.lang]
+              : (
+                hasDescriptions && Object.keys(serie.descriptions).length > 0
+                ? serie.descriptions[Object.keys(serie.descriptions)[0]]
+                : null
+              )
+            ),
+            link: (
+              typeof serie.uri !== 'undefined'
+              ? `https://inventaire.io/entity/${serie.uri}`
+              : null
+            ),
+          };
+        });
+
+        const works = responseJSON.works.map(work => {
+          const hasLabels = typeof work.labels !== 'undefined';
+          const hasDescriptions = typeof work.descriptions !== 'undefined';
+          const hasImage = typeof work.image !== 'undefined';
+          return {
+            name: (
+              hasLabels && typeof work.labels[this.lang] !== 'undefined'
+              ? work.labels[this.lang]
+              : (
+                hasLabels && Object.keys(work.labels).length > 0
+                ? work.labels[Object.keys(work.labels)[0]]
+                : null
+              )
+            ),
+            description: (
+              hasDescriptions && typeof work.descriptions[this.lang] !== 'undefined'
+              ? work.descriptions[this.lang]
+              : (
+                hasDescriptions && Object.keys(work.descriptions).length > 0
+                ? work.descriptions[Object.keys(work.descriptions)[0]]
+                : null
+              )
+            ),
+            link: (
+              typeof work.uri !== 'undefined'
+              ? `https://inventaire.io/entity/${work.uri}`
+              : null
+            ),
+            image: (
+              hasImage && typeof human.image.url !== 'undefined'
+              ? human.image
+              : null
+            ),
+            // Ratings and review count will be added here
+          };
+        });
+
+        return {
+          humans,
+          series,
+          works,
+        }
+      });
+    }
   }
 
   /**
