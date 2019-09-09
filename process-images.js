@@ -1,16 +1,16 @@
 const fs = require('fs');
 const sharp = require('sharp');
 
-const folder = './public/images/';
+const folder = './dev/images/';
 
-if (!fs.existsSync('./public')) {
-  fs.mkdirSync('./public');
+if (!fs.existsSync('./dev')) {
+  fs.mkdirSync('./dev');
 }
-if (!fs.existsSync('./public/images')) {
-  fs.mkdirSync('./public/images');
+if (!fs.existsSync('./dev/images')) {
+  fs.mkdirSync('./dev/images');
 }
 
-const favicon = sharp('./images/book-pile.svg');
+const favicon = sharp('./app/images/book-pile.svg');
 
 // sharp('./src/images/social.jpg').toFile(folder + 'social.jpg', (err, info) => {
 //   if (err) return console.error(err);
