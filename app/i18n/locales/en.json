@@ -1,0 +1,17 @@
+{
+  "name": "English",
+  "locale": "en",
+  "home": {
+    "subtitle": "An attempt at a viable alternative to Goodreads",
+    "temp_left": "Still gotta figure out a design.",
+    "temp_right": "It's early days, my friends!"
+  },
+  "login": {
+    "email": "Email",
+    "password": "Password",
+    "login_button": "Log In!"
+  },
+  "search": {
+    "header": "Search"
+  }
+}
