@@ -8,11 +8,12 @@ export const searchView = (state, emit) => {
   const i18n = new I18n(state);
   const controller = new SearchController(state);
 
-  // if (!controller.state.done && controller.hasQuery) {
-  //   controller.searchOpenLibrary(state.query.for).then(() => {
-  //     emit('render');
-  //   });
-  // }
+  if (controller.state.lastSearch !== state.query.for) {
+    console.log('searching!');
+    controller.search().then(() => {
+      emit('render');
+    });
+  }
 
   // Returning an array in a view allows non-shared parent HTML elements.
   // This one doesn't have the problem right now, but it's good to remember.
@@ -21,6 +22,8 @@ export const searchView = (state, emit) => {
       <h2 class="subtitle">${i18n.__('search.header')}</h2>
 
       <article>
+        ${controller.state.done ? 'Done searching' : 'Loading...'}
+
         ${controller.results.map(result => {
           return html`<div class="card">
             <header>
