@@ -33,10 +33,10 @@ fastify.addHook('onRequest', (request, reply, done) => {
 
 
 // Routes
-fastify.register(require('./routes/resources'));
-fastify.register(require('./routes/home'));
-fastify.register(require('./routes/account'));
-fastify.register(require('./routes/search'));
+fastify.register(require('./routes/public'));
+// fastify.register(require('./routes/home'));
+// fastify.register(require('./routes/account'));
+// fastify.register(require('./routes/search'));
 
 // Start the server
 fastify.listen(fastify.siteConfig.port, function (err, address) {
