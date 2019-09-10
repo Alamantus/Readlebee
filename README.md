@@ -45,19 +45,24 @@ Alternatively, you can use the NPM that's included with Node:
 npm install
 ```
 
-This install process will compile the sass into CSS at `public/css/index.css` and turn the svg in `images`
-into PNGs in `public/images` after the dependencies are installed. (Note: This runs even if you install new packages.)
-In the future, this postinstall process will also set up the database tables.
+Once installed, make sure that the images are processed from their original form:
+
+```
+npm run process-images
+```
+
+Finally, copy the `config.example.json` files in `app/` and `server/` folders into a new `config.json` file in each.
+These config files are not saved to the project, so you can put your server/database info in there safely.
 
 ## Usage
 
-After everything's installed, run the "start" NPM script to build and serve the front end:
+After everything's installed, run the "dev" NPM script to build and watch the front end and run the back end:
 
 ```
-npm start
+npm run dev
 ```
 
-Then use your browser to navigate to http://localhost:1234 to view the website.
+Then use your browser to navigate to http://localhost:3000 to view the website.
 
 When you make a change, you need to stop the server with `Ctrl+C` and re-run the script.
 
@@ -159,7 +164,7 @@ and do any other things that need to be done to get the project set up and usabl
 Run the following to start the server:
 
 ```
-sudo npm start-production
+sudo npm start
 ```
 
 Then it'll be running on your server's localhost at the port you specified in the config!
