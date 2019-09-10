@@ -124,7 +124,7 @@ class SearchController {
               : null
             ),
             image: (
-              hasImage && typeof human.image.url !== 'undefined'
+              hasImage && typeof work.image.url !== 'undefined'
               ? human.image
               : null
             ),

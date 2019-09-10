@@ -12,6 +12,9 @@
     "login_button": "Log In!"
   },
   "search": {
-    "header": "Search"
+    "header": "Search",
+    "people_header": "People",
+    "series_header": "Series",
+    "books_header": "Books"
   }
 }

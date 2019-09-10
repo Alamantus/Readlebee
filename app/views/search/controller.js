@@ -7,7 +7,11 @@ export class SearchController extends ViewController {
     super(state, 'search', {
       lastSearch: undefined,
       done: false,
-      results: [],
+      results: {
+        humans: [],
+        series: [],
+        works: [],
+      },
     });
 
     // If using controller methods in an input's onchange or onclick instance,
@@ -15,8 +19,12 @@ export class SearchController extends ViewController {
     // or use `onclick=${() => controller.submit()}` to maintain the 'this' of the class instead.
   }
 
+  get doneSearching() {
+    return this.state.done;
+  }
+
   get results() {
-    return [];
+    return this.state.results;
   }
 
   get hasQuery() {
@@ -33,7 +41,6 @@ export class SearchController extends ViewController {
       return fetch(`/api/search?for=${searchTerm}&lang=${this.appState.language}`)
         .then(response => response.json())
         .then(responseJSON => {
-          console.log(responseJSON);
           this.state.results = responseJSON;
           this.state.done = true;
         });
