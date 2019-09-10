@@ -7,8 +7,8 @@ Please note we have a code of conduct, please follow it in all your interactions
 
 ## Discussion
 
-- Join the [Gitter community](https://gitter.im/book-tracker/general) to chat about the project or give feedback
-- Add [Issues](https://gitlab.com/Alamantus/book-tracker/issues) for feature requests or bug reports
+- Join the [Gitter community](https://gitter.im/Readlebee/community) to chat about the project or give feedback
+- Add [Issues](https://gitlab.com/Alamantus/Readlebee/issues) for feature requests or bug reports
 
 ## Pull Request Process
 

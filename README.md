@@ -1,24 +1,24 @@
-# book-tracker
+# Readlebee
 
-[![Read our Contribution Guidelines](https://badges.frapsoft.com/os/v1/open-source.svg?v=102)](./CONTRIBUTING.md) [![Issues](https://img.shields.io/github/issues/Alamantus/book-tracker.svg)](https://gitlab.com/Alamantus/book-tracker/issues) [![Join the chat at https://gitter.im/book-tracker/general](https://badges.gitter.im/book-tracker/general.svg)](https://gitter.im/book-tracker/general)
+[![Read our Contribution Guidelines](https://badges.frapsoft.com/os/v1/open-source.svg?v=102)](./CONTRIBUTING.md) [![Issues](https://img.shields.io/github/issues/Alamantus/Readlebee.svg)](https://gitlab.com/Alamantus/Readlebee/issues) [![Join the chat at https://gitter.im/Readlebee/community](https://badges.gitter.im/Readlebee/general.svg)](https://gitter.im/Readlebee/community)
 
 An attempt at a viable alternative to Goodreads (currently lacking a name—ideas welcome!)
 
 ## Important Links
 
-- [Project Scope](https://gitlab.com/Alamantus/book-tracker/wikis/Project-Scope)
+- [Project Scope](https://gitlab.com/Alamantus/Readlebee/wikis/Project-Scope)
   - Features we feel are essential to the project. Anything beyond the scope should be discussed for later and not prioritized.
-- [Dependencies Stack](https://gitlab.com/Alamantus/book-tracker/wikis/Dependencies-Stack)
+- [Dependencies Stack](https://gitlab.com/Alamantus/Readlebee/wikis/Dependencies-Stack)
   - A list of dependencies used in the project and a short explanation of what each of them are for.
 - [Contrubution Guidelines](./CONTRIBUTING.md)
   - Subject to change but important to follow. Includes a basic code of conduct.
-- [Project chat via Gitter](https://gitter.io/book-tracker)
+- [Project chat via Gitter](https://gitter.io/Readlebee)
   - Real-time discussion about the project.
-- [Issue Tracker](https://gitlab.com/Alamantus/book-tracker/issues)
+- [Issue Tracker](https://gitlab.com/Alamantus/Readlebee/issues)
   - For adding and tracking feature requests, feedback, and bug reports.
-- [Main Repo on GitLab](https://gitlab.com/Alamantus/book-tracker)
+- [Main Repo on GitLab](https://gitlab.com/Alamantus/Readlebee)
   - Where all changes are made "official".
-- [Mirror Repo on GitHub](https://github.com/Alamantus/book-tracker)
+- [Mirror Repo on GitHub](https://github.com/Alamantus/Readlebee)
   - Gets changes from GitLab pushed to it so people who prefer GitHub can contribute there as well. Pull requests and issues created here will also be addressed.
 
 ## Development
@@ -30,7 +30,7 @@ To develop, you'll need to know how to use a terminal or shell on your computer.
 Clone the repo to your computer with [Git](https://git-scm.com/) by running:
 
 ```
-git clone https://gitlab.com/Alamantus/book-tracker.git
+git clone https://gitlab.com/Alamantus/Readlebee.git
 ```
 
 Then run use [Yarn](https://yarnpkg.com) to install the dependencies:
@@ -115,10 +115,10 @@ the current user's home folder using Git like so:
 
 ```
 cd ~
-git clone https://gitlab.com/Alamantus/book-tracker.git && cd book-tracker
+git clone https://gitlab.com/Alamantus/Readlebee.git && cd Readlebee
 ```
 
-This will download the entire project source code into a `book-tracker` folder.
+This will download the entire project source code into a `Readlebee` folder.
 
 #### Step 3: Configure the Project
 
@@ -136,7 +136,7 @@ the `config.example.json` looks like with some explanations of each field:
   "port": 3000  # the port that the server will serve the app from.
   "dbhost": "localhost" # Where the postgres server is
   "dbport": 5432  # What port the postgres server uses
-  "dbname": "book-tracker"  # The name of the database book-tracker will use to make tables and store data in
+  "dbname": "Readlebee"  # The name of the database Readlebee will use to make tables and store data in
   "dbuser": "root"  # The username with access to your postgres database
   "dbpass": "password"  # The password for the username above
   ... # more to come

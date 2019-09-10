@@ -10,12 +10,18 @@ if (!fs.existsSync('./dev/images')) {
   fs.mkdirSync('./dev/images');
 }
 
-const favicon = sharp('./app/images/book-pile.svg');
+const favicon = sharp('./app/images/logo.svg');
+const social = sharp('./app/images/social.svg');
 
-// sharp('./src/images/social.jpg').toFile(folder + 'social.jpg', (err, info) => {
-//   if (err) return console.error(err);
-//   console.log(info);
-// });
+social.clone().resize(1280, 640).flatten({ background: '#ffffff' }).toFile(folder + 'social.png', (err, info) => {
+  if (err) return console.error(err);
+  console.log(info);
+});
+
+social.clone().trim(1).resize(null, 48).toFile(folder + 'header.png', (err, info) => {
+  if (err) return console.error(err);
+  console.log(info);
+});
 
 favicon.clone().resize(32, 32).toFile(folder + 'favicon.png', (err, info) => {
   if (err) return console.error(err);

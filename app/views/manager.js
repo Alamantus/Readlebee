@@ -1,5 +1,7 @@
 import html from 'choo/html';
 
+import headerImage from '../../dev/images/header.png';
+
 import { homeView } from './home';
 import { loginView } from './login';
 import { searchView } from './search';
@@ -30,7 +32,7 @@ export const viewManager = (state, emit) => {
     <nav>
       <div class="brand">
         <a href="/">
-          <span class="title">Unnamed Book Tracker</span>
+          <span><img src=${headerImage} alt="Readlebee"></span>
         </a>
       </div>
     
@@ -58,8 +60,8 @@ export const viewManager = (state, emit) => {
   <footer>
     <nav>
       <div class="links">
-        <a href="https://gitlab.com/Alamantus/book-tracker" class="pseudo button">Repo</a>
-        <a href="https://gitter.im/book-tracker/general" class="pseudo button">Chat</a>
+        <a href="https://gitlab.com/Alamantus/Readlebee" class="pseudo button">Repo</a>
+        <a href="https://gitter.im/Readlebee/community" class="pseudo button">Chat</a>
       </div>
     </nav>
   </footer>

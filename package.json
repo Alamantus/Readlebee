@@ -1,9 +1,9 @@
 {
-  "name": "book-tracker",
+  "name": "readlebee",
   "version": "0.0.0",
   "description": "An attempt at a viable alternative to Goodreads",
   "main": "index.html",
-  "repository": "https://gitlab.com/Alamantus/book-tracker.git",
+  "repository": "https://gitlab.com/Alamantus/Readlebee.git",
   "author": "Robbie Antenesse <dev@alamantus.com>",
   "license": "MIT",
   "scripts": {
