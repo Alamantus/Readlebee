@@ -22,7 +22,7 @@ export const searchView = (state, emit) => {
       <h1 class="title">${i18n.__('search.header')}</h1>
 
       <article>
-        ${controller.doneSearching ? 'Done searching' : 'Loading...'}
+        ${controller.doneSearching ? null : html`<h2><i class="icon-loading animate-spin"></i></h2>`}
 
         ${controller.results.works < 1
         ? null
@@ -36,9 +36,19 @@ export const searchView = (state, emit) => {
               <div class="half-500">
                 <h3 class="title">${result.name}</h3>
                 ${result.description ? html`<h4 class="subtitle">${result.description}</h4>` : null}
+                <span data-tooltip=${i18n.__('interaction.heart')}>
+                  <button class="pseudo">
+                    <i class="pseudo icon-heart-outline"></i>
+                  </button>
+                </span>
+                <span data-tooltip=${i18n.__('interaction.add')}>
+                  <button class="pseudo">
+                    <i class="pseudo icon-plus"></i>
+                  </button>
+                </span>
               </div>
               <div class="third-500">
-                <a href=${result.link} target="_blank">See details on Inventaire</a>
+                <a class="small pseudo button" href=${result.link} target="_blank">See details on Inventaire</a>
               </div>
             </div>`;
           }),

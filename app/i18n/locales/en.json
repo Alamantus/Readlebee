@@ -16,5 +16,9 @@
     "people_header": "People",
     "series_header": "Series",
     "books_header": "Books"
+  },
+  "interaction": {
+    "heart": "Like",
+    "add": "Add to Shelf"
   }
 }

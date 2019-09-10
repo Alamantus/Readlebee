@@ -36,10 +36,14 @@
 
 // @import '../../node_modules/picnic/src/plugins/dropimage/plugin';
 // @import '../../node_modules/picnic/src/plugins/tabs/plugin';
-// @import '../../node_modules/picnic/src/plugins/tooltip/plugin';
+@import '../../node_modules/picnic/src/plugins/tooltip/plugin';
 
 // Custom global styling
 @import './picnic-customizations/custom';
 
 // View styling
 @import './search';
+
+// Icons
+@import '../fonts/fontello/css/animation.css';
+@import '../fonts/fontello/css/icons.css';

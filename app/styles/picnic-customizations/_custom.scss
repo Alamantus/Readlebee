@@ -26,14 +26,14 @@ footer nav {
 }
 
 // External links
-// a[href^="http://"]:not([href*="localhost"]):not([href*="guts.plus"]):after,
-// a[href^="https://"]:not([href*="localhost"]):not([href*="guts.plus"]):after{
-//   font-family: "icons";
-//   font-size: 70%;
-//   vertical-align: top;
-//   margin-left: 3px;
-//   content: "\f08e";
-// }
+a[href^="http://"]:after,
+a[href^="https://"]:after{
+  font-family: "icons";
+  font-size: 70%;
+  vertical-align: top;
+  margin-left: 3px;
+  content: "\f08e";
+}
 
 .menu ul li {
   display: inline-block;

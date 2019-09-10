@@ -26,6 +26,7 @@ export class I18n {
       result = language[section][phrase];
     } else {
       console.error(`The translation for "${section}.${phrase}" is set up in neither the target nor default locale.`);
+      result = `${section}.${phrase}`;
     }
     
     return result;
