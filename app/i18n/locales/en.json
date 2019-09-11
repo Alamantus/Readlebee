@@ -15,7 +15,9 @@
     "header": "Search",
     "people_header": "People",
     "series_header": "Series",
-    "books_header": "Books"
+    "books_header": "Books",
+    "see_details": "See Details",
+    "see_details_tooltip": "Opens Inventaire in a new tab/window",
   },
   "interaction": {
     "heart": "Like",

@@ -30,12 +30,11 @@ export const searchView = (state, emit) => {
           html`<h2>${i18n.__('search.books_header')}</h2>`,
           controller.results.works.map(result => {
             return html`<div class="flex search-result">
-              <div class="sixth-500">
-                ${result.image ? html`<img src=${result.image.url} class="search-image">` : null}
-              </div>
               <div class="half-500">
                 <h3 class="title">${result.name}</h3>
                 ${result.description ? html`<h4 class="subtitle">${result.description}</h4>` : null}
+              </div>
+              <div class="third-500">
                 <span data-tooltip=${i18n.__('interaction.heart')}>
                   <button class="pseudo">
                     <i class="pseudo icon-heart-outline"></i>
@@ -47,8 +46,12 @@ export const searchView = (state, emit) => {
                   </button>
                 </span>
               </div>
-              <div class="third-500">
-                <a class="small pseudo button" href=${result.link} target="_blank">See details on Inventaire</a>
+              <div class="sixth-500">
+                <span class="tooltip-left" data-tooltip=${i18n.__('search.see_details_tooltip')}>
+                  <a class="small pseudo button" href=${result.link} target="_blank">
+                    ${i18n.__('search.see_details')}
+                  </a>
+                </span>
               </div>
             </div>`;
           }),
@@ -60,15 +63,16 @@ export const searchView = (state, emit) => {
           html`<h2>${i18n.__('search.series_header')}</h2>`,
           controller.results.series.map(result => {
             return html`<div class="flex search-result">
-              <div class="sixth-500">
-                ${result.image ? html`<img src=${result.image.url} class="search-image">` : null}
-              </div>
               <div class="half-500">
                 <h3 class="title">${result.name}</h3>
                 ${result.description ? html`<h4 class="subtitle">${result.description}</h4>` : null}
               </div>
-              <div class="third-500">
-                <a href=${result.link} target="_blank">See details on Inventaire</a>
+              <div class="sixth-500 off-third-500">
+                <span class="tooltip-left" data-tooltip=${i18n.__('search.see_details_tooltip')}>
+                  <a class="small pseudo button" href=${result.link} target="_blank">
+                    ${i18n.__('search.see_details')}
+                  </a>
+                </span>
               </div>
             </div>`;
           }),
@@ -88,7 +92,11 @@ export const searchView = (state, emit) => {
                 ${result.description ? html`<h4 class="subtitle">${result.description}</h4>` : null}
               </div>
               <div class="third-500">
-                <a href=${result.link} target="_blank">See details on Inventaire</a>
+                <span class="tooltip-left" data-tooltip=${i18n.__('search.see_details_tooltip')}>
+                  <a class="small pseudo button" href=${result.link} target="_blank">
+                    ${i18n.__('search.see_details')}
+                  </a>
+                </span>
               </div>
             </div>`;
           }),
