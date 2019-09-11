@@ -141,6 +141,73 @@ class SearchController {
     }
   }
 
+  async getInventaireCovers(inventaireURI) {
+    if (!inventaireURI) {
+      return Promise.resolve([]);
+    }
+
+    // Note: property `wdt:P629` is a given entity (uri)'s list of editions (ISBNs).
+    const editionsRequest = fetch(`https://inventaire.io/api/entities?action=reverse-claims&uri=${encodeURIComponent(inventaireURI)}&property=wdt:P629`)
+    editionsRequest.catch(exception => {
+      console.error(exception);
+      return {
+        error: exception,
+        message: `An error occurred when trying to reach the Inventaire API for URI ${inventaireURI}.`,
+      }
+    });
+
+    const editionsJson = editionsRequest.then(response => response.json());
+    editionsJson.catch(exception => {
+      console.error(exception);
+      return {
+        error: exception,
+        message: 'An error occurred when trying read the response from Inventaire as JSON.',
+      }
+    });
+
+    const editions = await editionsJson;
+    const editionURIs = typeof editions.uris !== 'undefined' ? editions.uris.join('|') : false;
+
+    if (editionURIs === false) {
+      return Promise.resolve([]);
+    }
+
+    const isbnsRequest = fetch(`https://inventaire.io/api/entities?action=by-uris&uris=${encodeURIComponent(editionURIs)}`);
+    isbnsRequest.catch(exception => {
+      console.error(exception);
+      return {
+        error: exception,
+        message: `An error occurred when trying to reach the Inventaire API for URI ${inventaireURI}.`,
+      }
+    });
+
+    const isbnsJson = isbnsRequest.then(response => response.json());
+    isbnsJson.catch(exception => {
+      console.error(exception);
+      return {
+        error: exception,
+        message: 'An error occurred when trying read the response from Inventaire as JSON.',
+      }
+    });
+    
+    return isbnsJson.then(responseJSON => {
+      if (typeof responseJSON.entities === 'undefined') {
+        return [];
+      }
+
+      return Object.keys(responseJSON.entities).filter(key => {
+        const entity = responseJSON.entities[key];
+        return entity.originalLang === this.lang && typeof entity.claims !== undefined && typeof entity.claims['invp:P2'] !== undefined ;
+      }).map(key => {
+        const entity = responseJSON.entities[key];
+        return {
+          uri: entity.uri,
+          cover: `https://inventaire.io/img/entities/${entity.claims['invp:P2'][0]}`,
+        }
+      });
+    });
+  }
+
   /**
    * Query a MediaWiki api.php instance with the given options
    */
