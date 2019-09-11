@@ -12,6 +12,7 @@ export class SearchController extends ViewController {
         series: [],
         works: [],
       },
+      openModal: null,
     });
 
     // If using controller methods in an input's onchange or onclick instance,
@@ -29,6 +30,14 @@ export class SearchController extends ViewController {
 
   get hasQuery() {
     return this.appState.query.hasOwnProperty('for') && this.appState.query.for.trim() !== '';
+  }
+
+  get openModal() {
+    return this.state.openModal;
+  }
+
+  set openModal(modalId) {
+    this.state.openModal = modalId;
   }
 
   search() {
