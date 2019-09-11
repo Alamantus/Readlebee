@@ -1,7 +1,8 @@
 const fetch = require('node-fetch');
 
 class SearchController {
-  constructor(searchTerm, language = 'en') {
+  constructor(inventaireDomain, searchTerm, language = 'en') {
+    this.inventaire = inventaireDomain;
     this.term = searchTerm;
     this.lang = language;
   }
@@ -12,7 +13,7 @@ class SearchController {
 
   searchInventaire() {
     if (this.hasQuery) {
-      const request = fetch(`https://inventaire.io/api/entities?action=search&search=${encodeURIComponent(this.term)}&lang=${encodeURIComponent(this.lang)}`)
+      const request = fetch(`${this.inventaire}/api/entities?action=search&search=${encodeURIComponent(this.term)}&lang=${encodeURIComponent(this.lang)}`)
       request.catch(exception => {
         console.error(exception);
         return {
@@ -54,7 +55,7 @@ class SearchController {
             ),
             link: (
               typeof human.uri !== 'undefined'
-              ? `https://inventaire.io/entity/${human.uri}`
+              ? `${this.inventaire}/entity/${human.uri}`
               : null
             ),
             image: (
@@ -89,7 +90,7 @@ class SearchController {
             ),
             link: (
               typeof serie.uri !== 'undefined'
-              ? `https://inventaire.io/entity/${serie.uri}`
+              ? `${this.inventaire}/entity/${serie.uri}`
               : null
             ),
           };
@@ -98,7 +99,7 @@ class SearchController {
         const works = responseJSON.works.map(work => {
           const hasLabels = typeof work.labels !== 'undefined';
           const hasDescriptions = typeof work.descriptions !== 'undefined';
-          const hasImage = typeof work.image !== 'undefined';
+
           return {
             name: (
               hasLabels && typeof work.labels[this.lang] !== 'undefined'
@@ -120,12 +121,12 @@ class SearchController {
             ),
             link: (
               typeof work.uri !== 'undefined'
-              ? `https://inventaire.io/entity/${work.uri}`
+              ? `${this.inventaire}/entity/${work.uri}`
               : null
             ),
-            image: (
-              hasImage && typeof work.image.url !== 'undefined'
-              ? human.image
+            uri: (
+              typeof work.uri !== 'undefined'
+              ? work.uri
               : null
             ),
             // Ratings and review count will be added here
@@ -147,7 +148,7 @@ class SearchController {
     }
 
     // Note: property `wdt:P629` is a given entity (uri)'s list of editions (ISBNs).
-    const editionsRequest = fetch(`https://inventaire.io/api/entities?action=reverse-claims&uri=${encodeURIComponent(inventaireURI)}&property=wdt:P629`)
+    const editionsRequest = fetch(`${this.inventaire}/api/entities?action=reverse-claims&uri=${encodeURIComponent(inventaireURI)}&property=wdt:P629`)
     editionsRequest.catch(exception => {
       console.error(exception);
       return {
@@ -172,7 +173,7 @@ class SearchController {
       return Promise.resolve([]);
     }
 
-    const isbnsRequest = fetch(`https://inventaire.io/api/entities?action=by-uris&uris=${encodeURIComponent(editionURIs)}`);
+    const isbnsRequest = fetch(`${this.inventaire}/api/entities?action=by-uris&uris=${encodeURIComponent(editionURIs)}`);
     isbnsRequest.catch(exception => {
       console.error(exception);
       return {
@@ -202,7 +203,7 @@ class SearchController {
         const entity = responseJSON.entities[key];
         return {
           uri: entity.uri,
-          cover: `https://inventaire.io/img/entities/${entity.claims['invp:P2'][0]}`,
+          url: `${this.inventaire}/img/entities/${entity.claims['invp:P2'][0]}`,
         }
       });
     });
