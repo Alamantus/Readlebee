@@ -1,14 +1,13 @@
 import html from 'choo/html';
 
-import { I18n } from '../../i18n';
 import './styles.scss'; // Creates a separate CSS file, but allows better code splitting.
 // We'll see if code splitting is worth it in the end or if we should combine everything into `src/index.scss`
 import { HomeController } from './controller';  // The controller for this view, where processing should happen.
 
 // This is the view function that is exported and used in the view manager.
 export const homeView = (state, emit) => {
-  const i18n = new I18n(state);
   const controller = new HomeController(state);
+  const { i18n } = controller;
 
   // Returning an array in a view allows non-shared parent HTML elements.
   // This one doesn't have the problem right now, but it's good to remember.

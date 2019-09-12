@@ -1,9 +1,10 @@
 import html from 'choo/html';
 
-import { I18n } from '../../i18n';
+import { LoginController } from './controller';
 
 export const loginView = (state, emit) => {
-  const i18n = new I18n(state);
+  const controller = new LoginController(state);
+  const { i18n } = controller;
 
   return html`<section>
 

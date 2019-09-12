@@ -2,7 +2,8 @@ import html from 'choo/html';
 
 import { modal } from '../partials/modal';
 
-export const resultDetails = (searchController, i18n, result, buttonHTML) => {
+export const resultDetails = (searchController, result, buttonHTML) => {
+  const { i18n } = searchController;
   const modalId = `result_${result.uri}}`;
   const modalContent = html`<article>
     <span class="tooltip-left" data-tooltip=${i18n.__('search.see_details_tooltip')}>

@@ -1,13 +1,12 @@
 import html from 'choo/html';
 
-import { I18n } from '../../i18n';
 import { SearchController } from './controller';  // The controller for this view, where processing should happen.
 import { resultDetails } from './resultDetails';
 
 // This is the view function that is exported and used in the view manager.
 export const searchView = (state, emit) => {
-  const i18n = new I18n(state);
   const controller = new SearchController(state);
+  const { i18n } = controller;
 
   if (controller.state.lastSearch !== state.query.for) {
     console.log('searching!');
@@ -38,7 +37,6 @@ export const searchView = (state, emit) => {
               <div class="third-500">
                 ${resultDetails(
                   controller,
-                  i18n,
                   result,
                   [
                     html`<span data-tooltip=${i18n.__('interaction.heart')}>
