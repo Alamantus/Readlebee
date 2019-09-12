@@ -26,7 +26,7 @@ export const modal = (modalId, controller, contentHTML, options = {}) => {
       <input id=${modalId} type="checkbox" ${!isOpen ? null : 'checked'}
         onchange=${() => controller.openModal = isOpen ? modalId : null }/>
       <label for=${modalId} class="overlay"></label>
-      <article>
+      <article style=${typeof options.styles !== 'undefined' ? options.styles : null}>
 
         ${typeof options.headerHTML === 'undefined'
           ? (
