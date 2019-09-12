@@ -35,22 +35,7 @@ export const searchView = (state, emit) => {
                 ${result.description ? html`<h4 class="subtitle">${result.description}</h4>` : null}
               </div>
               <div class="third-500">
-                ${resultDetails(
-                  controller,
-                  result,
-                  [
-                    html`<span data-tooltip=${i18n.__('interaction.heart')}>
-                      <button class="pseudo">
-                        <i class="pseudo icon-heart-outline"></i>
-                      </button>
-                    </span>`,
-                    html`<span data-tooltip=${i18n.__('interaction.add')}>
-                      <button class="pseudo">
-                        <i class="pseudo icon-plus"></i>
-                      </button>
-                    </span>`,
-                  ]
-                )}
+                ${resultDetails(controller, result)}
               </div>
             </div>`;
           }),

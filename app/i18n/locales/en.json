@@ -17,10 +17,12 @@
     "series_header": "Series",
     "books_header": "Books",
     "see_details": "See Details",
-    "see_details_tooltip": "Opens Inventaire in a new tab/window",
+    "see_details_tooltip": "Opens Inventaire in a new tab/window"
   },
   "interaction": {
     "heart": "Like",
-    "add": "Add to Shelf"
+    "add": "Add to Shelf",
+    "average_rating": "Average Rating",
+    "reviews_written": "Total Reviews Written"
   }
 }

@@ -129,7 +129,8 @@ class SearchController {
               ? work.uri
               : null
             ),
-            // Ratings and review count will be added here
+            rating: (Math.random() * 5).toFixed(1),
+            reviewCount: Math.floor(Math.random() * 100),
           };
         });
 

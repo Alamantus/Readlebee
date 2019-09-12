@@ -1,7 +1,12 @@
 
+.icon-star:before { content: '\e800'; } /* '' */
+.icon-star-empty:before { content: '\e801'; } /* '' */
+.icon-chat:before { content: '\e802'; } /* '' */
 .icon-heart-outline:before { content: '\e803'; } /* '' */
 .icon-heart-filled:before { content: '\e804'; } /* '' */
+.icon-comment:before { content: '\e805'; } /* '' */
 .icon-check:before { content: '\e807'; } /* '' */
 .icon-plus:before { content: '\e808'; } /* '' */
 .icon-loading:before { content: '\e839'; } /* '' */
 .icon-external:before { content: '\f08e'; } /* '' */
+.icon-star-half:before { content: '\f123'; } /* '' */
