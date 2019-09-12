@@ -30,11 +30,11 @@ export const searchView = (state, emit) => {
           html`<h2>${i18n.__('search.books_header')}</h2>`,
           controller.results.works.map(result => {
             return html`<div class="flex search-result">
-              <div class="two-third-500">
+              <div class="two-third-800 half-500">
                 <h3 class="title">${result.name}</h3>
                 ${result.description ? html`<h4 class="subtitle">${result.description}</h4>` : null}
               </div>
-              <div class="third-500">
+              <div class="third-800 half-500">
                 ${resultDetails(controller, result)}
               </div>
             </div>`;
@@ -47,14 +47,14 @@ export const searchView = (state, emit) => {
           html`<h2>${i18n.__('search.series_header')}</h2>`,
           controller.results.series.map(result => {
             return html`<div class="flex search-result">
-              <div class="half-500">
+              <div class="two-third-800 half-500">
                 <h3 class="title">${result.name}</h3>
                 ${result.description ? html`<h4 class="subtitle">${result.description}</h4>` : null}
               </div>
-              <div class="sixth-500 off-third-500">
+              <div class="third-800 half-500">
                 <span class="tooltip-left" data-tooltip=${i18n.__('search.see_details_tooltip')}>
                   <a class="small pseudo button" href=${result.link} target="_blank">
-                    ${i18n.__('search.see_details')}
+                    ${i18n.__('search.see_inventaire_details')}
                   </a>
                 </span>
               </div>
@@ -68,17 +68,17 @@ export const searchView = (state, emit) => {
           html`<h2>${i18n.__('search.people_header')}</h2>`,
           controller.results.humans.map(result => {
             return html`<div class="flex search-result">
-              <div class="sixth-500">
+              <div class="sixth">
                 ${result.image ? html`<img src=${result.image.url} class="search-image">` : null}
               </div>
-              <div class="half-500">
+              <div class="half-800 two-third">
                 <h3 class="title">${result.name}</h3>
                 ${result.description ? html`<h4 class="subtitle">${result.description}</h4>` : null}
               </div>
-              <div class="third-500">
+              <div class="third-800">
                 <span class="tooltip-left" data-tooltip=${i18n.__('search.see_details_tooltip')}>
                   <a class="small pseudo button" href=${result.link} target="_blank">
-                    ${i18n.__('search.see_details')}
+                    ${i18n.__('search.see_inventaire_details')}
                   </a>
                 </span>
               </div>
