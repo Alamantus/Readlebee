@@ -8,12 +8,12 @@ export const resultDetails = (searchController, result) => {
   const modalId = `result_${result.uri}`;
 
   const buttonHTML = html`<label for=${modalId} class="pseudo button">
-    <span data-tooltip="${i18n.__('interaction.average_rating')}: ${result.rating}">
-      ${starRating(result.rating)}
+    <span data-tooltip="${i18n.__('interaction.average_rating')}: ${result.averageRating}">
+      ${starRating(result.averageRating)}
     </span>  
     <span style="margin-left:10px;" data-tooltip=${i18n.__('interaction.reviews_written')}>
       <span style="margin-right:8px;"><i class="icon-chat"></i></span>
-      <span>${result.reviewCount}</span>
+      <span>${result.numberOfReviews}</span>
     </span>
   </label>`;
   
@@ -24,7 +24,7 @@ export const resultDetails = (searchController, result) => {
     </div>
     <div class="two-third-700">
       <h4>${i18n.__('interaction.average_rating')}</h4>
-      <span data-tooltip="${result.rating}">${starRating(result.rating)}</span>
+      <span data-tooltip="${result.averageRating}">${starRating(result.averageRating)}</span>
 
       <div class="flex">
         <div>
@@ -33,42 +33,34 @@ export const resultDetails = (searchController, result) => {
         <div>
           <a href="/book/${result.uri}" class="small button">
             <span style="margin-right:8px;"><i class="icon-chat"></i></span>
-            <span>${result.reviewCount}</span>
+            <span>${result.numberOfReviews}</span>
             <span>${i18n.__('search.see_interaction_details')}</span>
           </a>
         </div>
       </div>
-      <article class="card">
-        <header>
-          {{USERNAME}} ${starRating(Math.ceil(result.rating))}
-        </header>
-        <footer>
-          <div class="content">
-            <p>
-              The only thing worse than yellow snow is green snow. Let's put a touch more of the magic here.
-              With practice comes confidence. You have to allow the paint to break to make it beautiful.
-            </p>
-            <p>
-              Let all these little things happen. Don't fight them. Learn to use them. Imagination is the key
-              to painting. You can't make a mistake. Anything that happens you can learn to use - and make
-              something beautiful out of it. This is a fantastic little painting. In painting, you have unlimited
-              power. You have the ability to move mountains. We don't have anything but happy trees here.
-            </p>
-            <p>
-              If what you're doing doesn't make you happy - you're doing the wrong thing. A fan brush can be
-              your best friend. Mountains are so simple, they're hard.
-            </p>
-          </div>
-          <span class="tooltip-top" data-tooltip=${i18n.__('interaction.heart')}>
-            <button class="pseudo">
-              <i class="icon-heart-outline"></i>
-            </button>
-          </span>
-          <span>
-            ${result.reviewCount}
-          </span>
-        </footer>
-      </article>
+      ${result.reviews.map(review => {
+        return html`<article class="card">
+          <header style="font-weight:normal;">
+            <strong>${review.reviewer.name}</strong> <em>${review.reviewer.handle}</em><br>
+            ${review.date} ${starRating(Math.ceil(review.rating))}
+          </header>
+          <footer>
+            <div class="content">
+              <p>
+                ${review.review}
+              </p>
+            </div>
+            <span class="tooltip-top" data-tooltip=${i18n.__('interaction.heart')}>
+              <button class="pseudo">
+                <i class="icon-heart-outline"></i>
+              </button>
+            </span>
+            <span>
+              ${review.hearts}
+            </span>
+          </footer>
+        </article>`;
+      })}
     </div>
     <div class="sixth-700">
       <p>
