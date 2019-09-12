@@ -3,7 +3,7 @@ import html from 'choo/html';
 import { starRating } from '../partials/starRating';
 import { modal } from '../partials/modal';
 
-export const resultDetails = (searchController, result) => {
+export const resultDetails = (searchController, result, emit = () => {}) => {
   const { i18n } = searchController;
   const modalId = `result_${result.uri}`;
 
@@ -17,10 +17,41 @@ export const resultDetails = (searchController, result) => {
     </span>
   </label>`;
   
+  const tabNames = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty'];
+  
   const modalContent = html`<article class="flex">
     <div class="sixth-700" style="text-align:center;">
       <h4>Covers</h4>
-      <span style="font-size:3em;"><i class="icon-loading animate-spin"></i></span>
+      ${typeof result.covers === 'undefined'
+        ? html`<span style="font-size:3em;"><i class="icon-loading animate-spin"></i></span>`
+        : html`<div class="tabs ${typeof tabNames[result.covers.length - 1] !== 'undefined' ? tabNames[result.covers.length - 1] : null}">
+          ${result.covers.map((cover, index) => {
+            return [
+              html`<input id="cover_${cover.uri}" type="radio" name="${modalId}_covers" ${index === 0 ? 'checked' : null} />`,
+              // html`<label class="small pseudo button toggle" for="cover_${cover.uri}">•</label>`,
+            ];
+          })}
+          <div class="row">
+          ${result.covers.map((cover, index, allCovers) => {
+            return html`<div>
+              <img src=${cover.url} alt="${cover.uri.replace(':', ' ').toUpperCase()}, Published: ${cover.publishDate}">
+              ${typeof allCovers[index - 1] === 'undefined'
+                ? null
+                : html`<label class="button" for="cover_${allCovers[index - 1].uri}" style="margin-right:8px;">
+                  ${'<'}
+                </label>`
+              }
+              ${typeof allCovers[index + 1] === 'undefined'
+                ? null
+                : html`<label class="button" for="cover_${allCovers[index + 1].uri}">
+                  ${'>'}
+                </label>`
+              }
+            </div>`;
+          })}
+          </div>
+        </div>`
+      }
     </div>
     <div class="two-third-700">
       <h4>${i18n.__('interaction.average_rating')}</h4>
@@ -84,5 +115,10 @@ export const resultDetails = (searchController, result) => {
     styles: "width:90%;",
     buttonHTML, // This should be replaced with buttonHTML containing the ratings and number of reviews etc.
     headerText: result.name,
+    onShow: () => {
+      if (typeof result.covers === 'undefined') {
+        searchController.getCovers(result.uri).then(() => emit('render'));
+      }
+    },
   });
 }

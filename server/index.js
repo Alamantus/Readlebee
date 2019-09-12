@@ -34,7 +34,7 @@ fastify.addHook('onRequest', (request, reply, done) => {
 
 // Routes
 fastify.register(require('./routes/public'));
-// fastify.register(require('./routes/home'));
+fastify.register(require('./routes/books'));
 // fastify.register(require('./routes/account'));
 fastify.register(require('./routes/search'));
 

@@ -185,16 +185,26 @@ class BooksController {
         return [];
       }
 
-      return Object.keys(responseJSON.entities).filter(key => {
+      const covers = Object.keys(responseJSON.entities).filter(key => {
         const entity = responseJSON.entities[key];
         return entity.originalLang === this.lang && typeof entity.claims !== undefined && typeof entity.claims['invp:P2'] !== undefined;
       }).map(key => {
         const entity = responseJSON.entities[key];
         return {
           uri: entity.uri,
-          url: `${this.inventaire}/img/entities/${entity.claims['invp:P2'][0]}`,
+          url: typeof entity.claims['invp:P2'] !== 'undefined' ? `${this.inventaire}/img/entities/${entity.claims['invp:P2'][0]}` : null,
+          publishDate: typeof entity.claims['wdt:P577'] !== 'undefined' ? entity.claims['wdt:P577'][0] : null,
         }
       });
+
+      covers.sort((a, b) => {
+        if (a.publishDate === b.publishDate) return 0;
+        if (!a.publishDate && !!b.publishDate) return 1;
+        if (!!a.publishDate && !b.publishDate) return 1;
+        return a.publishDate < b.publishDate ? -1 : 1;
+      });
+
+      return covers;
     });
   }
 }

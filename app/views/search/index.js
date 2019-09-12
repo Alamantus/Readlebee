@@ -35,7 +35,7 @@ export const searchView = (state, emit) => {
                 ${result.description ? html`<h4 class="subtitle">${result.description}</h4>` : null}
               </div>
               <div class="third-800 half-500">
-                ${resultDetails(controller, result)}
+                ${resultDetails(controller, result, emit)}
               </div>
             </div>`;
           }),

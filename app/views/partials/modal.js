@@ -10,6 +10,8 @@ export const modal = (modalId, controller, contentHTML, options = {}) => {
    * headerText <string>: Displayed in an `<h3>` if no header is specified
    * noFooter <bool>: Set to `true` and exclude footerHTML to not include a modal footer
    * footerHTML <choo/html>: Displayed in place of the default footer; Recommended to use `<footer>` tag
+   * onShow <function>: Runs when the modal opens.
+   * onHide <function>: Runs when the modal closes.
    */
   
   const isOpen = controller.openModal === modalId;
@@ -23,9 +25,17 @@ export const modal = (modalId, controller, contentHTML, options = {}) => {
     
     // Modals in Picnic CSS uses pure CSS with clever usage of invisible checkboxes and labels
     html`<div class="modal">
-      <input id=${modalId} type="checkbox" ${!isOpen ? null : 'checked'}
-        onchange=${() => controller.openModal = isOpen ? modalId : null }/>
+      <input id=${modalId} type="checkbox" ${isOpen ? 'checked' : null} onchange=${event => {
+        controller.openModal = !isOpen ? modalId : null;  // If it's not already open, set it to the open one
+        if (typeof options.onShow !== 'undefined' && event.target.checked) {
+          options.onShow();
+        }
+        if (typeof options.onHide !== 'undefined' && !event.target.checked) {
+          options.onHide();
+        }
+      }}>
       <label for=${modalId} class="overlay"></label>
+      
       <article style=${typeof options.styles !== 'undefined' ? options.styles : null}>
 
         ${typeof options.headerHTML === 'undefined'

@@ -35,10 +35,11 @@
 @import '../../node_modules/picnic/src/plugins/modal/plugin';
 
 // @import '../../node_modules/picnic/src/plugins/dropimage/plugin';
-// @import '../../node_modules/picnic/src/plugins/tabs/plugin';
+@import '../../node_modules/picnic/src/plugins/tabs/plugin';
 @import '../../node_modules/picnic/src/plugins/tooltip/plugin';
 
 // Custom global styling
+@import './picnic-customizations/tabs';
 @import './picnic-customizations/custom';
 
 // View styling

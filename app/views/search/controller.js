@@ -56,4 +56,21 @@ export class SearchController extends ViewController {
     }
     return Promise.resolve();
   }
+
+  getCovers(inventaireURI) {
+    // This should only be callable after results are displayed.
+    const workIndex = this.results.works.findIndex(work => work.uri === inventaireURI);
+    if (workIndex > -1) { // This should never be false, but just in case...
+      if (typeof this.state.results.works[workIndex].covers === 'undefined') {
+        // Only fetch covers if not already fetched.
+        return fetch(`/api/books/covers?uri=${inventaireURI}&lang=${this.appState.language}`)
+          .then(response => response.json())
+          .then(responseJSON => {
+            this.state.results.works[workIndex].covers = responseJSON;
+          });
+      }
+    }
+
+    return Promise.resolve();
+  }
 }
