@@ -31,22 +31,42 @@ app.use((state, emitter) => {
       savedSettings = {};
     }
     savedSettings[settingsKey] = value;
-    return window.localStorage.setItem(JSON.stringify(savedSettings));
+    return window.localStorage.setItem('settings', JSON.stringify(savedSettings));
+  }
+  app.getSessionState = () => {
+    let sessionState = window.sessionStorage.getItem('sessionState');
+    if (sessionState) {
+      return JSON.parse(sessionState);
+    }
+    return null;
+  }
+  app.setSessionState = () => {
+    return window.sessionStorage.setItem('sessionState', JSON.stringify(app.state));
   }
 });
 
 // App state and emitters
 app.use((state, emitter) => {
-  // Default state variables
-  state.currentView = 'home';
-  state.language = app.getSettingsItem('lang') ? app.getSettingsItem('lang') : (navigator.language || navigator.userLanguage).split('-')[0];
-  state.viewStates = {};
+  const sessionState = app.getSessionState();
+  if (sessionState) {
+    Object.keys(sessionState).forEach(key => {
+      if (typeof state[key] === 'undefined') {
+        state[key] = sessionState[key];
+      }
+    });
+  } else {
+    // Default state variables
+    state.currentView = 'home';
+    state.language = app.getSettingsItem('lang') ? app.getSettingsItem('lang') : (navigator.language || navigator.userLanguage).split('-')[0];
+    state.viewStates = {};
+  }
 
   // Listeners
   emitter.on('DOMContentLoaded', () => {
     document.title = config.siteName;
     // Emitter listeners
     emitter.on('render', callback => {
+      app.setSessionState();
       // This is a dirty hack to get the callback to call *after* re-rendering.
       if (callback && typeof callback === "function") {
         setTimeout(() => {
