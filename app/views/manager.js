@@ -38,7 +38,7 @@ export const viewManager = (state, emit) => {
     
       <!-- responsive-->
       <input id="navMenu" type="checkbox" class="show">
-      <label for="navMenu" class="burger pseudo button">&#8801;</label>
+      <label for="navMenu" class="burger pseudo button">${'\u2261'}</label>
     
       <div class="menu">
         <label style="display: inline-block;">
