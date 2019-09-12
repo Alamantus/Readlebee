@@ -1,5 +1,7 @@
 const fetch = require('node-fetch');
 
+const BooksController = require('./books');
+
 class SearchController {
   constructor(inventaireDomain, searchTerm, language = 'en') {
     this.inventaire = inventaireDomain;
@@ -97,41 +99,14 @@ class SearchController {
         });
 
         const works = responseJSON.works.map(work => {
-          const hasLabels = typeof work.labels !== 'undefined';
-          const hasDescriptions = typeof work.descriptions !== 'undefined';
-
+          const booksController = new BooksController(this.inventaire, work.uri, this.lang);
+          const bookData = booksController.handleInventaireEntity(work);
+          const communityData = booksController.getCommunityData(5);
+          
           return {
-            name: (
-              hasLabels && typeof work.labels[this.lang] !== 'undefined'
-              ? work.labels[this.lang]
-              : (
-                hasLabels && Object.keys(work.labels).length > 0
-                ? work.labels[Object.keys(work.labels)[0]]
-                : null
-              )
-            ),
-            description: (
-              hasDescriptions && typeof work.descriptions[this.lang] !== 'undefined'
-              ? work.descriptions[this.lang]
-              : (
-                hasDescriptions && Object.keys(work.descriptions).length > 0
-                ? work.descriptions[Object.keys(work.descriptions)[0]]
-                : null
-              )
-            ),
-            link: (
-              typeof work.uri !== 'undefined'
-              ? `${this.inventaire}/entity/${work.uri}`
-              : null
-            ),
-            uri: (
-              typeof work.uri !== 'undefined'
-              ? work.uri
-              : null
-            ),
-            rating: (Math.random() * 5).toFixed(1),
-            reviewCount: Math.floor(Math.random() * 100),
-          };
+            ...bookData,
+            ...communityData,
+          }
         });
 
         return {
@@ -141,73 +116,6 @@ class SearchController {
         }
       });
     }
-  }
-
-  async getInventaireCovers(inventaireURI) {
-    if (!inventaireURI) {
-      return Promise.resolve([]);
-    }
-
-    // Note: property `wdt:P629` is a given entity (uri)'s list of editions (ISBNs).
-    const editionsRequest = fetch(`${this.inventaire}/api/entities?action=reverse-claims&uri=${encodeURIComponent(inventaireURI)}&property=wdt:P629`)
-    editionsRequest.catch(exception => {
-      console.error(exception);
-      return {
-        error: exception,
-        message: `An error occurred when trying to reach the Inventaire API for URI ${inventaireURI}.`,
-      }
-    });
-
-    const editionsJson = editionsRequest.then(response => response.json());
-    editionsJson.catch(exception => {
-      console.error(exception);
-      return {
-        error: exception,
-        message: 'An error occurred when trying read the response from Inventaire as JSON.',
-      }
-    });
-
-    const editions = await editionsJson;
-    const editionURIs = typeof editions.uris !== 'undefined' ? editions.uris.join('|') : false;
-
-    if (editionURIs === false) {
-      return Promise.resolve([]);
-    }
-
-    const isbnsRequest = fetch(`${this.inventaire}/api/entities?action=by-uris&uris=${encodeURIComponent(editionURIs)}`);
-    isbnsRequest.catch(exception => {
-      console.error(exception);
-      return {
-        error: exception,
-        message: `An error occurred when trying to reach the Inventaire API for URI ${inventaireURI}.`,
-      }
-    });
-
-    const isbnsJson = isbnsRequest.then(response => response.json());
-    isbnsJson.catch(exception => {
-      console.error(exception);
-      return {
-        error: exception,
-        message: 'An error occurred when trying read the response from Inventaire as JSON.',
-      }
-    });
-    
-    return isbnsJson.then(responseJSON => {
-      if (typeof responseJSON.entities === 'undefined') {
-        return [];
-      }
-
-      return Object.keys(responseJSON.entities).filter(key => {
-        const entity = responseJSON.entities[key];
-        return entity.originalLang === this.lang && typeof entity.claims !== undefined && typeof entity.claims['invp:P2'] !== undefined ;
-      }).map(key => {
-        const entity = responseJSON.entities[key];
-        return {
-          uri: entity.uri,
-          url: `${this.inventaire}/img/entities/${entity.claims['invp:P2'][0]}`,
-        }
-      });
-    });
   }
 
   /**
