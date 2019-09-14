@@ -12,9 +12,15 @@
     "logged_out_join_now": "Join Now!"
   },
   "login": {
+    "log_in": "Log In",
     "email": "Email",
     "password": "Password",
-    "login_button": "Log In!"
+    "login_button": "Log In!",
+    "create_account": "Create a New Account",
+    "confirm_password": "Confirm Password",
+    "username": "Username",
+    "display_name": "Display Name",
+    "create_account_button": "Create Account!"
   },
   "search": {
     "header": "Search",
