@@ -11,7 +11,8 @@
     "start": "npm run build && cross-env NODE_ENV=production npm run serve",
     "watch-js": "parcel watch app/index.html --out-dir public --no-hmr --no-cache",
     "serve": "node server/index.js",
-    "build": "npm run process-images && parcel build app/index.html --out-dir public --no-source-maps --no-cache",
+    "build": "npm run process-images && npm run bundle",
+    "bundle": "parcel build app/index.html --out-dir public --no-source-maps --no-cache",
     "process-images": "node ./process-images.js",
     "clear": "rimraf public/{*,.*}"
   },
