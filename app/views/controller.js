@@ -12,4 +12,8 @@ export class ViewController {
     }
     this.state = this.appState.viewStates[viewName];
   }
+
+  get isLoggedIn () {
+    return this.appState.isLoggedIn;
+  }
 }
