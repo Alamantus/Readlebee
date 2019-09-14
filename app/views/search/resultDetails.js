@@ -71,7 +71,7 @@ export const resultDetails = (searchController, result, emit = () => {}) => {
         </div>
       </div>
       ${result.reviews.map(review => {
-        return reviewCard(review);
+        return reviewCard(searchController, review);
       })}
     </div>
     <div class="sixth-700">

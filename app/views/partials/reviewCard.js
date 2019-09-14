@@ -2,7 +2,9 @@ import html from 'choo/html';
 
 import { starRating } from './starRating';
 
-export const reviewCard = (review) => {
+export const reviewCard = (controller, review) => {
+  const { i18n } = controller;
+
   return html`<article class="card">
     <header style="font-weight:normal;">
       <strong>${review.reviewer.name}</strong> <em>${review.reviewer.handle}</em><br>
