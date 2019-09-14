@@ -1,3 +1,4 @@
+// Picnic Overrides
 body {
   font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 }
@@ -18,11 +19,9 @@ nav {
   position: relative;
 }
 
-footer nav {
-  .links {
-    @extend .brand;
-    font-weight: unset;
-  }
+.pseudo[data-tooltip]::after {
+  background-color: $picnic-black;
+  color: $picnic-white;
 }
 
 // External links
@@ -35,9 +34,17 @@ a[href^="https://"]:after{
   content: "\f08e";
 }
 
+// New components
 .menu ul li {
   display: inline-block;
   list-style: none;
+}
+
+footer nav {
+  .links {
+    @extend .brand;
+    font-weight: unset;
+  }
 }
 
 .container {
@@ -131,6 +138,7 @@ th {
   }
 }
 
+// Handy Utilities
 .paddingless {
   padding: 0 !important;
 }
@@ -140,8 +148,11 @@ th {
 .italic {
   font-style: italic !important;
 }
+.large {
+  font-size: 1.5em;
+}
 .small {
-  font-size: 80%;
+  font-size: 0.8em;
 }
 .left-align {
   text-align: left !important;
