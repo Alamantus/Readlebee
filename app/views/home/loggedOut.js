@@ -1,9 +1,11 @@
 import html from 'choo/html';
 
 export const loggedOutView = (homeController, emit) => {
+  const { i18n } = homeController;
+  
   return [
     html`<section>
-      <h2>Read Together</h2>
+      <h2>${i18n.__('home.logged_out_subtitle')}</h2>
       <article class="flex one three-500">
         <div>
           <div class="card">
@@ -13,7 +15,7 @@ export const loggedOutView = (homeController, emit) => {
               </span>
             </header>
             <footer>
-              Keep track of books you've read, want to read, and are currently reading.
+              ${i18n.__('home.logged_out_track_books')}
             </footer>
           </div>
         </div>
@@ -25,7 +27,7 @@ export const loggedOutView = (homeController, emit) => {
               </span>
             </header>
             <footer>
-              Share your thoughts about what you're reading and see what your friends think of their books.
+              ${i18n.__('home.logged_out_share_friends')}
             </footer>
           </div>
         </div>
@@ -37,20 +39,20 @@ export const loggedOutView = (homeController, emit) => {
               </span>
             </header>
             <footer>
-              Read, rate, and recommmend books or something. It'll be cool.
+              ${i18n.__('home.logged_out_read_rate')}
             </footer>
           </div>
         </div>
       </article>
     </section>`,
     html`<section>
-      <h2>Join the Community</h2>
+      <h2>${i18n.__('home.logged_out_community_header')}</h2>
       <div class="flex one two-700">
         <div>
           <div class="card">
             <header>
-              <h3>Recent Reviews</h3>
-              <button class="small pseudo pull-right tooltip-left" data-tooltip="Reload">
+              <h3>${i18n.__('home.logged_out_recent_reviews')}</h3>
+              <button class="small pseudo pull-right tooltip-left" data-tooltip=${i18n.__('interaction.reload')}>
                 <i class="icon-loading"></i><!--/* This needs to get updated to a reload icon */-->
               </button>
             </header>
@@ -62,8 +64,8 @@ export const loggedOutView = (homeController, emit) => {
         <div>
           <div class="card">
             <header>
-              <h3>Recent Updates</h3>
-              <button class="small pseudo pull-right tooltip-left" data-tooltip="Reload">
+              <h3>${i18n.__('home.logged_out_recent_updates')}</h3>
+              <button class="small pseudo pull-right tooltip-left" data-tooltip=${i18n.__('interaction.reload')}>
                 <i class="icon-loading"></i><!--/* This needs to get updated to a reload icon */-->
               </button>
             </header>
@@ -75,7 +77,7 @@ export const loggedOutView = (homeController, emit) => {
       </div>
     </section>`,
     html`<section class="center-align">
-      <a href="/login" class="large success button">Join Now!</a>
+      <a href="/login" class="large success button">${i18n.__('home.logged_out_join_now')}</a>
     </section>`,
   ];
 }

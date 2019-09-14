@@ -2,9 +2,14 @@
   "name": "English",
   "locale": "en",
   "home": {
-    "subtitle": "An attempt at a viable alternative to Goodreads",
-    "temp_left": "Still gotta figure out a design.",
-    "temp_right": "It's early days, my friends!"
+    "logged_out_subtitle": "All the Book Buzz in Once Place",
+    "logged_out_track_books": "Keep track of books you've read, want to read, and are currently reading.",
+    "logged_out_share_friends": "Share your thoughts about what you're reading and see what your friends think of their books.",
+    "logged_out_read_rate": "Rate, review, and recommmend books or something. I dunno. It's early days, my friends!",
+    "logged_out_community_header": "A Look Inside the Hive",
+    "logged_out_recent_reviews": "Recent Reviews",
+    "logged_out_recent_updates": "Recent Updates",
+    "logged_out_join_now": "Join Now!"
   },
   "login": {
     "email": "Email",
@@ -22,6 +27,7 @@
     "see_details_tooltip": "Opens Inventaire in a new tab/window"
   },
   "interaction": {
+    "reload": "Reload",
     "heart": "Like",
     "add": "Add to Shelf",
     "average_rating": "Average Rating",
