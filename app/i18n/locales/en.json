@@ -31,6 +31,8 @@
   },
   "search": {
     "header": "Search",
+    "loading": "Loading...",
+    "results_header": "Results for:",
     "people_header": "People",
     "series_header": "Series",
     "books_header": "Books",

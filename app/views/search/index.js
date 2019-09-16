@@ -20,10 +20,16 @@ export const searchView = (state, emit, i18n) => {
     html`<section>
       <h1 class="title">${__('search.header')}</h1>
 
+      
       <article>
-        ${controller.doneSearching ? null : html`<h2><i class="icon-loading animate-spin"></i></h2>`}
+        <h2>
+          ${controller.doneSearching
+            ? html`<span>${__('search.results_header')}</span> <code>${controller.state.lastSearch}</code>`
+            : html`<i class="icon-loading animate-spin"></i> <span>${__('search.loading')}</span>`
+          }
+        </h2>
 
-        ${controller.results.works < 1
+        ${!controller.doneSearching || controller.results.works < 1
         ? null
         : [
           html`<h2>${__('search.books_header')}</h2>`,
