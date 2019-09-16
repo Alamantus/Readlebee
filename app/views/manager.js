@@ -2,11 +2,13 @@ import html from 'choo/html';
 
 import headerImage from '../../dev/images/header.png';
 
+import { I18n } from '../i18n';
 import { homeView } from './home';
 import { loginView } from './login';
 import { searchView } from './search';
 
 export const viewManager = (state, emit) => {
+  const i18n = new I18n(state);
   // In viewManager all we are doing is checking the app's state
   // and passing the state and emit to the relevant view.
   let htmlContent = html`<div>loading</div>`;
@@ -42,13 +44,15 @@ export const viewManager = (state, emit) => {
     
       <div class="menu">
         <label style="display: inline-block;">
-          <input type="text" name="search" placeholder="Search" onchange=${e => {
-            console.log(encodeURIComponent(e.target.value.trim()));
-            emit('pushState', '/search?for=' + encodeURIComponent(e.target.value.trim()));
-          }}>
+          <input type="text" name="search"
+            placeholder=${i18n.__('global.searchbar_placeholder')}
+            onchange=${e => {
+              emit('pushState', '/search?for=' + encodeURIComponent(e.target.value.trim()));
+            }}
+          >
         </label>
-        <a href="/login" class="pseudo button">Log In</a>
-        <a href="/logout" class="pseudo button">Log Out</a>
+        <a href="/login" class="pseudo button">${i18n.__('global.menu_login')}</a>
+        <a href="/logout" class="pseudo button">${i18n.__('global.menu_logout')}</a>
       </div>
     </nav>
   </header>
@@ -60,8 +64,12 @@ export const viewManager = (state, emit) => {
   <footer>
     <nav>
       <div class="links">
-        <a href="https://gitlab.com/Alamantus/Readlebee" class="pseudo button">Repo</a>
-        <a href="https://gitter.im/Readlebee/community" class="pseudo button">Chat</a>
+        <a href="https://gitlab.com/Alamantus/Readlebee" class="pseudo button">
+          ${i18n.__('global.footer_repo')}
+        </a>
+        <a href="https://gitter.im/Readlebee/community" class="pseudo button">
+          ${i18n.__('global.footer_chat')}
+        </a>
       </div>
     </nav>
   </footer>

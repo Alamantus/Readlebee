@@ -1,6 +1,13 @@
 {
   "name": "English",
   "locale": "en",
+  "global": {
+    "searchbar_placeholder": "Search for Books",
+    "menu_login": "Log In",
+    "menu_logout": "Log Out",
+    "footer_repo": "Repo",
+    "footer_chat": "Chat"
+  },
   "home": {
     "logged_out_subtitle": "All the Book Buzz in Once Place",
     "logged_out_track_books": "Keep track of books you've read, want to read, and are currently reading.",
