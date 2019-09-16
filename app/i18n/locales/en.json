@@ -33,6 +33,8 @@
     "header": "Search",
     "loading": "Loading...",
     "results_header": "Results for:",
+    "no_results": "None Found",
+    "no_results_suggestion": "If you're expecting book data, go and help fill out the Inventaire database!",
     "people_header": "People",
     "series_header": "Series",
     "books_header": "Books",

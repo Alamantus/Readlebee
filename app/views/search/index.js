@@ -19,7 +19,6 @@ export const searchView = (state, emit, i18n) => {
   return [
     html`<section>
       <h1 class="title">${__('search.header')}</h1>
-
       
       <article>
         <h2>
@@ -30,10 +29,13 @@ export const searchView = (state, emit, i18n) => {
         </h2>
 
         ${!controller.doneSearching || controller.results.works < 1
-        ? null
-        : [
-          html`<h2>${__('search.books_header')}</h2>`,
-          controller.results.works.map(result => {
+          ? [
+            html`<h3>${__('search.no_results')}</h3>`,
+            html`<a class="button" href="https://wiki.inventaire.io/wiki/How-to-contribute" target="_blank">
+              ${__('search.no_results_suggestion')}
+            </a>`
+          ]
+          : controller.results.works.map(result => {
             return html`<div class="flex search-result">
               <div class="two-third-800 half-500">
                 <h3 class="title">${result.name}</h3>
@@ -43,53 +45,8 @@ export const searchView = (state, emit, i18n) => {
                 ${resultDetails(controller, result, emit)}
               </div>
             </div>`;
-          }),
-        ]}
-
-        ${controller.results.series.length < 1
-        ? null
-        : [
-          html`<h2>${__('search.series_header')}</h2>`,
-          controller.results.series.map(result => {
-            return html`<div class="flex search-result">
-              <div class="two-third-800 half-500">
-                <h3 class="title">${result.name}</h3>
-                ${result.description ? html`<h4 class="subtitle">${result.description}</h4>` : null}
-              </div>
-              <div class="third-800 half-500">
-                <span class="tooltip-left" data-tooltip=${__('search.see_details_tooltip')}>
-                  <a class="small pseudo button" href=${result.link} target="_blank">
-                    ${__('search.see_inventaire_details')}
-                  </a>
-                </span>
-              </div>
-            </div>`;
-          }),
-        ]}
-
-        ${controller.results.humans.length < 1
-        ? null
-        : [
-          html`<h2>${__('search.people_header')}</h2>`,
-          controller.results.humans.map(result => {
-            return html`<div class="flex search-result">
-              <div class="sixth">
-                ${result.image ? html`<img src=${result.image.url} class="search-image">` : null}
-              </div>
-              <div class="half-800 two-third">
-                <h3 class="title">${result.name}</h3>
-                ${result.description ? html`<h4 class="subtitle">${result.description}</h4>` : null}
-              </div>
-              <div class="third-800">
-                <span class="tooltip-left" data-tooltip=${__('search.see_details_tooltip')}>
-                  <a class="small pseudo button" href=${result.link} target="_blank">
-                    ${__('search.see_inventaire_details')}
-                  </a>
-                </span>
-              </div>
-            </div>`;
-          }),
-        ]}
+          })
+        }
       </article>
     </section>`,
   ];
