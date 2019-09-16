@@ -14,7 +14,7 @@ export const modal = (modalId, controller, contentHTML, options = {}) => {
    * onHide <function>: Runs when the modal closes.
    */
   
-  const isOpen = controller.openModal === modalId;
+  const isOpen = () => controller.openModal === modalId;
    
   return [
     (
@@ -25,8 +25,8 @@ export const modal = (modalId, controller, contentHTML, options = {}) => {
     
     // Modals in Picnic CSS uses pure CSS with clever usage of invisible checkboxes and labels
     html`<div class="modal">
-      <input id=${modalId} type="checkbox" ${isOpen ? 'checked' : null} onchange=${event => {
-        controller.openModal = !isOpen ? modalId : null;  // If it's not already open, set it to the open one
+      <input id=${modalId} type="checkbox" ${isOpen() ? 'checked' : null} onchange=${event => {
+        controller.openModal = !isOpen() ? modalId : null;  // If it's not already open, set it to the open one
         if (typeof options.onShow !== 'undefined' && event.target.checked) {
           options.onShow();
         }
