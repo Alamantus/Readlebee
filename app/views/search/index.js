@@ -4,12 +4,11 @@ import { SearchController } from './controller';  // The controller for this vie
 import { resultDetails } from './resultDetails';
 
 // This is the view function that is exported and used in the view manager.
-export const searchView = (state, emit) => {
-  const controller = new SearchController(state);
-  const { i18n } = controller;
+export const searchView = (state, emit, i18n) => {
+  const controller = new SearchController(state, i18n);
+  const { __ } = controller.i18n;
 
   if (controller.state.lastSearch !== state.query.for) {
-    console.log('searching!');
     controller.search().then(() => {
       emit('render');
     });
@@ -19,7 +18,7 @@ export const searchView = (state, emit) => {
   // This one doesn't have the problem right now, but it's good to remember.
   return [
     html`<section>
-      <h1 class="title">${i18n.__('search.header')}</h1>
+      <h1 class="title">${__('search.header')}</h1>
 
       <article>
         ${controller.doneSearching ? null : html`<h2><i class="icon-loading animate-spin"></i></h2>`}
@@ -27,7 +26,7 @@ export const searchView = (state, emit) => {
         ${controller.results.works < 1
         ? null
         : [
-          html`<h2>${i18n.__('search.books_header')}</h2>`,
+          html`<h2>${__('search.books_header')}</h2>`,
           controller.results.works.map(result => {
             return html`<div class="flex search-result">
               <div class="two-third-800 half-500">
@@ -44,7 +43,7 @@ export const searchView = (state, emit) => {
         ${controller.results.series.length < 1
         ? null
         : [
-          html`<h2>${i18n.__('search.series_header')}</h2>`,
+          html`<h2>${__('search.series_header')}</h2>`,
           controller.results.series.map(result => {
             return html`<div class="flex search-result">
               <div class="two-third-800 half-500">
@@ -52,9 +51,9 @@ export const searchView = (state, emit) => {
                 ${result.description ? html`<h4 class="subtitle">${result.description}</h4>` : null}
               </div>
               <div class="third-800 half-500">
-                <span class="tooltip-left" data-tooltip=${i18n.__('search.see_details_tooltip')}>
+                <span class="tooltip-left" data-tooltip=${__('search.see_details_tooltip')}>
                   <a class="small pseudo button" href=${result.link} target="_blank">
-                    ${i18n.__('search.see_inventaire_details')}
+                    ${__('search.see_inventaire_details')}
                   </a>
                 </span>
               </div>
@@ -65,7 +64,7 @@ export const searchView = (state, emit) => {
         ${controller.results.humans.length < 1
         ? null
         : [
-          html`<h2>${i18n.__('search.people_header')}</h2>`,
+          html`<h2>${__('search.people_header')}</h2>`,
           controller.results.humans.map(result => {
             return html`<div class="flex search-result">
               <div class="sixth">
@@ -76,9 +75,9 @@ export const searchView = (state, emit) => {
                 ${result.description ? html`<h4 class="subtitle">${result.description}</h4>` : null}
               </div>
               <div class="third-800">
-                <span class="tooltip-left" data-tooltip=${i18n.__('search.see_details_tooltip')}>
+                <span class="tooltip-left" data-tooltip=${__('search.see_details_tooltip')}>
                   <a class="small pseudo button" href=${result.link} target="_blank">
-                    ${i18n.__('search.see_inventaire_details')}
+                    ${__('search.see_inventaire_details')}
                   </a>
                 </span>
               </div>

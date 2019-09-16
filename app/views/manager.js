@@ -8,22 +8,22 @@ import { loginView } from './login';
 import { searchView } from './search';
 
 export const viewManager = (state, emit) => {
-  const i18n = new I18n(state);
+  const i18n = new I18n(state); // Global I18n class passed to all views
   // In viewManager all we are doing is checking the app's state
   // and passing the state and emit to the relevant view.
   let htmlContent = html`<div>loading</div>`;
   switch (state.params.page) {
     case 'home':
     default: {
-      htmlContent = homeView(state, emit);
+      htmlContent = homeView(state, emit, i18n);
       break;
     }
     case 'login': {
-      htmlContent = loginView(state, emit);
+      htmlContent = loginView(state, emit, i18n);
       break;
     }
     case 'search': {
-      htmlContent = searchView(state, emit);
+      htmlContent = searchView(state, emit, i18n);
       break;
     }
   }

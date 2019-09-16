@@ -3,7 +3,7 @@ import html from 'choo/html';
 import { starRating } from './starRating';
 
 export const reviewCard = (controller, review) => {
-  const { i18n } = controller;
+  const { __ } = controller.i18n;
 
   return html`<article class="card">
     <header style="font-weight:normal;">
@@ -16,7 +16,7 @@ export const reviewCard = (controller, review) => {
           ${review.review}
         </p>
       </div>
-      <span class="tooltip-top" data-tooltip=${i18n.__('interaction.heart')}>
+      <span class="tooltip-top" data-tooltip=${__('interaction.heart')}>
         <button class="pseudo">
           <i class="icon-heart-outline"></i>
         </button>

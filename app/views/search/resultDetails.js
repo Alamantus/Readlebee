@@ -5,14 +5,14 @@ import { starRating } from '../partials/starRating';
 import { modal } from '../partials/modal';
 
 export const resultDetails = (searchController, result, emit = () => {}) => {
-  const { i18n } = searchController;
+  const { __ } = searchController.i18n;
   const modalId = `result_${result.uri}`;
 
   const buttonHTML = html`<label for=${modalId} class="pseudo button">
-    <span data-tooltip="${i18n.__('interaction.average_rating')}: ${result.averageRating}">
+    <span data-tooltip="${__('interaction.average_rating')}: ${result.averageRating}">
       ${starRating(result.averageRating)}
     </span>  
-    <span style="margin-left:10px;" data-tooltip=${i18n.__('interaction.reviews_written')}>
+    <span style="margin-left:10px;" data-tooltip=${__('interaction.reviews_written')}>
       <span style="margin-right:8px;"><i class="icon-chat"></i></span>
       <span>${result.numberOfReviews}</span>
     </span>
@@ -55,7 +55,7 @@ export const resultDetails = (searchController, result, emit = () => {}) => {
       }
     </div>
     <div class="two-third-700">
-      <h4>${i18n.__('interaction.average_rating')}</h4>
+      <h4>${__('interaction.average_rating')}</h4>
       <span data-tooltip="${result.averageRating}">${starRating(result.averageRating)}</span>
 
       <div class="flex">
@@ -66,7 +66,7 @@ export const resultDetails = (searchController, result, emit = () => {}) => {
           <a href="/book/${result.uri}" class="small button">
             <span style="margin-right:8px;"><i class="icon-chat"></i></span>
             <span>${result.numberOfReviews}</span>
-            <span>${i18n.__('search.see_interaction_details')}</span>
+            <span>${__('search.see_interaction_details')}</span>
           </a>
         </div>
       </div>
@@ -76,16 +76,16 @@ export const resultDetails = (searchController, result, emit = () => {}) => {
     </div>
     <div class="sixth-700">
       <p>
-        <span data-tooltip=${i18n.__('interaction.add')}>
+        <span data-tooltip=${__('interaction.add')}>
           <button class="success">
             <i class="icon-plus"></i>
           </button>
         </span>
       </p>
       <p>
-        <span data-tooltip=${i18n.__('search.see_details_tooltip')}>
+        <span data-tooltip=${__('search.see_details_tooltip')}>
           <a class="small pseudo button" href=${result.link} target="_blank">
-            ${i18n.__('search.see_book_details')}
+            ${__('search.see_book_details')}
           </a>
         </span>
       </p>
