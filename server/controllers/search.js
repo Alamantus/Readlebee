@@ -13,6 +13,45 @@ class SearchController {
     return typeof this.term !== 'undefined' && this.term !== '';
   }
 
+  quickSearchInventaire() {
+    if (this.hasQuery) {
+      const request = fetch(`${this.inventaire}/api/search?types=works&search=${encodeURIComponent(this.term)}&lang=${encodeURIComponent(this.lang)}&limit=10`)
+      request.catch(exception => {
+        console.error(exception);
+        return {
+          error: exception,
+          message: 'An error occurred when trying to reach the Inventaire API.',
+        }
+      });
+      const json = request.then(response => response.json());
+      json.catch(exception => {
+        console.error(exception);
+        return {
+          error: exception,
+          message: 'An error occurred when trying read the response from Inventaire as JSON.',
+        }
+      });
+      return json.then(responseJSON => {
+        const works = responseJSON.results.map(work => {
+          const booksController = new BooksController(this.inventaire, work.uri, this.lang);
+          const bookData = booksController.handleQuickInventaireEntity(work);
+          const communityData = booksController.getCommunityData(5);
+          
+          return {
+            ...bookData,
+            ...communityData,
+          }
+        });
+
+        return {
+          humans: [],
+          series: [],
+          works,
+        }
+      });
+    }
+  }
+
   searchInventaire() {
     if (this.hasQuery) {
       const request = fetch(`${this.inventaire}/api/entities?action=search&search=${encodeURIComponent(this.term)}&lang=${encodeURIComponent(this.lang)}`)

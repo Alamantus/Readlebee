@@ -6,7 +6,7 @@ async function routes(fastify, options) {
     const language = typeof request.query.lang !== 'undefined' ? request.query.lang.trim().split('-')[0] : undefined; // Get base language in cases like 'en-US'
     const search = new SearchController(fastify.siteConfig.inventaireDomain, searchTerm, language);
     
-    return await search.searchInventaire();
+    return await search.quickSearchInventaire();
   });
 
   fastify.get('/api/search/cover', async (request, reply) => {

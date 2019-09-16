@@ -61,6 +61,41 @@ class BooksController {
     }
   }
 
+  handleQuickInventaireEntity(entityObject) {
+    return {
+      name: (
+        typeof entityObject.label !== 'undefined'
+          ? entityObject.label
+          : null
+      ),
+      description: (
+        typeof entityObject.description !== 'undefined'
+          ? entityObject.description
+          : null
+      ),
+      link: (
+        typeof entityObject.uri !== 'undefined'
+          ? `${this.inventaire}/entity/${entityObject.uri}`
+          : null
+      ),
+      uri: (
+        typeof entityObject.uri !== 'undefined'
+          ? entityObject.uri
+          : null
+      ),
+      covers: (
+        typeof entityObject.image !== 'undefined'
+          ? entityObject.image.map(imageId => {
+            return {
+              uri: imageId,
+              url: `${this.inventaire}/img/entities/${imageId}`,
+            }
+          })
+          : []
+      ),
+    };
+  }
+
   handleInventaireEntity(entityObject) {
     const hasLabels = typeof entityObject.labels !== 'undefined';
     const hasDescriptions = typeof entityObject.descriptions !== 'undefined';
