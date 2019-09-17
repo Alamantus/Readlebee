@@ -23,6 +23,17 @@ An attempt at a viable alternative to Goodreads (currently lacking a name—idea
 
 ## Development
 
+### Requirements
+
+- [Git](https://git-scm.com/)
+- [NodeJS 10.16.x](https://nodejs.org/)
+- [PostgreSQL 11](https://www.postgresql.org/download/)
+  - See the following articles for guidance on how to install it:
+    - Windows: http://www.postgresqltutorial.com/install-postgresql/
+    - Ubuntu: https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-18-04
+      - Be sure you set up an account for a readlebee database and [set a password for the account](https://stackoverflow.com/a/12721095)
+  - I plan to write up a tutorial on how to get this set up in the wiki at some point soon by combining these links
+
 ### Installation
 
 To develop, you'll need to know how to use a terminal or shell on your computer.

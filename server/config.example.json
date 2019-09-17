@@ -1,5 +1,10 @@
 {
   "port": 3000,
+  "pgsql_host": "localhost",
+  "pgsql_port": 5432,
+  "pgsql_database": "readlebee",
+  "pgsql_username": "postgres",
+  "pgsql_password": "password",
   "jwtSecretKey": "SomethingAtLeast32CharactersLong!",
   "tokenExpireDays": 7,
   "inventaireDomain": "https://inventaire.io"

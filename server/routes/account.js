@@ -1,5 +1,18 @@
 async function routes(fastify, options) {
-  fastify.get('/login', async (request, reply) => {
+  fastify.get('/api/test-db-connect', async (request, reply) => {
+    fastify.pg.connect((err, client, release) => {
+      if (err) return reply.send(err);
+  
+      client.query(
+        'SELECT * FROM test', [], (err, result) => {
+          release();
+          return reply.send(err || result);
+        }
+      );
+    })
+  });
+
+  /*fastify.get('/login', async (request, reply) => {
     reply.view('login.hbs', { text: request.isLoggedInUser ? JSON.stringify(fastify.jwt.decode(request.cookies.token)) : 'you are NOT logged in' });
   });
   
@@ -23,7 +36,7 @@ async function routes(fastify, options) {
   
   fastify.get('/logout', async (request, reply) => {
     reply.clearCookie('token', { path: '/' }).redirect('/?loggedout');
-  });
+  });*/
 }
 
-module.exports = routes
+module.exports = routes;

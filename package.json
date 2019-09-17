@@ -7,7 +7,7 @@
   "author": "Robbie Antenesse <dev@alamantus.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "concurrently \"npm run watch-js\" \"npm run serve\"",
+    "dev": "concurrently --kill-others \"npm run watch-js\" \"npm run serve\"",
     "start": "npm run build && cross-env NODE_ENV=production npm run serve",
     "watch-js": "parcel watch app/index.html --out-dir public --no-hmr --no-cache",
     "serve": "node server/index.js",
@@ -38,11 +38,13 @@
     "fastify-cookie": "^3.1.0",
     "fastify-helmet": "^3.0.1",
     "fastify-jwt": "^1.0.0",
+    "fastify-postgres": "^2.0.0",
     "fastify-static": "^2.5.0",
     "handlebars": "^4.2.0",
     "html-minifier": "^4.0.0",
     "make-promises-safe": "^5.0.0",
     "node-fetch": "^2.6.0",
+    "pg": "^7.12.1",
     "picnic": "^6.5.1"
   }
 }

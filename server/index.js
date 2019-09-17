@@ -24,6 +24,13 @@ fastify.register(require('fastify-cookie'));  // Enable reading and setting http
 fastify.register(require('fastify-jwt'), {  // Enable creating, parsing, and verifying JSON Web Tokens from the global fastify object
   secret: fastify.siteConfig.jwtSecretKey,  // The secret key used to generate JWTs. Make it big and random!
 });
+fastify.register(require('fastify-postgres'), {
+  host: fastify.siteConfig.pgsql_host,
+  port: fastify.siteConfig.pgsql_port,
+  database: fastify.siteConfig.pgsql_database,
+  user: fastify.siteConfig.pgsql_username,
+  password: fastify.siteConfig.pgsql_password,
+});
 
 // Every request, check to see if a valid token exists
 fastify.addHook('onRequest', (request, reply, done) => {
@@ -35,7 +42,7 @@ fastify.addHook('onRequest', (request, reply, done) => {
 // Routes
 fastify.register(require('./routes/public'));
 fastify.register(require('./routes/books'));
-// fastify.register(require('./routes/account'));
+fastify.register(require('./routes/account'));
 fastify.register(require('./routes/search'));
 
 // Start the server
