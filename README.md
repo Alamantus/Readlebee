@@ -1,8 +1,8 @@
 # Readlebee
 
-[![Read our Contribution Guidelines](https://badges.frapsoft.com/os/v1/open-source.svg?v=102)](./CONTRIBUTING.md) [![Issues](https://img.shields.io/github/issues/Alamantus/Readlebee.svg)](https://gitlab.com/Alamantus/Readlebee/issues) [![Join the chat at https://gitter.im/Readlebee/community](https://badges.gitter.im/Readlebee/general.svg)](https://gitter.im/Readlebee/community)
+[![Read our Contribution Guidelines](https://badges.frapsoft.com/os/v1/open-source.svg?v=102)](./CONTRIBUTING.md) [![Join the chat at https://gitter.im/Readlebee/community](https://badges.gitter.im/Readlebee/general.svg)](https://gitter.im/Readlebee/community) [![Dependencies Status](https://david-dm.org/Alamantus/Readlebee.svg)](https://david-dm.org/Alamantus/Readlebee) [![DevDependencies Status](https://david-dm.org/Alamantus/Readlebee/dev-status.svg)](https://david-dm.org/Alamantus/Readlebee?type=dev)
 
-An attempt at a viable alternative to Goodreads (currently lacking a name—ideas welcome!)
+An attempt at a viable alternative to Goodreads
 
 ## Important Links
 
