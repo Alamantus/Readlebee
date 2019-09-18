@@ -24,13 +24,28 @@ fastify.register(require('fastify-cookie'));  // Enable reading and setting http
 fastify.register(require('fastify-jwt'), {  // Enable creating, parsing, and verifying JSON Web Tokens from the global fastify object
   secret: fastify.siteConfig.jwtSecretKey,  // The secret key used to generate JWTs. Make it big and random!
 });
-fastify.register(require('fastify-postgres'), {
-  host: fastify.siteConfig.pgsql_host,
-  port: fastify.siteConfig.pgsql_port,
-  database: fastify.siteConfig.pgsql_database,
-  user: fastify.siteConfig.pgsql_username,
-  password: fastify.siteConfig.pgsql_password,
-});
+
+const sequelizeConfig = {
+  instance: 'sequelize',
+  autoConnect: true,
+  dialect: fastify.siteConfig.db_engine,
+};
+switch (fastify.siteConfig.db_engine) {
+  case 'sqlite': {
+    sequelizeConfig.storage = typeof fastify.siteConfig.sqlite_location !== 'undefined'
+      ? path.resolve(fastify.siteConfig.sqlite_location)
+      : path.resolve(__dirname, './database.sqlite');
+    break;
+  }
+  default: {
+    sequelizeConfig.host = fastify.siteConfig.db_host;
+    sequelizeConfig.port = fastify.siteConfig.db_port;
+    sequelizeConfig.database = fastify.siteConfig.db_database;
+    sequelizeConfig.username = fastify.siteConfig.db_username;
+    sequelizeConfig.password = fastify.siteConfig.db_password;
+  }
+}
+fastify.register(require('fastify-sequelize'), sequelizeConfig);
 
 // Every request, check to see if a valid token exists
 fastify.addHook('onRequest', (request, reply, done) => {

@@ -37,11 +37,14 @@
     "fastify-cookie": "^3.1.0",
     "fastify-helmet": "^3.0.1",
     "fastify-jwt": "^1.0.0",
-    "fastify-postgres": "^2.0.0",
+    "fastify-sequelize": "^1.0.4",
     "fastify-static": "^2.5.0",
     "make-promises-safe": "^5.0.0",
+    "mysql2": "^1.7.0",
     "node-fetch": "^2.6.0",
     "pg": "^7.12.1",
-    "picnic": "^6.5.1"
+    "pg-hstore": "^2.3.3",
+    "picnic": "^6.5.1",
+    "sqlite": "^3.0.3"
   }
 }

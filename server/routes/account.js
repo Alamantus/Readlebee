@@ -1,15 +1,32 @@
+const Sequelize = require('sequelize');
+const faker = require('faker');
+
 async function routes(fastify, options) {
   fastify.get('/api/test-db-connect', async (request, reply) => {
-    fastify.pg.connect((err, client, release) => {
-      if (err) return reply.send(err);
-  
-      client.query(
-        'SELECT * FROM test', [], (err, result) => {
-          release();
-          return reply.send(err || result);
-        }
-      );
-    })
+    const User = fastify.sequelize.define('user', {
+      email: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      test: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      }
+    });
+    User.sync();
+    
+    return await User.findAll()
+      .catch(async ex => {
+        return await User.sync().then(() => {
+          return [];
+        });
+      });
+
+    // return await User.sync().then(() => {
+    //   return User.create({
+    //     email: faker.internet.email(),
+    //   })
+    // });
   });
 
   /*fastify.get('/login', async (request, reply) => {
