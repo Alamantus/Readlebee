@@ -8,7 +8,6 @@ export const appState = (app, state, emitter) => {
     });
   } else {
     // Default state variables
-    state.currentView = 'home';
     state.language = app.getSettingsItem('lang') ? app.getSettingsItem('lang') : (navigator.language || navigator.userLanguage).split('-')[0];
     state.viewStates = {};
     state.isLoggedIn = false;
