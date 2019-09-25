@@ -77,6 +77,12 @@
       "css": "reload",
       "code": 59398,
       "src": "fontawesome"
+    },
+    {
+      "uid": "c6344a6ed148da12354cc90705287696",
+      "css": "search",
+      "code": 59401,
+      "src": "iconic"
     }
   ]
 }

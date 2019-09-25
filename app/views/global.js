@@ -18,14 +18,7 @@ export const globalView = (state, emit, i18n, view) => {
       <label for="navMenu" class="burger pseudo button">${'\u2261'}</label>
     
       <div class="menu">
-        <label style="display: inline-block;">
-          <input type="text" name="search"
-            placeholder=${i18n.__('global.searchbar_placeholder')}
-            onchange=${e => {
-              emit('pushState', '/search?for=' + encodeURIComponent(e.target.value.trim()));
-            }}
-          >
-        </label>
+        <a href="/search" class="pseudo button"><i class="icon-search" aria-label=${i18n.__('global.menu_search')}></i></a>
         <a href="/login" class="pseudo button">${i18n.__('global.menu_login')}</a>
         <a href="/logout" class="pseudo button">${i18n.__('global.menu_logout')}</a>
       </div>

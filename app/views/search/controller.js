@@ -5,8 +5,8 @@ export class SearchController extends ViewController {
     // Super passes state, view name, and default state to ViewController,
     // which stores state in this.appState and the view controller's state to this.state
     super(state, i18n, 'search', {
-      lastSearch: undefined,
-      done: false,
+      lastSearch: '',
+      done: true,
       results: {
         humans: [],
         series: [],
@@ -32,6 +32,10 @@ export class SearchController extends ViewController {
 
   get hasQuery() {
     return this.appState.query.hasOwnProperty('for') && this.appState.query.for.trim() !== '';
+  }
+
+  get queryIsNew() {
+    return this.state.lastSearch !== this.appState.query.for.trim();
   }
 
   get openModal() {

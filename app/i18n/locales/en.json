@@ -2,7 +2,7 @@
   "name": "English",
   "locale": "en",
   "global": {
-    "searchbar_placeholder": "Search for Books",
+    "menu_search": "Search for Books",
     "menu_login": "Log In",
     "menu_logout": "Log Out",
     "footer_repo": "Repo",
@@ -35,8 +35,9 @@
   },
   "search": {
     "header": "Search",
+    "placeholder": "Search for Books",
+    "button_text": "Search",
     "loading": "Loading...",
-    "results_header": "Results for:",
     "no_results": "None Found",
     "no_results_suggestion": "If you're expecting book data, go and help fill out the Inventaire database!",
     "people_header": "People",
