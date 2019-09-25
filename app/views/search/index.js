@@ -5,13 +5,11 @@ import { resultDetails } from './resultDetails';
 
 // This is the view function that is exported and used in the view manager.
 export const searchView = (state, emit, i18n) => {
-  const controller = new SearchController(state, i18n);
+  const controller = new SearchController(state, emit, i18n);
   const { __ } = controller.i18n;
 
   if (controller.state.lastSearch !== state.query.for) {
-    controller.search().then(() => {
-      emit('render');
-    });
+    controller.search();
   }
 
   // Returning an array in a view allows non-shared parent HTML elements.
@@ -21,12 +19,26 @@ export const searchView = (state, emit, i18n) => {
       <h1 class="title">${__('search.header')}</h1>
       
       <article>
-        <h2>
+        <div class="flex">
+          <div class="two-third-700">
+            <h2>
+              ${controller.doneSearching
+                ? html`<span>${__('search.results_header')}</span> <code>${controller.state.lastSearch}</code>`
+                : html`<span>${__('search.loading')}</span>`
+              }
+            </h2>
+          </div>
+          <div class="one-third-700">
           ${controller.doneSearching
-            ? html`<span>${__('search.results_header')}</span> <code>${controller.state.lastSearch}</code>`
-            : html`<i class="icon-loading animate-spin"></i> <span>${__('search.loading')}</span>`
+            ? html`<span class="pull-right" data-tooltip=${__('interaction.reload')}>
+              <button class="pseudo" onclick=${() => controller.search()}>
+                <i class="icon-reload"></i>
+              </button>
+            </span>`
+            : html`<i class="icon-loading animate-spin"></i>`
           }
-        </h2>
+          </div>
+        </div>
 
         ${!controller.doneSearching || controller.results.works < 1
           ? [
