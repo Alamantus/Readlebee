@@ -71,6 +71,12 @@
       "css": "comment",
       "code": 59397,
       "src": "typicons"
+    },
+    {
+      "uid": "a73c5deb486c8d66249811642e5d719a",
+      "css": "reload",
+      "code": 59398,
+      "src": "fontawesome"
     }
   ]
 }

@@ -53,7 +53,7 @@ export const loggedOutView = (homeController, emit) => {
             <header>
               <h3>${__('home.logged_out_recent_reviews')}</h3>
               <button class="small pseudo pull-right tooltip-left" data-tooltip=${__('interaction.reload')}>
-                <i class="icon-loading"></i><!--/* This needs to get updated to a reload icon */-->
+                <i class="icon-reload"></i>
               </button>
             </header>
             <footer>
@@ -66,7 +66,7 @@ export const loggedOutView = (homeController, emit) => {
             <header>
               <h3>${__('home.logged_out_recent_updates')}</h3>
               <button class="small pseudo pull-right tooltip-left" data-tooltip=${__('interaction.reload')}>
-                <i class="icon-loading"></i><!--/* This needs to get updated to a reload icon */-->
+                <i class="icon-reload"></i>
               </button>
             </header>
             <footer>
