@@ -43,6 +43,35 @@ export const searchView = (state, emit, i18n) => {
       </section>`,
 
     html`<section>
+      <header class="flex four">
+        <div>
+          <h3>Search Options</h3>
+        </div>
+        <div>
+          <button class="pseudo">+ Expand</button>
+        </div>
+      </header>
+      <footer class="flex three">
+        <div>
+          <label>
+            Search Source
+            <select>
+              <option value="inventaire">Inventaire</option>
+            </select>
+          </label>
+        </div>
+        <div>
+            Search By<br>
+            <label>
+              <input type="radio" name="searchBy" value="title">
+              <span class="checkable">Title</span>
+            </label>
+            <label>
+              <input type="radio" name="searchBy" value="author">
+              <span class="checkable">Author</span>
+            </label>
+        </div>
+      </footer>
     </section>`,
       
     html`<section>
