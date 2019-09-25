@@ -2,7 +2,8 @@ import html from 'choo/html';
 
 import headerImage from '../../dev/images/header.png';
 
-export const globalView = (state, emit, i18n, view) => {
+export const globalView = (state, emit, view) => {
+  const { i18n } = state;
   // Create a wrapper for view content that includes global header/footer
   return html`<body>
   <header>

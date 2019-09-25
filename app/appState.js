@@ -1,15 +1,8 @@
+import { I18n } from "./i18n";
+
 export const appState = (app, state, emitter) => {
-  const sessionState = app.getSessionState();
-  if (sessionState) {
-    Object.keys(sessionState).forEach(key => {
-      if (typeof state[key] === 'undefined') {
-        state[key] = sessionState[key];
-      }
-    });
-  } else {
-    // Default state variables
-    state.language = app.getSettingsItem('lang') ? app.getSettingsItem('lang') : (navigator.language || navigator.userLanguage).split('-')[0];
-    state.viewStates = {};
-    state.isLoggedIn = false;
-  }
+  state.language = app.getSettingsItem('lang') ? app.getSettingsItem('lang') : (navigator.language || navigator.userLanguage).split('-')[0];
+  state.viewStates = {};
+  state.isLoggedIn = false;
+  state.i18n = new I18n(state); // Global I18n class passed to all views
 }

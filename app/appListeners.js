@@ -3,7 +3,6 @@ export const appListeners = (app, state, emitter) => {
     document.title = app.siteConfig.siteName;
     // Emitter listeners
     emitter.on('render', callback => {
-      app.setSessionState();
       // This is a dirty hack to get the callback to call *after* re-rendering.
       if (callback && typeof callback === "function") {
         setTimeout(() => {
