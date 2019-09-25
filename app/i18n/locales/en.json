@@ -18,6 +18,10 @@
     "logged_out_recent_updates": "Recent Updates",
     "logged_out_join_now": "Join Now!"
   },
+  "404": {
+    "header": "Oops!",
+    "subheader": "It looks like the page you requested doesn't exist. Please try a different one!"
+  },
   "login": {
     "log_in": "Log In",
     "email": "Email",

@@ -2,34 +2,9 @@ import html from 'choo/html';
 
 import headerImage from '../../dev/images/header.png';
 
-import { I18n } from '../i18n';
-import { homeView } from './home';
-import { loginView } from './login';
-import { searchView } from './search';
-
-export const viewManager = (state, emit) => {
-  const i18n = new I18n(state); // Global I18n class passed to all views
-  // In viewManager all we are doing is checking the app's state
-  // and passing the state and emit to the relevant view.
-  let htmlContent = html`<div>loading</div>`;
-  switch (state.params.page) {
-    case 'home':
-    default: {
-      htmlContent = homeView(state, emit, i18n);
-      break;
-    }
-    case 'login': {
-      htmlContent = loginView(state, emit, i18n);
-      break;
-    }
-    case 'search': {
-      htmlContent = searchView(state, emit, i18n);
-      break;
-    }
-  }
-
+export const globalView = (state, emit, i18n, view) => {
   // Create a wrapper for view content that includes global header/footer
-  let view = html`<body>
+  return html`<body>
   <header>
     <nav>
       <div class="brand">
@@ -58,7 +33,7 @@ export const viewManager = (state, emit) => {
   </header>
 
   <main class="container">
-    ${htmlContent}
+    ${view(state, emit, i18n)}
   </main>
 
   <footer>
@@ -74,6 +49,4 @@ export const viewManager = (state, emit) => {
     </nav>
   </footer>
 </body>`;
-
-  return view;
 }

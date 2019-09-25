@@ -107,12 +107,38 @@ footer nav {
   margin: 0 0 0 auto;
 }
 
-.card.info {
-  background: $picnic-info;
-  color: $picnic-white;
-
-  * {
+.card {
+  &.info {
+    background: $picnic-info;
     color: $picnic-white;
+
+    * {
+      color: $picnic-white;
+    }
+  }
+  &.success {
+    background: $picnic-success;
+    color: $picnic-white;
+
+    * {
+      color: $picnic-white;
+    }
+  }
+  &.warning {
+    background: $picnic-warning;
+    color: $picnic-white;
+
+    * {
+      color: $picnic-white;
+    }
+  }
+  &.error {
+    background: $picnic-error;
+    color: $picnic-white;
+
+    * {
+      color: $picnic-white;
+    }
   }
 }
 
