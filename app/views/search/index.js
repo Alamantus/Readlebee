@@ -10,6 +10,8 @@ export const searchView = (state, emit, i18n) => {
 
   if (controller.hasQuery && controller.queryIsNew) {
     controller.search();
+  } else if (controller.state.lastSearch !== '') {
+    controller.appState.query.for = controller.state.lastSearch;
   }
 
   // Returning an array in a view allows non-shared parent HTML elements.
@@ -29,7 +31,10 @@ export const searchView = (state, emit, i18n) => {
             ${!controller.doneSearching ? 'disabled' : null}
           >
         </label>
-        <button class="fourth" style="margin-top:0;height:2.1em;" onclick=${() => controller.search()} ${!controller.doneSearching ? 'disabled' : null}>
+        <button class="fourth" style="margin-top:0;height:2.1em;"
+          onclick=${() => emit('pushState', '/search?for=' + encodeURIComponent(controller.appState.query.for))}
+          ${!controller.doneSearching ? 'disabled' : null}
+        >
           ${!controller.doneSearching
             ? html`<i class="icon-loading animate-spin"></i>`
             : __('search.button_text')
