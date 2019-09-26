@@ -19,6 +19,11 @@ nav {
   position: relative;
 }
 
+// For some reason, hidden is not important by default!
+[hidden] {
+  display: none !important;
+}
+
 .pseudo[data-tooltip]::after {
   background-color: $picnic-black;
   color: $picnic-white;
@@ -165,6 +170,9 @@ th {
 }
 
 // Handy Utilities
+.marginless {
+  margin: 0 !important;
+}
 .paddingless {
   padding: 0 !important;
 }
