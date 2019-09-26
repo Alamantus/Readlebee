@@ -61,11 +61,6 @@ export const searchView = (state, emit, i18n) => {
                 Open Library
               </a>
             </li>
-            <li>
-              <a href="https://bookbrainz.org/" target="_blank">
-                BoookBrainz
-              </a>
-            </li>
           </ul>`,
         ], {
           buttonText: 'What\'s This?',
@@ -82,9 +77,6 @@ export const searchView = (state, emit, i18n) => {
             </option>
             <option value="openLibrary" ${controller.state.searchSource === 'openLibrary' ? 'selected' : null}>
               Open Library
-            </option>
-            <option value="bookBrainz" ${controller.state.searchSource === 'bookBrainz' ? 'selected' : null}>
-              BookBrainz
             </option>
           </select>
         </label>
