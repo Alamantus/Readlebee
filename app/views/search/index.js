@@ -2,6 +2,7 @@ import html from 'choo/html';
 
 import { SearchController } from './controller';  // The controller for this view, where processing should happen.
 import { resultDetails } from './resultDetails';
+import { modal } from '../partials/modal';
 
 // This is the view function that is exported and used in the view manager.
 export const searchView = (state, emit, i18n) => {
@@ -42,32 +43,88 @@ export const searchView = (state, emit, i18n) => {
         </button>
       </section>`,
 
+    // Search Options Section
     html`<section>
-      <header class="flex four">
+      <header class="flex two four-800">
         <div>
           <h3>Search Options</h3>
         </div>
         <div>
-          <button class="pseudo">+ Expand</button>
+          <button class="pseudo" onclick=${() => {
+            controller.state.expandSearchOptions = !controller.state.expandSearchOptions;
+            emit('render');
+          }}>
+            ${controller.state.expandSearchOptions !== true ? '+ Expand' : '- Collapse'}
+          </button>
         </div>
       </header>
-      <footer class="flex three">
+      <footer class="flex one two-700" ${controller.state.expandSearchOptions !== true ? 'hidden' : null}>
         <div>
+          ${modal('searchSourceInfo', controller, [
+            html`<p>
+              This refers to where the search tries to look for data.
+            </p>`,
+            html`<ul>
+              <li>
+                <a href="https://inventaire.io" target="_blank">
+                  Inventaire
+                </a>
+              </li>
+              <li>
+                <a href="https://openlibrary.org" target="_blank">
+                  Open Library
+                </a>
+              </li>
+              <li>
+                <a href="https://bookbrainz.org/" target="_blank">
+                  BoookBrainz
+                </a>
+              </li>
+            </ul>`,
+          ], {
+            buttonText: 'What\'s This?',
+            buttonClasses: 'small marginless pseudo button pull-right',
+            headerText: 'What does "Search Source" mean?',
+          })}
           <label>
             Search Source
-            <select>
-              <option value="inventaire">Inventaire</option>
+            <select onchange=${event => {
+              controller.state.searchSource = event.target.value;
+            }}>
+              <option value="inventaire" ${controller.state.searchSource === 'inventaire' ? 'selected' : null}>
+                Inventaire
+              </option>
+              <option value="openlibrary" ${controller.state.searchSource === 'openlibrary' ? 'selected' : null}>
+                Open Library
+              </option>
+              <option value="bookbrainz" ${controller.state.searchSource === 'bookbrainz' ? 'selected' : null}>
+                BookBrainz
+              </option>
             </select>
           </label>
         </div>
         <div>
             Search By<br>
             <label>
-              <input type="radio" name="searchBy" value="title">
+              <input type="radio" name="searchBy" value="title"
+                ${controller.state.searchBy === 'title' ? 'checked' : null}
+                onchange=${(event) => {
+                  if (event.target.checked) {
+                    controller.state.searchBy = event.target.value;
+                  }
+                }}
+              >
               <span class="checkable">Title</span>
             </label>
             <label>
-              <input type="radio" name="searchBy" value="author">
+              <input type="radio" name="searchBy" value="author"
+                ${controller.state.searchBy === 'author' ? 'checked' : null}
+                onchange=${(event) => {
+                  if (event.target.checked) {
+                    controller.state.searchBy = event.target.value;
+                  }
+                }}
+              >
               <span class="checkable">Author</span>
             </label>
         </div>

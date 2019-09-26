@@ -6,6 +6,9 @@ export class SearchController extends ViewController {
     // which stores state in this.appState and the view controller's state to this.state
     super(state, i18n, 'search', {
       lastSearch: '',
+      expandSearchOptions: false,
+      searchSource: 'inventaire',
+      searchBy: 'title',
       done: true,
       results: {
         humans: [],
