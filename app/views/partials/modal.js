@@ -5,6 +5,7 @@ export const modal = (modalId, controller, contentHTML, options = {}) => {
    * controller <class>: Pass the controller class with state; Requires get/set for openModal in state.
    * buttonHTML <choo/html>: Displayed in place of the default button to open the modal
    * buttonText <string>: Displayed if no buttonHTML is specified
+   * buttonClasses <string>: Used with buttonText. If excluded, 'button' is used.
    * noHeader <bool>: Set to `true` and exclude headerHTML to not include a modal header
    * headerHTML <choo/html>: Displayed in place of the default header; Recommended to use `<header>` tag
    * headerText <string>: Displayed in an `<h3>` if no header is specified
@@ -19,7 +20,9 @@ export const modal = (modalId, controller, contentHTML, options = {}) => {
   return [
     (
       typeof options.buttonHTML === 'undefined'
-      ? html`<label for=${modalId} class="button">${options.buttonText}</label>`
+      ? html`<label for=${modalId} class=${typeof options.buttonClasses === 'undefined' ? 'button' : options.buttonClasses}>
+        ${options.buttonText}
+      </label>`
       : options.buttonHTML
     ),
     
