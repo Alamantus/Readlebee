@@ -16,5 +16,7 @@ export const appListeners = (app, state, emitter) => {
       state.language = newLanguage;
       emitter.emit('render', () => { });
     });
+
+    emitter.emit('render'); // This should hopefully only run once after the DOM is loaded. It prevents routing issues where 'render' hasn't been defined yet
   });
 }

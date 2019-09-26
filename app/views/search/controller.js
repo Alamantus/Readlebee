@@ -6,6 +6,8 @@ export class SearchController extends ViewController {
     // which stores state in this.appState and the view controller's state to this.state
     super(state, i18n, 'search', {
       lastSearch: '',
+      lastSource: 'inventaire',
+      lastBy: 'title',
       searchSource: 'inventaire',
       searchBy: 'title',
       done: true,
@@ -33,7 +35,9 @@ export class SearchController extends ViewController {
   }
 
   get queryIsNew() {
-    return this.state.lastSearch !== this.appState.query.for.trim();
+    return this.state.lastSearch !== this.appState.query.for.trim()
+      || this.state.lastSource !== this.state.searchSource
+      || this.state.lastBy !== this.state.searchBy;
   }
 
   get openModal() {
@@ -49,6 +53,8 @@ export class SearchController extends ViewController {
       this.state.done = false;
       this.emit('render', () => {
         this.state.lastSearch = this.appState.query.for;
+        this.state.lastSource = this.state.searchSource;
+        this.state.lastBy = this.state.searchBy;
   
         const searchTerm = this.appState.query.for.trim();
   
