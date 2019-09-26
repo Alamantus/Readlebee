@@ -53,9 +53,7 @@
     "series_header": "Series",
     "books_header": "Books",
     "see_interaction_details": "See All Interactions",
-    "see_book_details": "See Book Details",
-    "see_inventaire_details": "See Details",
-    "see_details_tooltip": "Opens Inventaire in a new tab/window"
+    "see_book_details": "See Book Details"
   },
   "interaction": {
     "reload": "Reload",

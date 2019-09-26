@@ -83,11 +83,9 @@ export const resultDetails = (searchController, result, emit = () => {}) => {
         </span>
       </p>
       <p>
-        <span data-tooltip=${__('search.see_details_tooltip')}>
-          <a class="small pseudo button" href=${result.link} target="_blank">
-            ${__('search.see_book_details')}
-          </a>
-        </span>
+        <a class="small button" href=${result.link} target="_blank">
+          ${__('search.see_book_details')}
+        </a>
       </p>
     </div>
   </article>`;
