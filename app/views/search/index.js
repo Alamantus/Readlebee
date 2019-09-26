@@ -131,6 +131,7 @@ export const searchView = (state, emit, i18n) => {
       </footer>
     </section>`,
       
+    // Search Results section
     html`<section>
       <h2>
         ${controller.hasQuery && !controller.doneSearching
@@ -139,14 +140,14 @@ export const searchView = (state, emit, i18n) => {
         }
       </h2>
 
-      ${controller.hasQuery && controller.doneSearching && controller.results.works < 1
+      ${controller.hasQuery && controller.doneSearching && controller.results < 1
         ? [
           html`<h3>${__('search.no_results')}</h3>`,
           html`<a class="button" href="https://wiki.inventaire.io/wiki/How-to-contribute" target="_blank">
             ${__('search.no_results_suggestion')}
           </a>`
         ]
-        : controller.results.works.map(result => {
+        : controller.results.map(result => {
           return html`<article class="flex search-result">
             <header class="two-third-800 half-500">
               <h3 class="title">${result.name}</h3>

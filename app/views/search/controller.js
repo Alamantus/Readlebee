@@ -10,11 +10,7 @@ export class SearchController extends ViewController {
       searchSource: 'inventaire',
       searchBy: 'title',
       done: true,
-      results: {
-        humans: [],
-        series: [],
-        works: [],
-      },
+      results: [],
       openModal: null,
     });
 
