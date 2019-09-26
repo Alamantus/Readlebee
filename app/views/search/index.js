@@ -44,91 +44,76 @@ export const searchView = (state, emit, i18n) => {
       </section>`,
 
     // Search Options Section
-    html`<section>
-      <header class="flex two four-800">
-        <div>
-          <h3>Search Options</h3>
-        </div>
-        <div>
-          <button class="pseudo" onclick=${() => {
-            controller.state.expandSearchOptions = !controller.state.expandSearchOptions;
-            emit('render');
-          }}>
-            ${controller.state.expandSearchOptions !== true ? '+ Expand' : '- Collapse'}
-          </button>
-        </div>
-      </header>
-      <footer class="flex one two-700" ${controller.state.expandSearchOptions !== true ? 'hidden' : null}>
-        <div>
-          ${modal('searchSourceInfo', controller, [
-            html`<p>
-              This refers to where the search tries to look for data.
-            </p>`,
-            html`<ul>
-              <li>
-                <a href="https://inventaire.io" target="_blank">
-                  Inventaire
-                </a>
-              </li>
-              <li>
-                <a href="https://openlibrary.org" target="_blank">
-                  Open Library
-                </a>
-              </li>
-              <li>
-                <a href="https://bookbrainz.org/" target="_blank">
-                  BoookBrainz
-                </a>
-              </li>
-            </ul>`,
-          ], {
-            buttonText: 'What\'s This?',
-            buttonClasses: 'small marginless pseudo button pull-right',
-            headerText: 'What does "Search Source" mean?',
-          })}
-          <label>
-            Search Source
-            <select onchange=${event => {
-              controller.state.searchSource = event.target.value;
-            }}>
-              <option value="inventaire" ${controller.state.searchSource === 'inventaire' ? 'selected' : null}>
+    html`<section class="flex one two-700">
+      <div>
+        ${modal('searchSourceInfo', controller, [
+          html`<p>
+            This refers to where the search tries to look for data.
+          </p>`,
+          html`<ul>
+            <li>
+              <a href="https://inventaire.io" target="_blank">
                 Inventaire
-              </option>
-              <option value="openLibrary" ${controller.state.searchSource === 'openLibrary' ? 'selected' : null}>
+              </a>
+            </li>
+            <li>
+              <a href="https://openlibrary.org" target="_blank">
                 Open Library
-              </option>
-              <option value="bookBrainz" ${controller.state.searchSource === 'bookBrainz' ? 'selected' : null}>
-                BookBrainz
-              </option>
-            </select>
+              </a>
+            </li>
+            <li>
+              <a href="https://bookbrainz.org/" target="_blank">
+                BoookBrainz
+              </a>
+            </li>
+          </ul>`,
+        ], {
+          buttonText: 'What\'s This?',
+          buttonClasses: 'small marginless pseudo button pull-right',
+          headerText: 'What does "Search Source" mean?',
+        })}
+        <label>
+          Search Source
+          <select onchange=${event => {
+            controller.state.searchSource = event.target.value;
+          }}>
+            <option value="inventaire" ${controller.state.searchSource === 'inventaire' ? 'selected' : null}>
+              Inventaire
+            </option>
+            <option value="openLibrary" ${controller.state.searchSource === 'openLibrary' ? 'selected' : null}>
+              Open Library
+            </option>
+            <option value="bookBrainz" ${controller.state.searchSource === 'bookBrainz' ? 'selected' : null}>
+              BookBrainz
+            </option>
+          </select>
+        </label>
+      </div>
+      <div>
+          Search By<br>
+          <label>
+            <input type="radio" name="searchBy" value="title"
+              ${controller.state.searchBy === 'title' ? 'checked' : null}
+              onchange=${(event) => {
+                if (event.target.checked) {
+                  controller.state.searchBy = event.target.value;
+                }
+              }}
+            >
+            <span class="checkable">Title</span>
           </label>
-        </div>
-        <div>
-            Search By<br>
-            <label>
-              <input type="radio" name="searchBy" value="title"
-                ${controller.state.searchBy === 'title' ? 'checked' : null}
-                onchange=${(event) => {
-                  if (event.target.checked) {
-                    controller.state.searchBy = event.target.value;
-                  }
-                }}
-              >
-              <span class="checkable">Title</span>
-            </label>
-            <label>
-              <input type="radio" name="searchBy" value="author"
-                ${controller.state.searchBy === 'author' ? 'checked' : null}
-                onchange=${(event) => {
-                  if (event.target.checked) {
-                    controller.state.searchBy = event.target.value;
-                  }
-                }}
-              >
-              <span class="checkable">Author</span>
-            </label>
-        </div>
-      </footer>
+          <label>
+            <input type="radio" name="searchBy" value="author"
+              ${controller.state.searchBy === 'author' ? 'checked' : null}
+              onchange=${(event) => {
+                if (event.target.checked) {
+                  controller.state.searchBy = event.target.value;
+                }
+              }}
+            >
+            <span class="checkable">Author</span>
+          </label>
+      </div>
     </section>`,
       
     // Search Results section
