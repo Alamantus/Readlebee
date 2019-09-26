@@ -94,10 +94,10 @@ export const searchView = (state, emit, i18n) => {
               <option value="inventaire" ${controller.state.searchSource === 'inventaire' ? 'selected' : null}>
                 Inventaire
               </option>
-              <option value="openlibrary" ${controller.state.searchSource === 'openlibrary' ? 'selected' : null}>
+              <option value="openLibrary" ${controller.state.searchSource === 'openLibrary' ? 'selected' : null}>
                 Open Library
               </option>
-              <option value="bookbrainz" ${controller.state.searchSource === 'bookbrainz' ? 'selected' : null}>
+              <option value="bookBrainz" ${controller.state.searchSource === 'bookBrainz' ? 'selected' : null}>
                 BookBrainz
               </option>
             </select>

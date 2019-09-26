@@ -1,8 +1,11 @@
 const fetch = require('node-fetch');
 
 class BooksController {
-  constructor(inventaireDomain, bookURI, language) {
-    this.inventaire = inventaireDomain;
+  constructor(bookSource, bookURI, language) {
+    this.source = bookSource;
+    this.inventaire = 'https://inventaire.io';
+    this.openLibrary = 'https://openlibrary.org';
+    this.bookBrainz = 'https://bookbrainz.org';
     this.uri = bookURI;
     this.lang = language;
   }
@@ -87,7 +90,7 @@ class BooksController {
         typeof entityObject.image !== 'undefined'
           ? entityObject.image.map(imageId => {
             return {
-              uri: imageId,
+              uri: imageId.toString(),
               url: `${this.inventaire}/img/entities/${imageId}`,
             }
           })
@@ -128,6 +131,36 @@ class BooksController {
         typeof entityObject.uri !== 'undefined'
           ? entityObject.uri
           : null
+      ),
+    };
+  }
+
+  handleOpenLibraryEntity(entityObject) {
+    return {
+      name: (
+        typeof entityObject.title_suggest !== 'undefined'
+          ? entityObject.title_suggest
+          : null
+      ),
+      description: (
+        typeof entityObject.author_name !== 'undefined'
+          ? `${entityObject.type} by ${entityObject.author_name.map(name => name.trim()).join(', ')}`
+          : null
+      ),
+      link: (
+        typeof entityObject.key !== 'undefined'
+          ? `${this.openLibrary}${entityObject.key}`
+          : null
+      ),
+      uri: (
+        typeof entityObject.key !== 'undefined'
+          ? entityObject.key.substr(entityObject.key.lastIndexOf('/') + 1)
+          : null
+      ),
+      coverId: (
+        typeof entityObject.cover_i !== 'undefined'
+          ? entityObject.cover_i.toString()
+          : false
       ),
     };
   }

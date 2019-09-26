@@ -3,8 +3,7 @@ const fetch = require('node-fetch');
 const BooksController = require('./books');
 
 class SearchController {
-  constructor(inventaireDomain, searchTerm, language = 'en') {
-    this.inventaire = inventaireDomain;
+  constructor(searchTerm, language = 'en') {
     this.term = searchTerm;
     this.lang = language;
   }
@@ -15,7 +14,7 @@ class SearchController {
 
   quickSearchInventaire() {
     if (this.hasQuery) {
-      const request = fetch(`${this.inventaire}/api/search?types=works&search=${encodeURIComponent(this.term)}&lang=${encodeURIComponent(this.lang)}&limit=10`)
+      const request = fetch(`https://inventaire.io/api/search?types=works&search=${encodeURIComponent(this.term)}&lang=${encodeURIComponent(this.lang)}&limit=10`)
       request.catch(exception => {
         console.error(exception);
         return {
@@ -32,9 +31,11 @@ class SearchController {
         }
       });
       return json.then(responseJSON => {
+        const booksController = new BooksController('inventaire', undefined, this.lang);
+        
         return responseJSON.results.map(work => {
-          const booksController = new BooksController(this.inventaire, work.uri, this.lang);
           const bookData = booksController.handleQuickInventaireEntity(work);
+          booksController.uri = bookData.uri; // Update booksController.uri for each book when fetching community data.
           const communityData = booksController.getCommunityData(5);
           
           return {
@@ -46,9 +47,9 @@ class SearchController {
     }
   }
 
-  searchInventaire() {
+  searchInventaire(searchBy = 'title') {
     if (this.hasQuery) {
-      const request = fetch(`${this.inventaire}/api/entities?action=search&search=${encodeURIComponent(this.term)}&lang=${encodeURIComponent(this.lang)}`)
+      const request = fetch(`https://inventaire.io/api/entities?action=search&search=${encodeURIComponent(this.term)}&lang=${encodeURIComponent(this.lang)}`)
       request.catch(exception => {
         console.error(exception);
         return {
@@ -65,8 +66,8 @@ class SearchController {
         }
       });
       return json.then(responseJSON => {
+        const booksController = new BooksController('inventaire', undefined, this.lang);
         return responseJSON.works.map(work => {
-          const booksController = new BooksController(this.inventaire, work.uri, this.lang);
           const bookData = booksController.handleInventaireEntity(work);
           const communityData = booksController.getCommunityData(5);
           
@@ -167,44 +168,56 @@ class SearchController {
     });
   }
 
-  async searchOpenLibrary() {
+  async searchOpenLibrary(searchBy = 'title') {
     if (!this.hasQuery) {
       return [];
     }
 
-    return fetch('http://openlibrary.org/search.json?q=' + encodeURIComponent(this.term))
+    return fetch(`http://openlibrary.org/search.json?${searchBy}=${encodeURIComponent(this.term)}`)
       .then(res => res.json())
       .then(response => {
         if (!response.hasOwnProperty('docs')) {
           return [];
         }
+
+        const booksController = new BooksController('openLibrary', undefined, this.lang);
+        
         // Format the response into usable objects
         const docs = response.docs.map(doc => {
-          return {
-            title: doc.title_suggest.trim(),
-            authors: doc.hasOwnProperty('author_name') ? doc.author_name.map(name => name.trim()) : [],
-            cover: doc.hasOwnProperty('cover_i') ? `//covers.openlibrary.org/b/id/${doc.cover_i}-S.jpg` : false,
-          };
+          return booksController.handleOpenLibraryEntity(doc);
         });
 
         // Filter out duplicate items with the same title and author
         const results = docs.filter((doc, index, allDocs) => {
           return typeof allDocs.find((filterResult, filterIndex) => {
             return index !== filterIndex && filterResult.title === doc.title
-              && JSON.stringify(filterResult.authors) === JSON.stringify(doc.authors);
+              && filterResult.description === doc.description;
           }) === 'undefined';
         }).map(result => {
           // Find any duplicates in case they have different cover data
           const duplicates = docs.filter(doc => {
-            return doc.title.toLowerCase() === result.title.toLowerCase() && JSON.stringify(doc.authors) === JSON.stringify(result.authors);
+            return doc.name.toLowerCase() === result.name.toLowerCase() && doc.description === result.description;
           });
           result.covers = [];
           duplicates.forEach(duplicate => {
-            if (duplicate.cover !== false) {
-              result.covers.push(duplicate.cover);
+            if (duplicate.coverId !== false) {
+              result.covers.push({
+                uri: duplicate.coverId,
+                url: `//covers.openlibrary.org/b/id/${duplicate.coverId}-M.jpg`,
+              });
             }
           });
+          delete result.coverId;
           return result;
+        }).map(bookData => {
+          // Use bookController to get community data
+          booksController.uri = bookData.uri; // Update booksController.uri for each book when fetching community data.
+          const communityData = booksController.getCommunityData(5);
+  
+          return {
+            ...bookData,
+            ...communityData,
+          };
         });
 
         return results;

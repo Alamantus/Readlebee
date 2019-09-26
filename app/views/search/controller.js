@@ -53,7 +53,7 @@ export class SearchController extends ViewController {
   
         const searchTerm = this.appState.query.for.trim();
   
-        return fetch(`/api/search?for=${searchTerm}&lang=${this.appState.language}`)
+        return fetch(`/api/search?for=${searchTerm}&by=${this.state.searchBy}&lang=${this.appState.language}&source=${this.state.searchSource}`)
           .then(response => response.json())
           .then(responseJSON => {
             this.state.results = responseJSON;
