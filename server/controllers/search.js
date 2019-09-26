@@ -173,7 +173,7 @@ class SearchController {
       return [];
     }
 
-    return fetch(`http://openlibrary.org/search.json?${searchBy}=${encodeURIComponent(this.term)}`)
+    return fetch(`https://openlibrary.org/search.json?${searchBy}=${encodeURIComponent(this.term)}`)
       .then(res => res.json())
       .then(response => {
         if (!response.hasOwnProperty('docs')) {
@@ -187,13 +187,19 @@ class SearchController {
           return booksController.handleOpenLibraryEntity(doc);
         });
 
+        let results = [];
         // Filter out duplicate items with the same title and author
-        const results = docs.filter((doc, index, allDocs) => {
-          return typeof allDocs.find((filterResult, filterIndex) => {
-            return index !== filterIndex && filterResult.title === doc.title
-              && filterResult.description === doc.description;
-          }) === 'undefined';
-        }).map(result => {
+        docs.forEach(doc => {
+          const existingDoc = results.find((filterResult) => {
+            return filterResult.title === doc.title && filterResult.description === doc.description;
+          });
+
+          if (!existingDoc) {
+            results.push(doc);
+          }
+        });
+
+        results = results.map(result => {
           // Find any duplicates in case they have different cover data
           const duplicates = docs.filter(doc => {
             return doc.name.toLowerCase() === result.name.toLowerCase() && doc.description === result.description;
