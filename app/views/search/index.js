@@ -48,27 +48,38 @@ export const searchView = (state, emit, i18n) => {
       <div>
         ${modal('searchSourceInfo', controller, [
           html`<p>
-            This refers to where the search tries to look for data.
+            ${__('search.search_source_help_text')}
           </p>`,
           html`<ul>
             <li>
               <a href="https://inventaire.io" target="_blank">
                 Inventaire
               </a>
+              <ul>
+                <li>
+                  ${__('search.search_source_help_inventaire')}
+                </li>
+              </ul>
             </li>
             <li>
               <a href="https://openlibrary.org" target="_blank">
                 Open Library
               </a>
+              <ul>
+                <li>
+                  ${__('search.search_source_help_openLibrary')}
+                </li>
+              </ul>
             </li>
           </ul>`,
         ], {
-          buttonText: 'What\'s This?',
+          buttonText: __('search.search_source_help_button'),
           buttonClasses: 'small marginless pseudo button pull-right',
-          headerText: 'What does "Search Source" mean?',
+          headerText: __('search.search_source_help_header'),
         })}
         <label>
-          Search Source
+          ${__('search.search_source_label')}
+
           <select onchange=${event => {
             controller.state.searchSource = event.target.value;
           }}>
@@ -82,7 +93,8 @@ export const searchView = (state, emit, i18n) => {
         </label>
       </div>
       <div>
-          Search By<br>
+          ${__('search.search_by_label')}<br>
+
           <label>
             <input type="radio" name="searchBy" value="title"
               ${controller.state.searchBy === 'title' ? 'checked' : null}
@@ -92,7 +104,9 @@ export const searchView = (state, emit, i18n) => {
                 }
               }}
             >
-            <span class="checkable">Title</span>
+            <span class="checkable">
+              ${__('search.search_by_title')}
+            </span>
           </label>
           <label>
             <input type="radio" name="searchBy" value="author"
@@ -103,7 +117,9 @@ export const searchView = (state, emit, i18n) => {
                 }
               }}
             >
-            <span class="checkable">Author</span>
+            <span class="checkable">
+              ${__('search.search_by_author')}
+            </span>
           </label>
       </div>
     </section>`,
