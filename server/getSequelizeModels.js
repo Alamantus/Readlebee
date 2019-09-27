@@ -11,16 +11,27 @@ function getSequelizeModels (sequelize) {
       type: Sequelize.STRING,
       allowNull: false,
       unique: true,
+      validate: {
+        isEmail: true,
+        len: [5, 150],
+      },
     },
     username: {
       type: Sequelize.STRING,
       allowNull: false,
       unique: true,
+      validate: {
+        is: /^[a-z0-9_]+$/i, // Is a set of characters a-z, 0-9, or _, case insensitive
+        len: [2, 32],
+      },
     },
     displayName: {
       type: Sequelize.STRING,
       allowNull: false,
       unique: true,
+      validate: {
+        len: [2, 32],
+      },
     },
     passwordHash: {
       type: Sequelize.STRING,
