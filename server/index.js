@@ -48,9 +48,25 @@ switch (fastify.siteConfig.db_engine) {
 fastify.register(require('fastify-sequelize'), sequelizeConfig);
 
 // Every request, check to see if a valid token exists
-fastify.addHook('onRequest', (request, reply, done) => {
-  request.isLoggedInUser = typeof request.cookies.token !== 'undefined' && fastify.jwt.verify(request.cookies.token);
-  done();
+fastify.addHook('onRequest', async (request, reply) => {
+  request.isLoggedInUser = false;
+  if (typeof request.cookies.token !== 'undefined' && fastify.jwt.verify(request.cookies.token)) {
+    const { id } = fastify.jwt.verify(request.cookies.token);
+    const user = await fastify.models.User.findByPk(id).catch(ex => fastify.log(ex));
+    if (!user) {
+      console.log('Invalid user id from token');
+      request.clearCookie('token', token, {
+        path: '/',
+        expires: new Date(Date.now() - 9999),
+        maxAge: new Date(Date.now() - 9999),  // Both are set as a "just in case"
+        httpOnly: true, // Prevents JavaScript on the front end from grabbing it
+        sameSite: true, // Prevents the cookie from being used outside of this site
+      });
+    } else {
+      request.isLoggedInUser = true;
+      request.user = user;
+    }
+  }
 });
 
 
@@ -66,5 +82,6 @@ fastify.listen(fastify.siteConfig.port, function (err, address) {
     fastify.log.error(err);
     process.exit(1);
   }
-  fastify.log.info(`server listening on ${address}`);
+
+  fastify.decorate('models', require('./getSequelizeModels')(fastify.sequelize));
 });
