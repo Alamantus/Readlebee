@@ -6,3 +6,5 @@ dev/
 
 **/*.log
 config.json
+*.sqlite*
+*.db

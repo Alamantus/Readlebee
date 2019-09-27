@@ -16,8 +16,12 @@ const sequelizeConfig = {
 switch (siteConfig.db_engine) {
   case 'sqlite': {
     sequelizeConfig.storage = typeof siteConfig.sqlite_location !== 'undefined'
-      ? path.resolve(siteConfig.sqlite_location)
-      : path.resolve(__dirname, './database.sqlite');
+      ? (
+        siteConfig.sqlite_location.substr(0, 1) === '.' // If relative path, make relative to ./server
+          ? path.resolve('./server/', siteConfig.sqlite_location)
+          : path.resolve(siteConfig.sqlite_location)
+      )
+      : path.resolve(__dirname, './server/database.sqlite');
     break;
   }
   default: {
