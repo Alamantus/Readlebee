@@ -7,6 +7,10 @@
   "db_database": "readlebee",
   "db_username": "postgres",
   "db_password": "password",
+  "email_host": null,
+  "email_port": 465,
+  "email_username": null,
+  "email_password": "password",
   "jwtSecretKey": "SomethingAtLeast32CharactersLong!",
   "tokenExpireDays": 7,
   "inventaireDomain": "https://inventaire.io"

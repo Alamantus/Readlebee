@@ -27,27 +27,35 @@ async function routes(fastify, options) {
       return reply.code(400).send(canCreateUser);
     }
 
-    const result = await account.createUser(formData.email, formData.username, formData.displayName, formData.password);
+    const result = await account.createUser(formData.email, formData.username, formData.displayName, formData.password, fastify.canEmail);
 
     if (typeof result.error !== 'undefined') {
       return reply.code(400).send(result);      
     }
 
-    const token = fastify.jwt.sign({ id: result.id });
-    const expireTime = fastify.siteConfig.tokenExpireDays * (24 * 60 * 60e3);  // The section in parentheses is milliseconds in a day
+    if (fastify.canEmail) {
+      // fastify.nodemailer.sendMail();
+      return reply.send({
+          error: false,
+          message: 'api.account_create_success',
+        });
+    } else {
+      const token = fastify.jwt.sign({ id: result.id });
+      const expireTime = fastify.siteConfig.tokenExpireDays * (24 * 60 * 60e3);  // The section in parentheses is milliseconds in a day
 
-    return reply
-      .setCookie('token', token, {
-        path: '/',
-        expires: new Date(Date.now() + expireTime),
-        maxAge: new Date(Date.now() + expireTime),  // Both are set as a "just in case"
-        httpOnly: true, // Prevents JavaScript on the front end from grabbing it
-        sameSite: true, // Prevents the cookie from being used outside of this site
-      })
-      .send({
-        error: false,
-        message: 'api.account_create_success',
-      });
+      return reply
+        .setCookie('token', token, {
+          path: '/',
+          expires: new Date(Date.now() + expireTime),
+          maxAge: new Date(Date.now() + expireTime),  // Both are set as a "just in case"
+          httpOnly: true, // Prevents JavaScript on the front end from grabbing it
+          sameSite: true, // Prevents the cookie from being used outside of this site
+        })
+        .send({
+          error: false,
+          message: 'api.account_create_success',
+        });
+    }
   });
 
   fastify.get('/api/login', async (request, reply) => {

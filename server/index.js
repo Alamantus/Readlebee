@@ -47,6 +47,21 @@ switch (fastify.siteConfig.db_engine) {
 }
 fastify.register(require('fastify-sequelize'), sequelizeConfig);
 
+if (!fastify.siteConfig.email_host || !fastify.siteConfig.email_username) {
+  console.warn('###\nNo email server set up. You will not be able to send emails without entering your email configuration.\n###');
+} else {
+  fastify.register(require('fastify-nodemailer'), {
+    pool: true,
+    host: fastify.siteConfig.email_host,
+    port: fastify.siteConfig.email_port,
+    secure: true, // use TLS
+    auth: {
+      user: fastify.siteConfig.email_username,
+      pass: fastify.siteConfig.email_password,
+    },
+  });
+}
+
 // Every request, check to see if a valid token exists
 fastify.addHook('onRequest', async (request, reply) => {
   request.isLoggedInUser = false;
@@ -83,5 +98,6 @@ fastify.listen(fastify.siteConfig.port, function (err, address) {
     process.exit(1);
   }
 
+  fastify.decorate('canEmail', typeof fastify.nodemailer !== 'undefined');
   fastify.decorate('models', require('./getSequelizeModels')(fastify.sequelize));
 });

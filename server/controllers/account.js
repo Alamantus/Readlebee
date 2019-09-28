@@ -97,7 +97,7 @@ class Account {
     return true;
   }
 
-  async createUser (email, username, displayName, password) {
+  async createUser (email, username, displayName, password, needsConfirmation) {
     const hashData = Account.hashPassword(password);
     // The data should already have gone through Account.cleanCreateAccountFormData()
     return await this.model.create({
@@ -106,6 +106,7 @@ class Account {
       displayName,
       passwordHash: hashData.hash,
       passwordSalt: hashData.salt,
+      accountConfirm: needsConfirmation ? crypto.randomBytes(32).toString('hex') : null,
     });
   }
 }

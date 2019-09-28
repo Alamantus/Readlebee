@@ -41,6 +41,10 @@ function getSequelizeModels (sequelize) {
       type: Sequelize.STRING,
       allowNull: false,
     },
+    accountConfirm: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },
 
     // Timestamps
     createdAt: {
