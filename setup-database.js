@@ -3,6 +3,7 @@
 const path = require('path');
 const Sequelize = require('sequelize');
 const getSequelizeModels = require('./server/getSequelizeModels');
+const force = typeof process.argv[2] !== 'undefined' && process.argv[2] === 'force';
 let siteConfig;
 try {
   siteConfig = require('./server/config.json');
@@ -38,7 +39,7 @@ const sequelize = new Sequelize(sequelizeConfig);
 
 const Models = getSequelizeModels(sequelize);
 
-sequelize.sync().then(() => {
+sequelize.sync({ force }).then(() => {
   const promises = [ // Default status types to use in Statuses
     { name: 'update' },
     { name: 'progress' },
