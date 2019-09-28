@@ -61,5 +61,14 @@
     "add": "Add to Shelf",
     "average_rating": "Average Rating",
     "reviews_written": "Total Reviews Written"
+  },
+  "api": {
+    "account_already_logged_in": "You are already logged in! You cannot create an account or log in again.",
+    "account_create_required_data_missing": "Could not create account because required data is missing.",
+    "account_create_invalid_email": "The email address entered is not valid.",
+    "account_create_invalid_username": "The username entered is not valid. Usernames must be at least 2 characters long and can only contain letters a–z, numbers 0–9, and underscores",
+    "account_email_exists": "The email address entered is already in use.",
+    "account_username_exists": "The username entered is already in use.",
+    "account_create_success": "Account created successfully! You are now logged in."
   }
 }
