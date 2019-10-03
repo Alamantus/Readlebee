@@ -1,0 +1,10 @@
+Hello {display_name} (username: {username}),
+
+Someone used this email address to create an account at {domain}.
+
+If this was you, please confirm your account and log in using the link below:
+
+{domain}/login?id={id}&confirm={code}
+
+Thanks!
+{sender}

@@ -1,0 +1,10 @@
+Hello {display_name} (username: {username}),
+
+You have successfully confirmed your account on {domain}.
+
+You may now log in using your email address and password at the following address:
+
+{domain}/login
+
+Thanks!
+{sender}

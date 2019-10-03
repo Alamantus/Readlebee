@@ -33,7 +33,7 @@ const sequelizeConfig = {
 switch (fastify.siteConfig.db_engine) {
   case 'sqlite': {
     sequelizeConfig.storage = typeof fastify.siteConfig.sqlite_location !== 'undefined'
-      ? path.resolve(fastify.siteConfig.sqlite_location)
+      ? path.resolve(__dirname, fastify.siteConfig.sqlite_location)
       : path.resolve(__dirname, './database.sqlite');
     break;
   }

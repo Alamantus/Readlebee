@@ -58,6 +58,19 @@ class Account {
     }
   }
 
+  static confirmAccountDataIsValid(createAccountData) {
+    if (typeof createAccountData.id === 'undefined'
+      || typeof createAccountData.confirm === 'undefined'
+      || !createAccountData.confirm) {
+      return {
+        error: true,
+        message: 'api.account_confirm_required_data_missing',
+      };
+    }
+
+    return true;
+  }
+
   async emailExists (email) {
     const existingUser = await this.model.find({
       attributes: ['id'],
@@ -107,6 +120,39 @@ class Account {
       passwordHash: hashData.hash,
       passwordSalt: hashData.salt,
       accountConfirm: needsConfirmation ? crypto.randomBytes(32).toString('hex') : null,
+    });
+  }
+
+  async confirmUser (id, accountConfirm) {
+    const userToConfirm = await this.model.findOne({
+      where: {
+        id,
+        accountConfirm,
+      },
+    });
+
+    if (!userToConfirm) {
+      return {
+        error: true,
+        message: 'api.account_confirm_invalid_code',
+      }
+    }
+
+    return await this.model.update({
+      accountConfirm: null,
+    }, {
+      where: {
+        id,
+        accountConfirm,
+      },
+    }).then(success => {
+      if (success[0] < 1) {
+        return {
+          error: true,
+          message: 'api.account_confirm_update_fail',
+        }
+      }
+      return userToConfirm;
     });
   }
 }

@@ -1,4 +1,5 @@
 {
+  "domain": "localhost",
   "port": 3000,
   "db_engine": "postgres",
   "sqlite_location": "./database.sqlite",
@@ -11,6 +12,8 @@
   "email_port": 465,
   "email_username": null,
   "email_password": "password",
+  "email_from_name": "Readlebee Admin",
+  "email_from_address": null,
   "jwtSecretKey": "SomethingAtLeast32CharactersLong!",
   "tokenExpireDays": 7,
   "inventaireDomain": "https://inventaire.io"
