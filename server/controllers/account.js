@@ -49,6 +49,25 @@ class Account {
     return true;
   }
 
+  static loginDataIsValid (loginData) {
+    if (typeof loginData.email === 'undefined'
+      || typeof loginData.password === 'undefined'
+      || loginData.password === '') {
+      return {
+        error: true,
+        message: 'api.account_login_required_data_missing',
+      };
+    }
+    if (loginData.email.length < 5 || !/^.+@.+\..+$/.test(loginData.email)) {
+      return {
+        error: true,
+        message: 'api.account_login_invalid_email',
+      };
+    }
+
+    return true;
+  }
+
   static cleanCreateAccountFormData (formData) {
     return {
       email: formData.email.trim(),
@@ -154,6 +173,41 @@ class Account {
       }
       return userToConfirm;
     });
+  }
+
+  async validateLogin (email, password) {
+    const existingUser = await this.model.find({
+      attributes: ['id', 'passwordHash', 'passwordSalt', 'accountConfirm'],
+      where: {
+        email,
+      },
+    });
+    if (existingUser == null) {
+      return {
+        error: true,
+        message: 'api.account_login_invalid_email',
+      };
+    }
+
+    if (existingUser.accountConfirm !== null) {
+      return {
+        error: true,
+        message: 'api.account_login_not_confirmed',
+      };
+    }
+
+    const passwordIsValid = Account.verifyPassword(existingUser.passwordHash, existingUser.passwordSalt, password);
+    if (!passwordIsValid) {
+      return {
+        error: true,
+        message: 'api.account_login_invalid_password',
+      };
+    }
+
+    return {
+      error: false,
+      id: existingUser.id,
+    };
   }
 }
 

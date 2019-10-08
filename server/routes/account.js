@@ -78,21 +78,10 @@ async function routes(fastify, options) {
         });
       }
     } else {
-      const token = fastify.jwt.sign({ id: newUser.id });
-      const expireTime = fastify.siteConfig.tokenExpireDays * (24 * 60 * 60e3);  // The section in parentheses is milliseconds in a day
-
-      return reply
-        .setCookie('token', token, {
-          path: '/',
-          expires: new Date(Date.now() + expireTime),
-          maxAge: new Date(Date.now() + expireTime),  // Both are set as a "just in case"
-          httpOnly: true, // Prevents JavaScript on the front end from grabbing it
-          sameSite: true, // Prevents the cookie from being used outside of this site
-        })
-        .send({
-          error: false,
-          message: 'api.account_create_success',
-        });
+      return reply.send({
+        error: false,
+        message: 'api.account_create_success',
+      });
     }
   });
 
@@ -138,7 +127,7 @@ async function routes(fastify, options) {
       }).then(email => {
         if (email.err) {
           console.error(email.err);
-          return reply.send({
+          return reply.code(400).send({
             error: true,
             message: 'api.account_confirm_email_send_fail',
           });
@@ -158,18 +147,23 @@ async function routes(fastify, options) {
     }
   });
 
-  fastify.get('/api/login', async (request, reply) => {
-    reply.view('login.hbs', { text: request.isLoggedInUser ? JSON.stringify(fastify.jwt.decode(request.cookies.token)) : 'you are NOT logged in' });
-  });
-  
-  fastify.post('/api/login-validate', async (request, reply) => {
-    if (typeof request.body.email === "undefined" || typeof request.body.password === "undefined") {
-      reply.redirect('/login', 400);
+  fastify.get('/api/account/login', async (request, reply) => {
+    const formDataIsValid = Account.loginDataIsValid(request.body);
+    if (formDataIsValid !== true) {
+      return reply.code(400).send(formDataIsValid);
     }
 
-    const token = fastify.jwt.sign({ email: request.body.email, password: request.body.password });
+    const account = new Account(fastify.models.User);
+    const user = account.validateLogin(request.body.email, request.body.password);
+
+    if (user.error !== true) {
+      return reply.code(400).send(user);
+    }
+
+    const token = fastify.jwt.sign({ id: user.id });
     const expireTime = fastify.siteConfig.tokenExpireDays * (24 * 60 * 60e3);  // The section in parentheses is milliseconds in a day
-    reply
+
+    return reply
       .setCookie('token', token, {
         path: '/',
         expires: new Date(Date.now() + expireTime),
@@ -177,11 +171,49 @@ async function routes(fastify, options) {
         httpOnly: true, // Prevents JavaScript on the front end from grabbing it
         sameSite: true, // Prevents the cookie from being used outside of this site
       })
-      .redirect('/', 200);
+      .send({
+        error: false,
+        message: 'api.account_create_success',
+      });
+  });
+  
+  fastify.post('/api/account/validate', async (request, reply) => {
+    if (typeof request.cookies.token === "undefined") {
+      return reply.code(400).send({
+        error: true,
+        message: 'api.account_validate_missing_token',
+      });
+    }
+
+    const tokenIsValid = await fastify.jwt.verify(request.cookies.token);
+    if (!tokenIsValid) {
+      return reply.code(400).send({
+        error: true,
+        message: 'api.account_validate_invalid_token',
+      });
+    }
+
+    // Renew the token if valid
+    const expireTime = fastify.siteConfig.tokenExpireDays * (24 * 60 * 60e3);  // The section in parentheses is milliseconds in a day
+    return reply
+      .setCookie('token', request.cookies.token, {
+        path: '/',
+        expires: new Date(Date.now() + expireTime),
+        maxAge: new Date(Date.now() + expireTime),  // Both are set as a "just in case"
+        httpOnly: true, // Prevents JavaScript on the front end from grabbing it
+        sameSite: true, // Prevents the cookie from being used outside of this site
+      })
+      .send({
+        error: false,
+        message: 'api.account_validate_renewed_token',
+      });
   });
   
   fastify.get('/api/logout', async (request, reply) => {
-    reply.clearCookie('token', { path: '/' }).redirect('/?loggedout');
+    return reply.clearCookie('token', { path: '/' }).send({
+      error: false,
+      message: 'api._account_logout_success',
+    });
   });
 }
 

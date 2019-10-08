@@ -28,6 +28,13 @@ export class LoginController extends ViewController {
     // or use `onclick=${() => controller.submit()}` to maintain the 'this' of the class instead.
   }
 
+  clearLoginForm () {
+    this.state.fieldValues.loginEmail = '';
+    this.state.fieldValues.loginPassword = '';
+    
+    this.emit('render');
+  }
+
   clearCreateAccountForm () {
     this.state.fieldValues.createEmail = '';
     this.state.fieldValues.createUsername = '';
@@ -36,6 +43,31 @@ export class LoginController extends ViewController {
     this.state.fieldValues.createConfirm = '';
     
     this.emit('render');
+  }
+
+  validateLogin () {
+    const { __ } = this.i18n;
+    this.state.createError = '';
+    this.state.isChecking = true;
+
+    this.emit('render', () => {
+      const {
+        loginEmail,
+        loginPassword
+      } = this.state.fieldValues;
+
+      if ([
+        loginEmail,
+        loginPassword,
+      ].includes('')) {
+        this.state.createError = __('login.create_required_field_blank');
+        this.state.isChecking = false;
+        this.emit('render');
+        return;
+      }
+
+      this.logIn();
+    });
   }
 
   validateCreateAccount () {
@@ -72,6 +104,38 @@ export class LoginController extends ViewController {
 
       this.createAccount();
     });
+  }
+
+  logIn () {
+    const { __ } = this.i18n;
+    const {
+      loginEmail,
+      loginPassword
+    } = this.state.fieldValues;
+
+    fetch('/api/account/login', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: loginEmail,
+        password: loginPassword,
+      }),
+    }).then(response => response.json())
+    .then(response => {
+      if (response.error !== false) {
+        console.error(response);
+        this.state.loginError = __(response.message);
+        this.state.isChecking = false;
+        this.emit('render');
+        return;
+      }
+
+      this.state.loginMessage = __(response.message);
+      this.state.isChecking = false;
+      this.clearLoginForm();
+    })
   }
 
   createAccount () {
