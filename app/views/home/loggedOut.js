@@ -57,7 +57,7 @@ export const loggedOutView = (homeController, emit) => {
               </button>
             </header>
             <footer>
-              ${homeController.recentReviews.map(review => reviewCard(homeController, review))}
+              ${homeController.state.loggedOut.recentReviews.map(review => reviewCard(homeController, review))}
             </footer>
           </div>
         </div>
@@ -70,7 +70,7 @@ export const loggedOutView = (homeController, emit) => {
               </button>
             </header>
             <footer>
-              ${homeController.recentUpdates.map(review => reviewCard(homeController, review))}
+              ${homeController.state.loggedOut.recentUpdates.map(update => reviewCard(homeController, update))}
             </footer>
           </div>
         </div>

@@ -2,6 +2,7 @@ import html from 'choo/html';
 
 import { HomeController } from './controller';  // The controller for this view, where processing should happen.
 import { loggedOutView } from './loggedOut';
+import { loggedInView } from './loggedIn';
 
 // This is the view function that is exported and used in the view manager.
 export const homeView = (state, emit, i18n) => {
@@ -12,7 +13,7 @@ export const homeView = (state, emit, i18n) => {
   return [
     (!controller.isLoggedIn
       ? loggedOutView(controller, emit)
-      : html`<p>lol wut how are u logged in</p>`
+      : loggedInView(controller, emit)
     ),
   ];
 }

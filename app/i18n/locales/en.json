@@ -16,7 +16,10 @@
     "logged_out_community_header": "A Look Inside the Hive",
     "logged_out_recent_reviews": "Recent Reviews",
     "logged_out_recent_updates": "Recent Updates",
-    "logged_out_join_now": "Join Now!"
+    "logged_out_join_now": "Join Now!",
+    "logged_in_subtitle": "Welcome!",
+    "logged_in_updates": "Updates",
+    "logged_in_interactions": "Interactions"
   },
   "404": {
     "header": "Oops!",
