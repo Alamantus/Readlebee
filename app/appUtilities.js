@@ -19,4 +19,19 @@ export const appUtilities = (app) => {
     savedSettings[settingsKey] = value;
     return window.localStorage.setItem('settings', JSON.stringify(savedSettings));
   }
+
+  app.checkIfLoggedIn = (appState) => {
+    return fetch('/api/account/validate', { method: 'post' })
+      .then(response => response.json())
+      .then(response => {
+        if (response.error !== false) {
+          console.warn(response);
+          return false;
+        }
+        
+        console.info(response.message);
+        appState.isLoggedIn = true;
+        return true;
+      });
+  }
 }
