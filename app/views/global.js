@@ -40,14 +40,30 @@ export const globalView = (state, emit, view) => {
   </main>
 
   <footer>
-    <nav>
-      <div class="links">
-        <a href="https://gitlab.com/Alamantus/Readlebee" class="pseudo button">
-          ${i18n.__('global.footer_repo')}
-        </a>
-        <a href="https://gitter.im/Readlebee/community" class="pseudo button">
-          ${i18n.__('global.footer_chat')}
-        </a>
+    <nav class="flex one">
+      <div class="two-third-600">
+        <div class="links">
+          <a href="https://gitlab.com/Alamantus/Readlebee" class="pseudo button">
+            ${i18n.__('global.footer_repo')}
+          </a>
+          <a href="https://gitter.im/Readlebee/community" class="pseudo button">
+            ${i18n.__('global.footer_chat')}
+          </a>
+        </div>
+      </div>
+      <div class="third-600">
+        <label class="flex">
+          <span class="third">${i18n.__('global.change_language')}:</span>
+          <select class="two-third" onchange=${e => emit('set-language', e.target.value)}>
+            ${Object.keys(i18n.availableLanguages).map(languageKey => {
+              if (languageKey === 'default') return null;
+              const language = i18n.availableLanguages[languageKey];
+              return html`<option value=${language.locale} ${state.language === language.locale ? 'selected' : null}>
+                ${language.name}
+              </option>`;
+            })}
+          </select>
+        </label>
       </div>
     </nav>
   </footer>

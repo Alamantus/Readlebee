@@ -8,7 +8,8 @@
     "menu_account": "My Profile",
     "menu_logout": "Log Out",
     "footer_repo": "Repo",
-    "footer_chat": "Chat"
+    "footer_chat": "Chat",
+    "change_language": "Change Language"
   },
   "home": {
     "logged_out_subtitle": "All the Book Buzz in Once Place",

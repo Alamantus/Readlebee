@@ -14,7 +14,7 @@ export const appListeners = (app, state, emitter) => {
     emitter.on('set-language', newLanguage => {
       app.setSettingsItem('lang', newLanguage);
       state.language = newLanguage;
-      emitter.emit('render', () => { });
+      emitter.emit('render');
     });
 
     app.checkIfLoggedIn(state).then(isLoggedIn => {

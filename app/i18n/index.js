@@ -7,7 +7,11 @@ export class I18n {
       default: en,
       en,
     };
-    this.language = appState.language;
+    this.appState = appState;
+  }
+
+  get language () {
+    return this.appState.language;
   }
 
   translate (section, phrase) {
