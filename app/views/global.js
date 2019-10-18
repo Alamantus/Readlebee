@@ -19,9 +19,18 @@ export const globalView = (state, emit, view) => {
       <label for="navMenu" class="burger pseudo button">${'\u2261'}</label>
     
       <div class="menu">
-        <a href="/search" class="pseudo button"><i class="icon-search" aria-label=${i18n.__('global.menu_search')}></i></a>
-        <a href="/login" class="pseudo button">${i18n.__('global.menu_login')}</a>
-        <a href="/logout" class="pseudo button">${i18n.__('global.menu_logout')}</a>
+        <a href="/search" class="pseudo button">
+          <i class="icon-search" aria-labeledBy="searchLabel"></i> <span id="searchLabel">${i18n.__('global.menu_search')}</span>
+        </a>
+        <a href="/about" class="pseudo button">${i18n.__('global.menu_about')}</a>
+        ${
+          state.isLoggedIn === true
+          ? [
+            html`<a href="/account" class="pseudo button">${i18n.__('global.menu_account')}</a>`,
+            html`<a href="/logout" class="pseudo button">${i18n.__('global.menu_logout')}</a>`,
+          ]
+          : html`<a href="/login" class="pseudo button">${i18n.__('global.menu_login')}</a>`
+        }
       </div>
     </nav>
   </header>

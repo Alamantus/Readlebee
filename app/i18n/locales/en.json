@@ -3,7 +3,9 @@
   "locale": "en",
   "global": {
     "menu_search": "Search for Books",
-    "menu_login": "Log In",
+    "menu_about": "About",
+    "menu_login": "Log In / Create Account",
+    "menu_account": "My Profile",
     "menu_logout": "Log Out",
     "footer_repo": "Repo",
     "footer_chat": "Chat"
