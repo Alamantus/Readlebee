@@ -9,6 +9,8 @@ export const appRoutes = (app) => {
 
   app.route('/login', (state, emit) => globalView(state, emit, loginView));
 
+  app.route('/logout', () => window.location.reload());  // If Choo navigates here, refresh the page instead so the server can handle it and log out
+
   app.route('/search', (state, emit) => globalView(state, emit, searchView));
 
   app.route('/404', (state, emit) => globalView(state, emit, errorView));

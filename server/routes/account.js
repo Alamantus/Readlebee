@@ -209,11 +209,8 @@ async function routes(fastify, options) {
       });
   });
   
-  fastify.get('/api/logout', async (request, reply) => {
-    return reply.clearCookie('token', { path: '/' }).send({
-      error: false,
-      message: 'api._account_logout_success',
-    });
+  fastify.get('/logout', async (request, reply) => {
+    return reply.clearCookie('token', { path: '/' }).redirect('/');
   });
 }
 
