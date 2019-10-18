@@ -16,6 +16,7 @@ export class LoginController extends ViewController {
       },
       loginError: '',
       createError: '',
+      loginMessage: '',
       createMessage: '',
       pageMessage: '',
       isChecking: false,
@@ -47,7 +48,7 @@ export class LoginController extends ViewController {
 
   validateLogin () {
     const { __ } = this.i18n;
-    this.state.createError = '';
+    this.state.loginError = '';
     this.state.isChecking = true;
 
     this.emit('render', () => {
@@ -60,7 +61,7 @@ export class LoginController extends ViewController {
         loginEmail,
         loginPassword,
       ].includes('')) {
-        this.state.createError = __('login.create_required_field_blank');
+        this.state.loginError = __('login.login_required_field_blank');
         this.state.isChecking = false;
         this.emit('render');
         return;
@@ -132,6 +133,7 @@ export class LoginController extends ViewController {
         return;
       }
 
+      this.appState.isLoggedIn = true;
       this.state.loginMessage = __(response.message);
       this.state.isChecking = false;
       this.clearLoginForm();

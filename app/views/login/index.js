@@ -6,6 +6,28 @@ export const loginView = (state, emit, i18n) => {
   const controller = new LoginController(state, emit, i18n);
   const { __ } = controller.i18n;
 
+  if (controller.appState.isLoggedIn === true) {
+    setTimeout(() => {
+      controller.state.loginMessage = '';
+      emit('pushState', '/')
+    }, 3000);
+
+    return html`<div class="modal">
+      <input type="checkbox" checked>
+      <label class="overlay"></label>
+      
+      <article class="success card">
+        <header>
+          ${
+            controller.state.loginMessage === ''
+            ? __('login.already_logged_in')
+            : controller.state.loginMessage
+          }
+        </header>
+      </article>
+    </div>`;
+  }
+
   return html`<section>
 
     ${

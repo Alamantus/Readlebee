@@ -147,16 +147,16 @@ async function routes(fastify, options) {
     }
   });
 
-  fastify.get('/api/account/login', async (request, reply) => {
+  fastify.post('/api/account/login', async (request, reply) => {
     const formDataIsValid = Account.loginDataIsValid(request.body);
     if (formDataIsValid !== true) {
       return reply.code(400).send(formDataIsValid);
     }
 
     const account = new Account(fastify.models.User);
-    const user = account.validateLogin(request.body.email, request.body.password);
+    const user = await account.validateLogin(request.body.email, request.body.password);
 
-    if (user.error !== true) {
+    if (user.error === true) {
       return reply.code(400).send(user);
     }
 
@@ -173,7 +173,7 @@ async function routes(fastify, options) {
       })
       .send({
         error: false,
-        message: 'api.account_create_success',
+        message: 'api.account_login_success',
       });
   });
   
