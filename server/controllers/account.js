@@ -69,10 +69,11 @@ class Account {
   }
 
   static cleanCreateAccountFormData (formData) {
+    var displayName = typeof formData.displayName !== 'undefined' ? formData.displayName.toString().trim() : '';
     return {
       email: formData.email.trim(),
       username: formData.username.toString().trim(),
-      displayName: typeof formData.displayName !== 'undefined' ? formData.displayName.toString().trim() : 'A Bee',
+      displayName: displayName.length > 0 ? displayName : 'A Bee',
       password: formData.password,
     }
   }

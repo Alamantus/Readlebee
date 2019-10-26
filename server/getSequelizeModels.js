@@ -30,7 +30,7 @@ function getSequelizeModels (sequelize) {
       allowNull: false,
       unique: true,
       validate: {
-        len: [2, 32],
+        len: [1, 32],
       },
     },
     passwordHash: {
