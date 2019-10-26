@@ -48,6 +48,7 @@ export const loginView = (state, emit, i18n) => {
               <input type="email" name="email"
                 value=${controller.state.fieldValues.loginEmail}
                 oninput=${e => controller.state.fieldValues.loginEmail = e.target.value.trim()}
+                onkeyup=${e => { if (e.key === 'Enter') controller.validateLogin() }}
               >
             </label>
             <label>
@@ -55,12 +56,13 @@ export const loginView = (state, emit, i18n) => {
               <input type="password" name="password"
                 value=${controller.state.fieldValues.loginPassword}
                 oninput=${e => controller.state.fieldValues.loginPassword = e.target.value}
+                onkeyup=${e => { if (e.key === 'Enter') controller.validateLogin() }}
               >
             </label>
             ${
               controller.state.loginError === ''
               ? null
-              : html`<div class="error card">${controller.state.loginError}</div>`
+              : html`<div class="error card"><header>${controller.state.loginError}</header></div>`
             }
             <button ${controller.state.isChecking ? 'disabled' : null}
               onclick=${() => controller.validateLogin()}
@@ -86,31 +88,35 @@ export const loginView = (state, emit, i18n) => {
               : html`<div class="success card"><header>${controller.state.createMessage}</header></div>`
             }
             <label>
-              <span>${__('login.email')}</span>
-              <input type="email" name="new_email"
+              <span title=${__('interaction.required')}>${__('login.email')}*</span>
+              <input type="email" name="new_email" required
                 value=${controller.state.fieldValues.createEmail}
                 oninput=${e => controller.state.fieldValues.createEmail = e.target.value.trim()}
+                onkeyup=${e => { if (e.key === 'Enter') controller.validateCreateAccount() }}
               >
             </label>
             <label>
-              <span>${__('login.password')}</span>
-              <input type="password" name="new_password"
+              <span title=${__('interaction.required')}>${__('login.password')}*</span>
+              <input type="password" name="new_password" required
                 value=${controller.state.fieldValues.createPassword}
                 oninput=${e => controller.state.fieldValues.createPassword = e.target.value}
+                onkeyup=${e => { if (e.key === 'Enter') controller.validateCreateAccount() }}
               >
             </label>
             <label>
-              <span>${__('login.confirm_password')}</span>
-              <input type="password" name="confirm_password"
+              <span title=${__('interaction.required')}>${__('login.confirm_password')}*</span>
+              <input type="password" name="confirm_password" required
                 value=${controller.state.fieldValues.createConfirm}
                 oninput=${e => controller.state.fieldValues.createConfirm = e.target.value}
+                onkeyup=${e => { if (e.key === 'Enter') controller.validateCreateAccount() }}
               >
             </label>
             <label>
-              <span>${__('login.username')}</span>
-              <input type="text" name="new_username"
+              <span title=${__('interaction.required')}>${__('login.username')}*</span>
+              <input type="text" name="new_username" required
                 value=${controller.state.fieldValues.createUsername}
                 oninput=${e => controller.state.fieldValues.createUsername = e.target.value.trim()}
+                onkeyup=${e => { if (e.key === 'Enter') controller.validateCreateAccount() }}
               >
             </label>
             <label>
@@ -118,6 +124,7 @@ export const loginView = (state, emit, i18n) => {
               <input type="text" name="new_displayname"
                 value=${controller.state.fieldValues.createDisplayName}
                 oninput=${e => controller.state.fieldValues.createDisplayName = e.target.value.trim()}
+                onkeyup=${e => { if (e.key === 'Enter') controller.validateCreateAccount() }}
               >
             </label>
             ${
