@@ -41,6 +41,7 @@
     "fastify-sequelize": "^1.0.4",
     "fastify-static": "^2.5.0",
     "make-promises-safe": "^5.0.0",
+    "marked": "^0.7.0",
     "mysql2": "^1.7.0",
     "node-fetch": "^2.6.0",
     "pg": "^7.12.1",

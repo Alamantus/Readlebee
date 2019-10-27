@@ -84,6 +84,8 @@ fastify.addHook('onRequest', async (request, reply) => {
   }
 });
 
+// Store i18n files in fastify object and register locales routes
+fastify.register(require('./i18n'));
 
 // Routes
 fastify.register(require('./routes/public'));
