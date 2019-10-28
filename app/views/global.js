@@ -4,6 +4,9 @@ import headerImage from '../../dev/images/header.png';
 
 export const globalView = (state, emit, view) => {
   const { i18n } = state;
+  if (i18n.needsFetch) {
+    return html`<body>Loading...</body>`;
+  }
   // Create a wrapper for view content that includes global header/footer
   return html`<body>
   <header>
@@ -55,9 +58,7 @@ export const globalView = (state, emit, view) => {
         <label class="flex">
           <span class="third">${i18n.__('global.change_language')}:</span>
           <select class="two-third" onchange=${e => emit('set-language', e.target.value)}>
-            ${Object.keys(i18n.availableLanguages).map(languageKey => {
-              if (languageKey === 'default') return null;
-              const language = i18n.availableLanguages[languageKey];
+            ${i18n.availableLanguages.map(language => {
               return html`<option value=${language.locale} ${state.language === language.locale ? 'selected' : null}>
                 ${language.name}
               </option>`;

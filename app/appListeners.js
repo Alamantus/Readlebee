@@ -14,11 +14,15 @@ export const appListeners = (app, state, emitter) => {
     emitter.on('set-language', newLanguage => {
       app.setSettingsItem('lang', newLanguage);
       state.language = newLanguage;
-      emitter.emit('render');
+      state.i18n.fetchLocaleUI().then(() => {
+        emitter.emit('render');
+      });
     });
 
-    app.checkIfLoggedIn(state).then(isLoggedIn => {
-      emitter.emit('render'); // This should hopefully only run once after the DOM is loaded. It prevents routing issues where 'render' hasn't been defined yet
-    });
+    state.i18n.fetchLocaleUI().then(() => {
+      app.checkIfLoggedIn(state).then(isLoggedIn => {
+        emitter.emit('render'); // This should hopefully only run once after the DOM is loaded. It prevents routing issues where 'render' hasn't been defined yet
+      });
+    })
   });
 }
