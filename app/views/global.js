@@ -5,7 +5,7 @@ import headerImage from '../../dev/images/header.png';
 export const globalView = (state, emit, view) => {
   const { i18n } = state;
   if (i18n.needsFetch) {
-    return html`<body>Loading...</body>`;
+    return html`<body><i class="icon-loading animate-spin"></i></body>`;
   }
   // Create a wrapper for view content that includes global header/footer
   return html`<body>
