@@ -25,11 +25,11 @@ export const appUtilities = (app) => {
       .then(response => response.json())
       .then(response => {
         if (response.error !== false) {
-          console.warn(response);
+          console.warn(appState.i18n.__(response.message));
           return false;
         }
         
-        console.info(response.message);
+        console.info(appState.i18n.__(response.message));
         appState.isLoggedIn = true;
         return true;
       });

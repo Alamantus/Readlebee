@@ -48,7 +48,7 @@ export const searchView = (state, emit, i18n) => {
       <div>
         ${modal('searchSourceInfo', controller, [
           html`<p>
-            ${__('search.search_source_help_text')}
+            ${__('search.search_source.help.text')}
           </p>`,
           html`<ul>
             <li>
@@ -57,7 +57,7 @@ export const searchView = (state, emit, i18n) => {
               </a>
               <ul>
                 <li>
-                  ${__('search.search_source_help_inventaire')}
+                  ${__('search.search_source.help.inventaire')}
                 </li>
               </ul>
             </li>
@@ -67,18 +67,18 @@ export const searchView = (state, emit, i18n) => {
               </a>
               <ul>
                 <li>
-                  ${__('search.search_source_help_openLibrary')}
+                  ${__('search.search_source.help.openLibrary')}
                 </li>
               </ul>
             </li>
           </ul>`,
         ], {
-          buttonText: __('search.search_source_help_button'),
+          buttonText: __('search.search_source.help.button'),
           buttonClasses: 'small marginless pseudo button pull-right',
-          headerText: __('search.search_source_help_header'),
+          headerText: __('search.search_source.help.header'),
         })}
         <label>
-          ${__('search.search_source_label')}
+          ${__('search.search_source.label')}
 
           <select onchange=${event => {
             controller.state.searchSource = event.target.value;
@@ -93,7 +93,7 @@ export const searchView = (state, emit, i18n) => {
         </label>
       </div>
       <div>
-          ${__('search.search_by_label')}<br>
+          ${__('search.search_by.label')}<br>
 
           <label>
             <input type="radio" name="searchBy" value="title"
@@ -105,7 +105,7 @@ export const searchView = (state, emit, i18n) => {
               }}
             >
             <span class="checkable">
-              ${__('search.search_by_title')}
+              ${__('search.search_by.title')}
             </span>
           </label>
           <label>
@@ -118,7 +118,7 @@ export const searchView = (state, emit, i18n) => {
               }}
             >
             <span class="checkable">
-              ${__('search.search_by_author')}
+              ${__('search.search_by.author')}
             </span>
           </label>
       </div>

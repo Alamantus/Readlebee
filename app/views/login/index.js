@@ -20,7 +20,7 @@ export const loginView = (state, emit, i18n) => {
         <header>
           ${
             controller.state.loginMessage === ''
-            ? __('login.already_logged_in')
+            ? __('api.already_logged_in')
             : controller.state.loginMessage
           }
         </header>

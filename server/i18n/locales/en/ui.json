@@ -9,20 +9,24 @@
     "menu_logout": "Log Out",
     "footer_repo": "Repo",
     "footer_chat": "Chat",
-    "change_language": "Change Language"
+    "change_language": "Language"
   },
   "home": {
-    "logged_out_subtitle": "All the Book Buzz in Once Place",
-    "logged_out_track_books": "Keep track of books you've read, want to read, and are currently reading.",
-    "logged_out_share_friends": "Share your thoughts about what you're reading and see what your friends think of their books.",
-    "logged_out_read_rate": "Rate, review, and recommmend books or something. I dunno. It's early days, my friends!",
-    "logged_out_community_header": "A Look Inside the Hive",
-    "logged_out_recent_reviews": "Recent Reviews",
-    "logged_out_recent_updates": "Recent Updates",
-    "logged_out_join_now": "Join Now!",
-    "logged_in_subtitle": "Welcome!",
-    "logged_in_updates": "Updates",
-    "logged_in_interactions": "Interactions"
+    "logged_out": {
+      "subtitle": "All the Book Buzz in Once Place",
+      "track_books": "Keep track of books you've read, want to read, and are currently reading.",
+      "share_friends": "Share your thoughts about what you're reading and see what your friends think of their books.",
+      "read_rate": "Rate, review, and recommmend books or something. I dunno. It's early days, my friends!",
+      "community_header": "A Look Inside the Hive",
+      "recent_reviews": "Recent Reviews",
+      "recent_updates": "Recent Updates",
+      "join_now": "Join Now!"
+    },
+    "logged_in": {
+      "subtitle": "Welcome!",
+      "updates": "Updates",
+      "interactions": "Interactions"
+    }
   },
   "404": {
     "header": "Oops!",
@@ -46,15 +50,21 @@
     "header": "Search",
     "placeholder": "Search for Books",
     "button_text": "Search",
-    "search_source_label": "Search Source",
-    "search_source_help_button": "What's This?",
-    "search_source_help_header": "What does \"Search Source\" mean?",
-    "search_source_help_text": "This refers to where the search tries to look for data. Each source can be easily contributed to if you want to add missing books or correct errors.",
-    "search_source_help_inventaire": "Sources and extends data from WikiData, the service structure that powers Wikipedia and the like. Offers as many language options as possible.",
-    "search_source_help_openLibrary": "Sources data from Internet Archive and may provide a digital copy to read. Only offers English unless a work is in another language.",
-    "search_by_label": "Search By",
-    "search_by_title": "Title",
-    "search_by_author": "Author",
+    "search_source": {
+      "label": "Search Source",
+      "help": {
+        "button": "What's This?",
+        "header": "What does \"Search Source\" mean?",
+        "text": "This refers to where the search tries to look for data. Each source can be easily contributed to if you want to add missing books or correct errors.",
+        "inventaire": "Sources and extends data from WikiData, the service structure that powers Wikipedia and the like. Offers as many language options as possible.",
+        "openLibrary": "Sources data from Internet Archive and may provide a digital copy to read. Only offers English unless a work is in another language."
+      }
+    },
+    "search_by": {
+      "label": "Search By",
+      "title": "Title",
+      "author": "Author"
+    },
     "loading": "Loading...",
     "no_results": "None Found",
     "no_results_suggestion": "If you're expecting book data, go and help fill out the Inventaire database!",
@@ -73,28 +83,40 @@
     "reviews_written": "Total Reviews Written"
   },
   "api": {
-    "account_already_logged_in": "You are already logged in! You cannot create an account or log in again.",
-    "account_create_required_data_missing": "Could not create account because required data is missing.",
-    "account_create_invalid_email": "The email address entered is not valid.",
-    "account_create_invalid_username": "The username entered is not valid. Usernames must be at least 2 characters long and can only contain letters a–z, numbers 0–9, and underscores",
-    "account_email_exists": "The email address entered is already in use.",
-    "account_username_exists": "The username entered is already in use.",
-    "account_email_send_fail": "Your account was created successfully, but we were unable to send the confirmation email!",
-    "account_confirm_email": "A confirmation email has been sent to the address you specified. Please confirm your account using the link provided.",
-    "account_create_success": "Account created successfully! You may now log in using the email address and password you provided.",
-    "account_confirm_required_data_missing": "Could not confirm account because required data is missing.",
-    "account_confirm_invalid_code": "The specified confirmation code is not valid.",
-    "account_confirm_update_fail": "Something went wrong and we couldn't confirm your account. Please try again later!",
-    "account_confirm_email_send_fail": "Your account has been confirmed, but we were unable to send the email notification about it. You can log in anyway.",
-    "account_confirm_success_email": "Your account has been confirmed, and an email notification has been sent! You may now log in using your email address and password.",
-    "account_confirm_success": "Your account has been confirmed! You may now log in using your email address and password.",
-    "account_login_required_data_missing": "Could not attempt login because required data is missing.",
-    "account_login_invalid_email": "The email address specified does not have an associated account.",
-    "account_login_not_confirmed": "The specified account has not been confirmed. Please use the link you received to confirm your email address.",
-    "account_login_invalid_password": "The password specified is not correct.",
-    "account_login_success": "You have been successfully logged in! You will now be redirected to the home screen.",
-    "account_validate_missing_token": "User not logged in: There is no login token to validate.",
-    "account_validate_invalid_token": "User not logged in: The stored token is not a valid token.",
-    "account_validate_renewed_token": "User logged in, and the token has been renewed."
+    "not_logged_in": "You are not logged in.",
+    "already_logged_in": "You are already logged in! You cannot create an account or log in again.",
+    "account": {
+      "username_exists": "The username entered is already in use.",
+      "email_send_fail": "Your account was created successfully, but we were unable to send the confirmation email!",
+      "email_exists": "The email address entered is already in use.",
+      "create": {
+        "fail": "Something went wrong and the account could not be created. Please try again later.",
+        "required_data_missing": "Could not create account because required data is missing.",
+        "invalid_email": "The email address entered is not valid.",
+        "invalid_username": "The username entered is not valid. Usernames must be at least 2 characters long and can only contain letters a–z, numbers 0–9, and underscores",
+        "success": "Account created successfully! You may now log in using the email address and password you provided."
+      },
+      "confirm": {
+        "email": "A confirmation email has been sent to the address you specified. Please confirm your account using the link provided.",
+        "required_data_missing": "Could not confirm account because required data is missing.",
+        "invalid_code": "The specified confirmation code is not valid.",
+        "update_fail": "Something went wrong and we couldn't confirm your account. Please try again later!",
+        "email_send_fail": "Your account has been confirmed, but we were unable to send the email notification about it. You can log in anyway.",
+        "success_email": "Your account has been confirmed, and an email notification has been sent! You may now log in using your email address and password.",
+        "success": "Your account has been confirmed! You may now log in using your email address and password."
+      },
+      "login": {
+        "required_data_missing": "Could not attempt login because required data is missing.",
+        "invalid_email": "The email address specified does not have an associated account.",
+        "not_confirmed": "The specified account has not been confirmed. Please use the link you received to confirm your email address.",
+        "invalid_password": "The password specified is not correct.",
+        "success": "You have been successfully logged in! You will now be redirected to the home screen."
+      },
+      "validate": {
+        "missing_token": "User not logged in: There is no login token to validate.",
+        "invalid_token": "User not logged in: The stored token is not a valid token.",
+        "renewed_token": "User logged in, and the token has been renewed."
+      }
+    }
   }
 }

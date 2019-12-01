@@ -30,19 +30,19 @@ class AccountController {
       || createAccountData.password === '') {
       return {
         error: true,
-        message: 'api.account_create_required_data_missing',
+        message: 'api.account.create.required_data_missing',
       };
     }
     if (createAccountData.email.length < 5 || !/^.+@.+\..+$/.test(createAccountData.email)) {
       return {
         error: true,
-        message: 'api.account_create_invalid_email',
+        message: 'api.account.create.invalid_email',
       };
     }
     if (createAccountData.username.length < 2 || !/^[a-z0-9_]+$/i.test(createAccountData.username)) {
       return {
         error: true,
-        message: 'api.account_create_invalid_username',
+        message: 'api.account.create.invalid_username',
       };
     }
 
@@ -55,13 +55,13 @@ class AccountController {
       || loginData.password === '') {
       return {
         error: true,
-        message: 'api.account_login_required_data_missing',
+        message: 'api.account.login.required_data_missing',
       };
     }
     if (loginData.email.length < 5 || !/^.+@.+\..+$/.test(loginData.email)) {
       return {
         error: true,
-        message: 'api.account_login_invalid_email',
+        message: 'api.account.login.invalid_email',
       };
     }
 
@@ -84,7 +84,7 @@ class AccountController {
       || !createAccountData.confirm) {
       return {
         error: true,
-        message: 'api.account_confirm_required_data_missing',
+        message: 'api.account.confirm.required_data_missing',
       };
     }
 
@@ -117,13 +117,13 @@ class AccountController {
     if (emailExists) {
       return {
         error: true,
-        message: 'api.account_email_exists',
+        message: 'api.account.email_exists',
       };
     }
     if (usernameExists) {
       return {
         error: true,
-        message: 'api.account_username_exists',
+        message: 'api.account.username_exists',
       };
     }
 
@@ -160,7 +160,7 @@ class AccountController {
     if (!userToConfirm) {
       return {
         error: true,
-        message: 'api.account_confirm_invalid_code',
+        message: 'api.account.confirm.invalid_code',
       }
     }
 
@@ -175,7 +175,7 @@ class AccountController {
       if (success[0] < 1) {
         return {
           error: true,
-          message: 'api.account_confirm_update_fail',
+          message: 'api.account.confirm.update_fail',
         }
       }
       return userToConfirm;
@@ -192,14 +192,14 @@ class AccountController {
     if (existingUser == null) {
       return {
         error: true,
-        message: 'api.account_login_invalid_email',
+        message: 'api.account.login.invalid_email',
       };
     }
 
     if (existingUser.accountConfirm !== null) {
       return {
         error: true,
-        message: 'api.account_login_not_confirmed',
+        message: 'api.account.login.not_confirmed',
       };
     }
 
@@ -207,7 +207,7 @@ class AccountController {
     if (!passwordIsValid) {
       return {
         error: true,
-        message: 'api.account_login_invalid_password',
+        message: 'api.account.login.invalid_password',
       };
     }
 

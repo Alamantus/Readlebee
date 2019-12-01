@@ -12,7 +12,7 @@ async function routes(fastify, options) {
     if (request.isLoggedInUser) {
       return reply.code(400).send({
         error: true,
-        message: 'api.account_already_logged_in',
+        message: 'api.already_logged_in',
       });
     }
 
@@ -33,7 +33,7 @@ async function routes(fastify, options) {
     const newUser = await account.createUser(formData.email, formData.username, formData.displayName, formData.password, fastify.canEmail);
 
     if (typeof newUser.error !== 'undefined' && newUser.error !== false) {
-      newUser.message = 'api.account_create_fail';
+      newUser.message = 'api.account.create.fail';
       return reply.code(400).send(newUser);
     }
 
@@ -43,7 +43,7 @@ async function routes(fastify, options) {
     // If some of the default shelves are not created successfully, delete the user and send an error
     if (typeof defaultShelvesCreated.error !== 'undefined' && defaultShelvesCreated.error !== false) {
       account.deleteUser(newUser);
-      defaultShelvesCreated.message = 'api.account_create_fail';
+      defaultShelvesCreated.message = 'api.account.create.fail';
       return reply.code(400).send(defaultShelvesCreated);
     }
 
@@ -72,14 +72,14 @@ async function routes(fastify, options) {
             console.error(email.err);
             return reply.send({
               error: true,
-              message: 'api.account_email_send_fail',
+              message: 'api.account.email_send_fail',
               newUser,
             });
           }
 
           return reply.send({
             error: false,
-            message: 'api.account_confirm_email',
+            message: 'api.account.confirm.email',
           });
         });
       } catch (ex) {
@@ -89,7 +89,7 @@ async function routes(fastify, options) {
 
     return reply.send({
       error: false,
-      message: 'api.account_create_success',
+      message: 'api.account.create.success',
     });
   });
 
@@ -97,7 +97,7 @@ async function routes(fastify, options) {
     if (request.isLoggedInUser) {
       return reply.code(400).send({
         error: true,
-        message: 'api.account_already_logged_in',
+        message: 'api.already_logged_in',
       });
     }
 
@@ -137,13 +137,13 @@ async function routes(fastify, options) {
           console.error(email.err);
           return reply.code(400).send({
             error: true,
-            message: 'api.account_confirm_email_send_fail',
+            message: 'api.account.confirm.email_send_fail',
           });
         }
 
         return reply.send({
           error: false,
-          message: 'api.account_confirm_success_email',
+          message: 'api.account.confirm.success_email',
         });
       })
     } catch (ex) {
@@ -152,7 +152,7 @@ async function routes(fastify, options) {
 
     return reply.send({
       error: false,
-      message: 'api.account_confirm_success',
+      message: 'api.account.confirm.success',
     });
   });
 
@@ -182,7 +182,7 @@ async function routes(fastify, options) {
       })
       .send({
         error: false,
-        message: 'api.account_login_success',
+        message: 'api.account.login.success',
       });
   });
   
@@ -190,7 +190,7 @@ async function routes(fastify, options) {
     if (typeof request.cookies.token === "undefined") {
       return reply.code(400).send({
         error: true,
-        message: 'api.account_validate_missing_token',
+        message: 'api.account.validate.missing_token',
       });
     }
 
@@ -198,7 +198,7 @@ async function routes(fastify, options) {
     if (!tokenIsValid) {
       return reply.code(400).send({
         error: true,
-        message: 'api.account_validate_invalid_token',
+        message: 'api.account.validate.invalid_token',
       });
     }
 
@@ -214,7 +214,7 @@ async function routes(fastify, options) {
       })
       .send({
         error: false,
-        message: 'api.account_validate_renewed_token',
+        message: 'api.account.validate.renewed_token',
       });
   });
   

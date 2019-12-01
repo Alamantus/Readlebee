@@ -5,12 +5,12 @@ export const loggedInView = (homeController, emit) => {
 
   return [
     html`<section>
-      <h2>${__('home.logged_in_subtitle')}</h2>
+      <h2>${__('home.logged_in.subtitle')}</h2>
       <div class="flex one two-700">
         <div>
           <div class="card">
             <header>
-              <h3>${__('home.logged_in_updates')}</h3>
+              <h3>${__('home.logged_in.updates')}</h3>
               <button class="small pseudo pull-right tooltip-left" data-tooltip=${__('interaction.reload')}>
                 <i class="icon-reload"></i>
               </button>
@@ -23,7 +23,7 @@ export const loggedInView = (homeController, emit) => {
         <div>
           <div class="card">
             <header>
-              <h3>${__('home.logged_in_interactions')}</h3>
+              <h3>${__('home.logged_in.interactions')}</h3>
               <button class="small pseudo pull-right tooltip-left" data-tooltip=${__('interaction.reload')}>
                 <i class="icon-reload"></i>
               </button>
