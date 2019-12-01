@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
-const Account = require('../controllers/account');
-const Shelf = require('../controllers/shelf');
+const AccountController = require('../controllers/account');
+const ShelfController = require('../controllers/shelf');
 
 async function routes(fastify, options) {
   fastify.get('/api/accounts/test', async (request, reply) => {
@@ -16,14 +16,14 @@ async function routes(fastify, options) {
       });
     }
 
-    const formDataIsValid = Account.createAccountDataIsValid(request.body);
+    const formDataIsValid = AccountController.createAccountDataIsValid(request.body);
     if (formDataIsValid !== true) {
       return reply.code(400).send(formDataIsValid);
     }
 
-    const formData = Account.cleanCreateAccountFormData(request.body);
+    const formData = AccountController.cleanCreateAccountFormData(request.body);
 
-    const account = new Account(fastify.models.User);
+    const account = new AccountController(fastify.models.User);
 
     const canCreateUser = await account.canCreateUser(formData.email, formData.username);
     if (canCreateUser !== true) {
@@ -37,7 +37,7 @@ async function routes(fastify, options) {
       return reply.code(400).send(newUser);
     }
 
-    const shelf = new Shelf(fastify.models.Shelf, fastify.models.ShelfItem);
+    const shelf = new ShelfController(fastify.models.Shelf, fastify.models.ShelfItem);
     const defaultShelvesCreated = await shelf.createDefaultShelves(newUser);
 
     // If some of the default shelves are not created successfully, delete the user and send an error
@@ -101,12 +101,12 @@ async function routes(fastify, options) {
       });
     }
 
-    const formDataIsValid = Account.confirmAccountDataIsValid(request.body);
+    const formDataIsValid = AccountController.confirmAccountDataIsValid(request.body);
     if (formDataIsValid !== true) {
       return reply.code(400).send(formDataIsValid);
     }
 
-    const account = new Account(fastify.models.User);
+    const account = new AccountController(fastify.models.User);
 
     const confirmed = await account.confirmUser(request.body.id, request.body.confirm);
 
@@ -157,12 +157,12 @@ async function routes(fastify, options) {
   });
 
   fastify.post('/api/account/login', async (request, reply) => {
-    const formDataIsValid = Account.loginDataIsValid(request.body);
+    const formDataIsValid = AccountController.loginDataIsValid(request.body);
     if (formDataIsValid !== true) {
       return reply.code(400).send(formDataIsValid);
     }
 
-    const account = new Account(fastify.models.User);
+    const account = new AccountController(fastify.models.User);
     const user = await account.validateLogin(request.body.email, request.body.password);
 
     if (user.error === true) {

@@ -1,4 +1,4 @@
-class Shelf {
+class ShelfController {
   constructor (shelfModel, shelfItemModel) {
     this.model = shelfModel;
     this.itemModel = shelfItemModel;
@@ -65,4 +65,4 @@ class Shelf {
   }
 }
 
-module.exports = Shelf;
+module.exports = ShelfController;

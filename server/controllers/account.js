@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 
-class Account {
+class AccountController {
   constructor (userModel) {
     this.model = userModel;
   }
@@ -131,8 +131,8 @@ class Account {
   }
 
   async createUser (email, username, displayName, password, needsConfirmation) {
-    const hashData = Account.hashPassword(password);
-    // The data should already have gone through Account.cleanCreateAccountFormData()
+    const hashData = AccountController.hashPassword(password);
+    // The data should already have gone through AccountController.cleanCreateAccountFormData()
     try {
       return await this.model.create({
         email,
@@ -203,7 +203,7 @@ class Account {
       };
     }
 
-    const passwordIsValid = Account.verifyPassword(existingUser.passwordHash, existingUser.passwordSalt, password);
+    const passwordIsValid = AccountController.verifyPassword(existingUser.passwordHash, existingUser.passwordSalt, password);
     if (!passwordIsValid) {
       return {
         error: true,
@@ -223,4 +223,4 @@ class Account {
 }
 
 
-module.exports = Account;
+module.exports = AccountController;

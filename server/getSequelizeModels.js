@@ -76,6 +76,9 @@ function getSequelizeModels (sequelize) {
     name: {
       type: Sequelize.STRING,
       allowNull: false,
+      validate: {
+        len: [1, 32],
+      },
     },
     isPublic: {
       type: Sequelize.BOOLEAN,
@@ -104,6 +107,7 @@ function getSequelizeModels (sequelize) {
     foreignKey: 'userId',
     onDelete: 'CASCADE',
   });
+  User.hasMany(Shelf);
 
   const BookReference = sequelize.define('bookReference', {
     id: {
@@ -195,6 +199,7 @@ function getSequelizeModels (sequelize) {
     foreignKey: 'shelfId',
     onDelete: 'CASCADE',
   });
+  Shelf.hasMany(ShelfItem);
   ShelfItem.belongsTo(BookReference, {
     foreignKey: 'bookId',
     onDelete: 'CASCADE',
@@ -275,6 +280,7 @@ function getSequelizeModels (sequelize) {
     foreignKey: 'userId',
     onDelete: 'CASCADE',
   });
+  User.hasMany(Status);
 
   const Recommendation = sequelize.define('recommendation', {
     id: {
@@ -339,6 +345,9 @@ function getSequelizeModels (sequelize) {
     foreignKey: 'toUser',
     onDelete: 'CASCADE',
   });
+  User.hasMany(Recommendation, {
+    foreignKey: 'toUser',
+  })
 
   return {
     User,
