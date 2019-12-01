@@ -29,31 +29,45 @@ export class I18n {
     });
   }
 
-  translate (section, phrase) {
-    let result;
-    let language = this.default;
+  translate (target, useDefault = false) {
+    let language = useDefault ? this.default : this.language;
+    const pieces = target.split('.');
 
-    if (!this.needsFetch && this.appState.language !== this.language.locale) {
+    if (!this.needsFetch && !useDefault && this.appState.language !== language.locale) {
       console.warn(`The target language (${this.appState.language}) does not exist. Defaulting to ${this.default.name} (${this.default.locale}).`);
-    } else if (typeof this.language[section] == 'undefined' || typeof this.language[section][phrase] == 'undefined') {
-      console.warn(`The translation for "${section}.${phrase}" is not set in the ${this.language.locale} locale. Using ${this.default.name} (${this.default.locale}) instead.`);  
-    } else {
-      language = this.language;
+      language = this.default;
     }
 
-    if (typeof language[section] !== 'undefined' && typeof language[section][phrase] !== 'undefined') {
-      result = language[section][phrase];
-    } else {
-      console.error(`The translation for "${section}.${phrase}" is set up in neither the target nor default locale.`);
-      result = `${section}.${phrase}`;
+    let translation = pieces.reduce((lang, piece, i) => {
+      if (lang === false) return false;
+
+      if (typeof lang[piece] === 'object') {
+        // Only continue if there's another piece, otherwise, it will error.
+        if (typeof pieces[i + 1] !== 'undefined') {
+          return lang[piece];
+        }
+      }
+      
+      if (typeof lang[piece] === 'string') {
+        return lang[piece];
+      }
+
+      return false;
+    }, Object.assign({}, language));
+
+    if (translation === false) {
+      if (language.locale !== this.default.locale) {
+        console.warn(`The translation for "${target}" is not set in the ${this.language.locale} locale. Using ${this.default.name} (${this.default.locale}) instead.`);
+        return this.translate(target, true);
+      }
+      console.error(`The translation for "${target}" is set up in neither the target nor default locale.`);
+      return target;
     }
     
-    return result;
+    return translation;
   }
   
   __ (translation) {
-    const pieces = translation.split('.');
-    const result = this.translate(pieces[0], pieces[1]);
-    return result;
+    return this.translate(translation);
   }
 }
