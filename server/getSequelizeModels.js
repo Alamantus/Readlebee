@@ -65,7 +65,7 @@ function getSequelizeModels (sequelize) {
       primaryKey: true,
       autoIncrement: true,
     },
-    user: {
+    userId: {
       type: Sequelize.INTEGER,
       references: {
         model: User,
@@ -77,12 +77,6 @@ function getSequelizeModels (sequelize) {
       type: Sequelize.STRING,
       allowNull: false,
     },
-    isUnique: {
-      type: Sequelize.BOOLEAN,
-      allowNull: false,
-      defaultValue: false,
-      comment: 'If true, books on this shelf cannot be in other Unique shelves.',
-    },
     isPublic: {
       type: Sequelize.BOOLEAN,
       allowNull: false,
@@ -91,7 +85,7 @@ function getSequelizeModels (sequelize) {
     isDeletable: {
       type: Sequelize.BOOLEAN,
       allowNull: false,
-      defaultValue: false,
+      defaultValue: true,
     },
 
     // Timestamps
@@ -105,6 +99,10 @@ function getSequelizeModels (sequelize) {
       allowNull: false,
       defaultValue: Sequelize.NOW,
     },
+  });
+  Shelf.belongsTo(User, {
+    foreignKey: 'userId',
+    onDelete: 'CASCADE',
   });
 
   const BookReference = sequelize.define('bookReference', {
@@ -146,6 +144,12 @@ function getSequelizeModels (sequelize) {
       allowNull: false,
       defaultValue: Sequelize.NOW,
     },
+  }, {
+    indexes: [
+      {
+        fields: ['name', 'description'],
+      },
+    ],
   });
 
   const ShelfItem = sequelize.define('shelfItem', {
@@ -154,7 +158,7 @@ function getSequelizeModels (sequelize) {
       primaryKey: true,
       autoIncrement: true,
     },
-    shelf: {
+    shelfId: {
       type: Sequelize.INTEGER,
       references: {
         model: Shelf,
@@ -162,7 +166,7 @@ function getSequelizeModels (sequelize) {
         deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE,
       }
     },
-    book: {
+    bookId: {
       type: Sequelize.INTEGER,
       references: {
         model: BookReference,
@@ -187,6 +191,14 @@ function getSequelizeModels (sequelize) {
       defaultValue: Sequelize.NOW,
     },
   });
+  ShelfItem.belongsTo(Shelf, {
+    foreignKey: 'shelfId',
+    onDelete: 'CASCADE',
+  });
+  ShelfItem.belongsTo(BookReference, {
+    foreignKey: 'bookId',
+    onDelete: 'CASCADE',
+  });
 
   const StatusType = sequelize.define('statusType', {
     id: {
@@ -209,7 +221,7 @@ function getSequelizeModels (sequelize) {
       primaryKey: true,
       autoIncrement: true,
     },
-    type: {
+    typeId: {
       type: Sequelize.INTEGER,
       references: {
         model: StatusType,
@@ -217,7 +229,7 @@ function getSequelizeModels (sequelize) {
         deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE,
       }
     },
-    user: {
+    userId: {
       type: Sequelize.INTEGER,
       references: {
         model: User,
@@ -254,6 +266,14 @@ function getSequelizeModels (sequelize) {
       allowNull: false,
       defaultValue: Sequelize.NOW,
     },
+  });
+  Status.belongsTo(StatusType, {
+    foreignKey: 'typeId',
+    onDelete: 'CASCADE',
+  });
+  Status.belongsTo(User, {
+    foreignKey: 'userId',
+    onDelete: 'CASCADE',
   });
 
   const Recommendation = sequelize.define('recommendation', {
@@ -310,6 +330,14 @@ function getSequelizeModels (sequelize) {
       allowNull: false,
       defaultValue: Sequelize.NOW,
     },
+  });
+  Recommendation.belongsTo(User, {
+    foreignKey: 'fromUser',
+    onDelete: 'SET NULL',
+  });
+  Recommendation.belongsTo(User, {
+    foreignKey: 'toUser',
+    onDelete: 'CASCADE',
   });
 
   return {
