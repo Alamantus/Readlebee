@@ -91,6 +91,7 @@ fastify.register(require('./i18n'));
 fastify.register(require('./routes/public'));
 fastify.register(require('./routes/books'));
 fastify.register(require('./routes/account'));
+fastify.register(require('./routes/shelf'));
 fastify.register(require('./routes/search'));
 
 // Start the server

@@ -4,6 +4,24 @@ class ShelfController {
     this.itemModel = shelfItemModel;
   }
 
+  static newShelfNameIsValid (name, existingNames = []) {
+    if (name.length < 1) {
+      return {
+        error: true,
+        message: 'api.shelf.create.name_too_short',
+      };
+    }
+    
+    if (existingNames.includes(name)) {
+      return {
+        error: true,
+        message: 'api.shelf.create.name_already_exists',
+      };
+    }
+
+    return true;
+  }
+
   async createDefaultShelves (user) {
     try {
       const defaultShelvesCreated = await this.model.bulkCreate([
@@ -38,6 +56,18 @@ class ShelfController {
 
       return defaultShelvesCreated;
     } catch (error) {
+      return {
+        error,
+      }
+    }
+  }
+  
+  async createShelf (user, name) {
+    try {
+      return await user.addShelf({
+        name,
+      });
+    } catch(error) {
       return {
         error,
       }
