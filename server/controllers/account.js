@@ -133,14 +133,20 @@ class Account {
   async createUser (email, username, displayName, password, needsConfirmation) {
     const hashData = Account.hashPassword(password);
     // The data should already have gone through Account.cleanCreateAccountFormData()
-    return await this.model.create({
-      email,
-      username,
-      displayName,
-      passwordHash: hashData.hash,
-      passwordSalt: hashData.salt,
-      accountConfirm: needsConfirmation ? crypto.randomBytes(32).toString('hex') : null,
-    });
+    try {
+      return await this.model.create({
+        email,
+        username,
+        displayName,
+        passwordHash: hashData.hash,
+        passwordSalt: hashData.salt,
+        accountConfirm: needsConfirmation ? crypto.randomBytes(32).toString('hex') : null,
+      });
+    } catch (error) {
+      return {
+        error,
+      };
+    }
   }
 
   async confirmUser (id, accountConfirm) {
@@ -209,6 +215,10 @@ class Account {
       error: false,
       id: existingUser.id,
     };
+  }
+
+  async deleteUser(user) {
+    return await user.destroy();
   }
 }
 

@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const Account = require('../controllers/account');
+const Shelf = require('../controllers/shelf');
 
 async function routes(fastify, options) {
   fastify.get('/api/accounts/test', async (request, reply) => {
@@ -31,8 +32,19 @@ async function routes(fastify, options) {
 
     const newUser = await account.createUser(formData.email, formData.username, formData.displayName, formData.password, fastify.canEmail);
 
-    if (typeof newUser.error !== 'undefined') {
-      return reply.code(400).send(newUser);      
+    if (typeof newUser.error !== 'undefined' && newUser.error !== false) {
+      newUser.message = 'api.account_create_fail';
+      return reply.code(400).send(newUser);
+    }
+
+    const shelf = new Shelf(fastify.models.Shelf, fastify.models.ShelfItem);
+    const defaultShelvesCreated = await shelf.createDefaultShelves(newUser);
+
+    // If some of the default shelves are not created successfully, delete the user and send an error
+    if (typeof defaultShelvesCreated.error !== 'undefined' && defaultShelvesCreated.error !== false) {
+      account.deleteUser(newUser);
+      defaultShelvesCreated.message = 'api.account_create_fail';
+      return reply.code(400).send(defaultShelvesCreated);
     }
 
     if (fastify.canEmail) {
@@ -69,20 +81,16 @@ async function routes(fastify, options) {
             error: false,
             message: 'api.account_confirm_email',
           });
-        })
+        });
       } catch (ex) {
         console.error(ex);
-        return reply.send({
-          error: false,
-          message: 'api.account_create_success',
-        });
       }
-    } else {
-      return reply.send({
-        error: false,
-        message: 'api.account_create_success',
-      });
     }
+
+    return reply.send({
+      error: false,
+      message: 'api.account_create_success',
+    });
   });
 
   fastify.post('/api/account/confirm', async (request, reply) => {
@@ -140,11 +148,12 @@ async function routes(fastify, options) {
       })
     } catch (ex) {
       console.error(ex);
-      return reply.send({
-        error: false,
-        message: 'api.account_confirm_success',
-      });
     }
+
+    return reply.send({
+      error: false,
+      message: 'api.account_confirm_success',
+    });
   });
 
   fastify.post('/api/account/login', async (request, reply) => {
