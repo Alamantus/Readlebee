@@ -8,3 +8,4 @@ dev/
 config.json
 *.sqlite*
 *.db
+.dbversion

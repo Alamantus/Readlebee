@@ -14,6 +14,7 @@
     "build": "npm run process-images && npm run bundle",
     "bundle": "parcel build app/index.html --out-dir public --no-source-maps --no-cache",
     "process-images": "node ./process-images.js",
+    "setup-db": "node ./server/sequelize/setup-database.js",
     "clear": "rimraf public/{*,.*}"
   },
   "devDependencies": {
