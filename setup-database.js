@@ -2,7 +2,7 @@
 
 const path = require('path');
 const Sequelize = require('sequelize');
-const getSequelizeModels = require('./server/getSequelizeModels');
+const getModels = require('./server/sequelize/getModels');
 const force = typeof process.argv[2] !== 'undefined' && process.argv[2] === 'force';
 let siteConfig;
 try {
@@ -37,7 +37,7 @@ switch (siteConfig.db_engine) {
 
 const sequelize = new Sequelize(sequelizeConfig);
 
-const Models = getSequelizeModels(sequelize);
+const Models = getModels(sequelize);
 
 sequelize.sync({ force }).then(() => {
   const promises = [ // Default status types to use in Statuses

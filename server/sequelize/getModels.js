@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 
-function getSequelizeModels (sequelize) {
+function getModels (sequelize) {
   const User = sequelize.define('user', {
     id: {
       type: Sequelize.INTEGER,
@@ -360,4 +360,4 @@ function getSequelizeModels (sequelize) {
   }
 }
 
-module.exports = getSequelizeModels;
+module.exports = getModels;
