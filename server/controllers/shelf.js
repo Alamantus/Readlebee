@@ -73,6 +73,24 @@ class ShelfController {
       }
     }
   }
+  
+  async renameShelf (userId, id, name) {
+    try {
+      return await this.model.update({
+        name,
+      }, {
+        where: {
+          id,
+          userId,
+          isDeletable: true,  // You can only rename shelves not created by the system
+        }
+      });
+    } catch(error) {
+      return {
+        error,
+      }
+    }
+  }
 
   async getLastUpdatedTimestamp (shelf) {
     const lastEditedItem = await this.itemModel.findOne({
