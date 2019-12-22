@@ -7,6 +7,19 @@ async function routes(fastify, options) {
     return false;
   });
 
+  fastify.post('/api/shelves/get', async (request, reply) => {
+    if (!request.isLoggedInUser) {
+      return reply.code(400).send({
+        error: true,
+        message: 'api.not_logged_in',
+      });
+    }
+
+    return request.user.getShelves({
+      attributes: ['id', 'name', 'isDeletable', 'isPublic'],
+    });
+  });
+
   fastify.post('/api/shelf/create', async (request, reply) => {
     if (!request.isLoggedInUser) {
       return reply.code(400).send({
