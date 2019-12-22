@@ -83,6 +83,24 @@
       "css": "search",
       "code": 59401,
       "src": "iconic"
+    },
+    {
+      "uid": "jqzwo6i8oicjbn049sh2856d8anrqoli",
+      "css": "edit",
+      "code": 59403,
+      "src": "typicons"
+    },
+    {
+      "uid": "csuoy0rqoun3unhsgjoy2uumpldzbfmt",
+      "css": "delete",
+      "code": 59402,
+      "src": "typicons"
+    },
+    {
+      "uid": "1dq4tek4k8ea7zlj4kc3w83itnutaxg5",
+      "css": "close",
+      "code": 59404,
+      "src": "typicons"
     }
   ]
 }

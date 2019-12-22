@@ -9,6 +9,9 @@
 .icon-check:before { content: '\e807'; } /* '' */
 .icon-plus:before { content: '\e808'; } /* '' */
 .icon-search:before { content: '\e809'; } /* '' */
+.icon-delete:before { content: '\e80a'; } /* '' */
+.icon-edit:before { content: '\e80b'; } /* '' */
+.icon-close:before { content: '\e80c'; } /* '' */
 .icon-loading:before { content: '\e839'; } /* '' */
 .icon-external:before { content: '\f08e'; } /* '' */
 .icon-star-half:before { content: '\f123'; } /* '' */
