@@ -2,7 +2,7 @@ import html from 'choo/html';
 
 import { ShelvesController } from './controller';  // The controller for this view, where processing should happen.
 import { shelfView } from './shelf';
-import { shelvesView } from './shelves';
+import { userShelvesView } from './userShelves';
 
 // This is the view function that is exported and used in the view manager.
 export const shelvesView = (state, emit, i18n) => {
@@ -13,7 +13,7 @@ export const shelvesView = (state, emit, i18n) => {
   return [
     (controller.targetShelf !== null
       ? shelfView(controller, emit)
-      : shelvesView(controller, emit)
+      : userShelvesView(controller, emit)
     ),
   ];
 }

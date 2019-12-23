@@ -27,11 +27,13 @@ export class ShelvesController extends ViewController {
   }
 
   getUserShelves () {
-    return [
+    return Promise.resolve([
       {id:1,name:'Test Shelf',isDeletable:false,isPublilc:false},
-      {id:1,name:'Deletable Shelf',isDeletable:true,isPublilc:false},
-      {id:1,name:'Public Shelf',isDeletable:true,isPublilc:true},
-    ];
+      {id:2,name:'Deletable Shelf',isDeletable:true,isPublilc:false},
+      {id:3,name:'Public Shelf',isDeletable:true,isPublilc:true},
+    ]).then(shelves => {
+      this.state.myShelves = shelves;
+    });
     // return fetch('/api/shelves/get').then(response => response.json);
   }
 }

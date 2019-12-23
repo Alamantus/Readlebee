@@ -1,7 +1,7 @@
 import html from 'choo/html';
-import modal from '../partials/modal';
+import { editModal } from './editModal';
 
-export const shelvesView = (shelvesController, emit) => {
+export const userShelvesView = (shelvesController, emit) => {
   const { __ } = shelvesController.i18n;
 
   if (!shelvesController.isLoggedIn) {
@@ -30,7 +30,11 @@ export const shelvesView = (shelvesController, emit) => {
   return [
     html`<section>
       <h2>${__('shelves.title')}</h2>
-      ${controller.state.myShelves.map(shelf => {
+      ${shelvesController.state.myShelves.map(shelf => {
+        const deleteButton = html`<button class="small pseudo">
+          ${__('interaction.delete')} <i class="icon-delete"></i>
+        </button>`;
+        
         return html`<article class="card">
           <header>
             <h3>
@@ -38,26 +42,11 @@ export const shelvesView = (shelvesController, emit) => {
             </h3>
             ${shelf.isDeletable === true
             ? [
-              modal(`editShelf${shelf.id}`, shelvesController, editModal(shelf, shelvesController), {
-                buttonHTML: html`<button class="small pseudo pull-right tooltip-left" data-tooltip=${__('interaction.edit')}>
-                  <i class="icon-edit"></i>
-                </button>`,
-                headerText: `${__('shelves.edit.editing')}: ${shelf.name}`,
-                footerHTML: html`<footer>
-                  <button>
-                    ${__('shelves.edit.save')}
-                  </button>
-                  <label for=${modalId} class="button dangerous">
-                    ${__('interaction.close')}
-                  </label>
-                </footer>`,
-              }),
-
-              html`<button class="small pseudo pull-right tooltip-left" data-tooltip=${__('interaction.delete')}>
-                <i class="icon-delete"></i>
-              </button>`,
+              editModal(shelf, shelvesController),
+              [deleteButton], // editModal outputs a modal, which returns an array, so any subsequent html items must also be in an array for Choo to handle it correctly.
             ]
-            : null}
+            : null
+            }
           </header>
         </article>`;
       })}
