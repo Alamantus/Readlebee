@@ -29,6 +29,7 @@ export const globalView = (state, emit, view) => {
         ${
           state.isLoggedIn === true
           ? [
+            html`<a href="/shelves" class="pseudo button">${i18n.__('global.menu_shelves')}</a>`,
             html`<a href="/account" class="pseudo button">${i18n.__('global.menu_account')}</a>`,
             html`<a href="/logout" class="pseudo button">${i18n.__('global.menu_logout')}</a>`,
           ]
