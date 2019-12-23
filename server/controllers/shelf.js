@@ -93,20 +93,18 @@ class ShelfController {
   }
 
   async getLastUpdatedTimestamp (shelf) {
-    const lastEditedItem = await this.itemModel.findOne({
+    const lastEditedItem = await shelf.getShelfItems({
       attributes: ['updatedAt'],
-      where: {
-        shelf: shelf.id,
-      },
       order: [
         [
           'updatedAt',
           'DESC'
         ],
       ],
+      limit: 1,
     });
 
-    if (lastEditedItem && lastEditedItem.updatedAt > shelf.updatedAt) {
+    if (lastEditedItem.length > 0 && (lastEditedItem[0].updatedAt > shelf.updatedAt)) {
       return lastEditedItem.updatedAt;
     }
     return shelf.updatedAt;

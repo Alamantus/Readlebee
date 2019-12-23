@@ -7,7 +7,7 @@ async function routes(fastify, options) {
     return false;
   });
 
-  fastify.post('/api/shelves/get', async (request, reply) => {
+  fastify.get('/api/shelves/get', async (request, reply) => {
     if (!request.isLoggedInUser) {
       return reply.code(400).send({
         error: true,
@@ -15,8 +15,15 @@ async function routes(fastify, options) {
       });
     }
 
-    return request.user.getShelves({
-      attributes: ['id', 'name', 'isDeletable', 'isPublic'],
+    const shelfController = new ShelfController(fastify.models.Shelf, fastify.models.ShelfItem);
+
+    const shelves = await request.user.getShelves({
+      attributes: ['id', 'name', 'isDeletable', 'isPublic', 'updatedAt'],
+    });
+
+    return shelves.map(shelf => {
+      shelf.updatedAt = shelfController.getLastUpdatedTimestamp(shelf);
+      return shelf;
     });
   });
 
