@@ -29,6 +29,10 @@ nav {
   color: $picnic-white;
 }
 
+.modal {
+  position: absolute; // Prevent modal partial from interrupting content flow.
+}
+
 // External links
 a[href^="http://"]:after,
 a[href^="https://"]:after{
