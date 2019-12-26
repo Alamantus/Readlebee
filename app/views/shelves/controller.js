@@ -7,7 +7,25 @@ export class ShelvesController extends ViewController {
     super(state, i18n, 'shelves', {
       openModal: null,  // state value for edit modals
       myShelves: [],  // array of objects in sort order with name, id, and deletability.
-      loadedShelves: {},  // object key is shelf id with name and shelfItems
+      loadedShelves: {  // object key is shelf id with name and shelfItems
+        0: {
+          name: 'Test Shelf',
+          user: {
+            userName: 'testinTesterton',
+            displayName: 'Testin Testerton',
+          },
+          shelfItems: [
+            {
+              name: 'Book Title',
+              author: 'Someone Talented',
+              coverURL: 'https://picnicss.com/web/img/optimised.svg',
+              coverEdition: 'Special Edition',
+              rating: 4,
+              review: 'The Special Edition of Book Title by Someone Talented is my favorite thing in the whole world. I think and dream about it constantly and there is nothing better in the whole world.',
+            }
+          ]
+        },
+      },
     });
 
     // If using controller methods in an input's onchange or onclick instance,
@@ -29,6 +47,12 @@ export class ShelvesController extends ViewController {
   getUserShelves () {
     return fetch('/api/shelves/get').then(response => response.json()).then(shelves => {
       this.state.myShelves = shelves;
+    });
+  }
+
+  getTargetShelf () {
+    return fetch('/api/shelf/get/' + this.targetShelf).then(response => response.json()).then(shelf => {
+      this.state.loadedShelves[this.targetShelf] = shelf;
     });
   }
 }
