@@ -27,6 +27,32 @@ async function routes(fastify, options) {
     });
   });
 
+  fastify.get('/api/shelf/get', async (request, reply) => {
+    if (typeof request.body.shelf === 'undefined') {
+      return reply.code(400).send({
+        error: true,
+        message: 'api.shelf.get.missing_id',
+      });
+    }
+
+    const shelfController = new ShelfController(fastify.models.Shelf, fastify.models.ShelfItem);
+    const shelf = shelfController.getShelfById(request.body.shelf);
+    if (typeof shelf.error !== 'undefined') {
+      shelf.message = 'api.shelf.get.nonexistent_shelf';
+      return reply.code(400).send(shelf);
+    }
+    
+    const userCanViewShelf = shelfController.userCanViewShelf(request.user, shelf);
+    if (userCanViewShelf !== true) {
+      return reply.code(400).send({
+        error: true,
+        message: 'api.shelf.get.access_denied', // Should potentially be nonexistent shelf message instead?
+      });
+    }
+
+    return reply.send(shelf);
+  });
+
   fastify.post('/api/shelf/create', async (request, reply) => {
     if (!request.isLoggedInUser) {
       return reply.code(400).send({
@@ -35,12 +61,6 @@ async function routes(fastify, options) {
       });
     }
 
-    if (typeof request.body.shelfName === 'undefined') {
-      return reply.code(400).send({
-        error: true,
-        message: 'api.shelf.create.missing_name',
-      });
-    }
     request.body.shelfName = request.body.shelfName.trim();
     
     const userShelves = await request.user.getShelves({
@@ -54,9 +74,9 @@ async function routes(fastify, options) {
       return reply.code(400).send(shelfNameIsValid);
     }
 
-    const shelf = new ShelfController(fastify.models.Shelf, fastify.models.ShelfItem);
+    const shelfController = new ShelfController(fastify.models.Shelf, fastify.models.ShelfItem);
 
-    const newShelf = shelf.createShelf(request.user, request.body.shelfName);
+    const newShelf = shelfController.createShelf(request.user, request.body.shelfName);
     if (typeof newShelf.error !== 'undefined' && newShelf.error !== false) {
       newShelf.message = 'api.shelf.create.fail';
       return reply.code(400).send(newShelf);
@@ -102,9 +122,9 @@ async function routes(fastify, options) {
       return reply.code(400).send(shelfNameIsValid);
     }
 
-    const shelf = new ShelfController(fastify.models.Shelf, fastify.models.ShelfItem);
+    const shelfController = new ShelfController(fastify.models.Shelf, fastify.models.ShelfItem);
 
-    const newShelf = shelf.renameShelf(request.user, request.body.shelfId, request.body.shelfName);
+    const newShelf = shelfController.renameShelf(request.user, request.body.shelfId, request.body.shelfName);
     if (typeof newShelf.error !== 'undefined' && newShelf.error !== false) {
       newShelf.message = 'api.shelf.rename.fail';
       return reply.code(400).send(newShelf);

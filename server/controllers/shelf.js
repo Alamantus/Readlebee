@@ -109,6 +109,29 @@ class ShelfController {
     }
     return shelf.updatedAt;
   }
+
+  async getShelfById(shelfId) {
+    if (isNaN(parse(shelfId))) {
+      return {
+        error: 'Shelf ID Provided is not a number.',
+      };
+    }
+    const shelf = await this.shelfModel.findByPk(shelfId);
+
+    if (shelf === null) {
+      return {
+        error: `Shelf with ID ${shelfId} not found.`,
+      };
+    }
+
+    shelf.updatedAt = this.getLastUpdatedTimestamp(shelf);
+    return shelf;
+  }
+
+  async userCanViewShelf (user, shelf) {
+    // This needs work when permissions are added.
+    return user.id === shelf.userId || shelf.isPublic;
+  }
 }
 
 module.exports = ShelfController;
