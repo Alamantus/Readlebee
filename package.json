@@ -38,16 +38,17 @@
     "fastify-cookie": "^3.4.0",
     "fastify-helmet": "^3.0.2",
     "fastify-jwt": "^1.2.1",
-    "fastify-nodemailer": "^4.1.1",
-    "fastify-sequelize": "^1.0.4",
+    "fastify-plugin": "^1.6.0",
     "fastify-static": "^2.5.1",
     "make-promises-safe": "^5.1.0",
     "marked": "^0.7.0",
     "mysql2": "^1.7.0",
     "node-fetch": "^2.6.0",
-    "pg": "^7.16.0",
+    "nodemailer": "^6.4.2",
+    "pg": "^7.17.0",
     "pg-hstore": "^2.3.3",
     "picnic": "^6.5.1",
+    "sequelize": "^5.21.3",
     "sqlite": "^3.0.3"
   }
 }

@@ -45,12 +45,12 @@ switch (fastify.siteConfig.db_engine) {
     sequelizeConfig.password = fastify.siteConfig.db_password;
   }
 }
-fastify.register(require('fastify-sequelize'), sequelizeConfig);
+fastify.register(require('./fastify-plugins/fastify-sequelize'), sequelizeConfig);
 
 if (!fastify.siteConfig.email_host || !fastify.siteConfig.email_username) {
   console.warn('###\nNo email server set up. You will not be able to send emails without entering your email configuration.\n###');
 } else {
-  fastify.register(require('fastify-nodemailer'), {
+  fastify.register(require('./fastify-plugins/fastify-nodemailer'), {
     pool: true,
     host: fastify.siteConfig.email_host,
     port: fastify.siteConfig.email_port,

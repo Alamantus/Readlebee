@@ -92,7 +92,7 @@ class AccountController {
   }
 
   async emailExists (email) {
-    const existingUser = await this.model.find({
+    const existingUser = await this.model.findOne({
       attributes: ['id'],
       where: {
         email,
@@ -102,7 +102,7 @@ class AccountController {
   }
 
   async usernameExists (username) {
-    const existingUser = await this.model.find({
+    const existingUser = await this.model.findOne({
       attributes: ['id'],
       where: {
         username,
@@ -183,7 +183,7 @@ class AccountController {
   }
 
   async validateLogin (email, password) {
-    const existingUser = await this.model.find({
+    const existingUser = await this.model.findOne({
       attributes: ['id', 'passwordHash', 'passwordSalt', 'accountConfirm'],
       where: {
         email,
