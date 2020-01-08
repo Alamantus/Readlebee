@@ -27,8 +27,8 @@ async function routes(fastify, options) {
     });
   });
 
-  fastify.get('/api/shelf/get', async (request, reply) => {
-    if (typeof request.body.shelf === 'undefined') {
+  fastify.get('/api/shelf/get/:shelfId/:domain', async (request, reply) => {
+    if (typeof request.params.shelfId === 'undefined') {
       return reply.code(400).send({
         error: true,
         message: 'api.shelf.get.missing_id',
@@ -36,13 +36,15 @@ async function routes(fastify, options) {
     }
 
     const shelfController = new ShelfController(fastify.models.Shelf, fastify.models.ShelfItem);
-    const shelf = shelfController.getShelfById(request.body.shelf);
+
+    const shelf = await shelfController.getShelfById(request.params.shelfId);
     if (typeof shelf.error !== 'undefined') {
       shelf.message = 'api.shelf.get.nonexistent_shelf';
       return reply.code(400).send(shelf);
     }
     
-    const userCanViewShelf = shelfController.userCanViewShelf(request.user, shelf);
+    const userCanViewShelf = await shelfController.userCanViewShelf(request.user, shelf);
+    console.log('can view?', userCanViewShelf);
     if (userCanViewShelf !== true) {
       return reply.code(400).send({
         error: true,
@@ -50,6 +52,8 @@ async function routes(fastify, options) {
       });
     }
 
+    // const shelfData = await shelfController.scrubShelfData(shelf, request.user);
+    // return reply.send(shelfData);
     return reply.send(shelf);
   });
 

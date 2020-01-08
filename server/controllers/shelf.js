@@ -111,13 +111,15 @@ class ShelfController {
   }
 
   async getShelfById(shelfId) {
-    if (isNaN(parse(shelfId))) {
+    if (isNaN(parseInt(shelfId))) {
       return {
         error: 'Shelf ID Provided is not a number.',
       };
     }
-    const shelf = await this.shelfModel.findByPk(shelfId);
 
+    return this.getFakeShelf();
+
+    const shelf = await this.shelfModel.findByPk(shelfId);
     if (shelf === null) {
       return {
         error: `Shelf with ID ${shelfId} not found.`,
@@ -128,9 +130,75 @@ class ShelfController {
     return shelf;
   }
 
+  getFakeShelf () {
+    const faker = require('faker');
+    const isOwnShelf = faker.random.boolean();
+    const fakeName = faker.random.boolean()
+        ? faker.fake('{{name.firstName}} {{name.lastName}}')
+        : faker.fake('{{hacker.adjective}}{{hacker.noun}}');
+
+    const shelf = {
+      id: faker.random.number(),
+      userId: faker.random.number(),
+      user: isOwnShelf ? null : {
+        name: fakeName,
+        handle: faker.fake('@{{internet.userName}}@{{internet.domainName}}'),
+      },
+      name: faker.fake('{{hacker.ingverb}} {{hacker.noun}}'),
+      isPublic: Math.random() < 0.9,
+      updatedAt: faker.date.past(),
+      shelfItems: [],
+    };
+
+    const numberOfShelfItems = faker.random.number(50);
+    for (let i = 0; i < numberOfShelfItems; i++) {
+      const source = {
+        source: faker.internet.domainWord(),
+        sourceId: faker.random.uuid(),
+      };
+      const shelfItem = {
+        name: faker.lorem.words().split(' ').map(word => (word[0].toUpperCase() + word.substr(1))).join(' '),
+        author: faker.fake('a work by {{name.firstName}} {{name.lastName}}'),
+        source,
+        coverURL: faker.image.imageUrl(),
+        coverEdition: `img_${source.sourceId}`,
+        rating: faker.random.number(5),
+        review: faker.random.boolean()
+          ? null
+          : faker.lorem.paragraph(),
+      }
+
+      shelf.shelfItems.push(shelfItem);
+    }
+
+    if (isOwnShelf) {
+      shelf.createdAt = faker.date.past(undefined, shelf.updatedAt);
+      shelf.isDeletable = true;
+    }
+
+    return shelf;
+  }
+
   async userCanViewShelf (user, shelf) {
     // This needs work when permissions are added.
-    return user.id === shelf.userId || shelf.isPublic;
+    const userOwnsShelf = typeof user !== 'undefined' && user.id === shelf.userId;
+    console.log('owned?', userOwnsShelf);
+    console.log('isPublic?', shelf.isPublic);
+    return userOwnsShelf || shelf.isPublic;
+  }
+
+  async scrubShelfData (shelf, user) {
+    const userOwnsShelf = user.id === shelf.userId;
+    const shelfUser = userOwnsShelf ? null : shelf.getUser();
+    let userData = {};
+    if (shelfUser !== null) {
+      userData.name = shelfUser.displayName;
+      userData.handle = `@${shelfUser.username}`;
+    }
+    const shelfData = {
+      name: shelf.name,
+      user: userOwnsShelf ? null : shelf.getUser(),
+    }
   }
 }
 

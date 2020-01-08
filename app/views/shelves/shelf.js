@@ -45,6 +45,19 @@ export const shelfView = (shelvesController, emit) => {
     ];
   }
 
+  if (typeof shelf.error !== 'undefined') {
+    return [
+      html`<section>
+        <h2>${__('global.error')}</h2>
+        <article class="card">
+          <header>
+            ${shelf.message}
+          </header>
+        </article>
+      </section>`,
+    ];
+  }
+
   const shelfItems = shelf !== null ? shelf.shelfItems : [];
 
   // Returning an array in a view allows non-shared parent HTML elements.
@@ -54,7 +67,7 @@ export const shelfView = (shelvesController, emit) => {
       <div class="flex two">
         <div class="two-third three-fourth-700">
           <h2>${shelf.name}</h2>
-          <span>${__('shelves.owned_by')} <a href="/profile?user=${shelf.user.userName}" title=${shelf.user.userName}>${shelf.user.displayName}</a></span>
+          <span>${__('shelves.owned_by')} ${shelf.user === null ? __('shelves.you') : `<a href="/profile?user=${shelf.user.handle}" title=${shelf.user.handle}>${shelf.user.name}</a>`}</span>
         </div>
         <div class="third sixth-700">
           <button class="pseudo" onclick=${() => {
