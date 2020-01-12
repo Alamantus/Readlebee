@@ -195,18 +195,58 @@ class ShelfController {
     return userOwnsShelf || shelf.isPublic;
   }
 
-  async scrubShelfData (shelf, user) {
-    const userOwnsShelf = user.id === shelf.userId;
-    const shelfUser = userOwnsShelf ? null : shelf.getUser();
-    let userData = {};
+  async scrubShelfData (shelf, currentUser) {
+    const userOwnsShelf = currentUser.id === shelf.userId;
+    const shelfUser = userOwnsShelf ? null : await shelf.getUser({ attributes: ['username, displayName'] });
+    let user = {};
     if (shelfUser !== null) {
-      userData.name = shelfUser.displayName;
-      userData.handle = `@${shelfUser.username}`;
+      user.name = shelfUser.displayName;
+      user.handle = shelfUser.username;
+    } else {
+      user = null;
     }
+    const rawShelfItems = await shelf.getShelfItems({
+      attributes: ['bookId', 'createdAt', 'updatedAt'],
+      order: [['order', 'ASC']],
+    })
+    const bookReferenceMap = await Promise.all(shelfItems.map(shelfItem => {
+      return shelfItem.getBookReference({
+        attributes: ['name', 'description', 'sources', 'covers'],
+      });
+    }));
+    const bookReferenceStatuses = await Promise.all(bookReferenceMap.map(bookReference => {
+      return bookReference.getStatuses({
+        where: {
+          userId: shelf.userId,
+        },
+        order: [['updatedAt', 'DESC']],
+      });
+    }));
+    const bookReferences = bookReferenceMap.map(bookReference => {
+      bookReference.updates = bookReferenceStatuses.findAll(status => status.type === 1);
+      bookReference.rating = bookReferenceStatuses.find(status => status.type === 3);
+      bookReference.review = bookReferenceStatuses.find(status => status.type === 4);
+      return bookReference;
+    });
+    const shelfItems = rawShelfItems.map(shelfItem => {
+      const bookReference = bookReferences.find(bookData => bookData.id === shelfItem.bookId);
+      shelfItem.title = bookReference.name;
+      shelfItem.author = bookReference.description;
+      shelfItem.sources = bookReference.sources;
+      shelfItem.covers = bookReference.covers;
+      shelfItem.updates = bookReference.updates;
+      shelfItem.rating = bookReference.rating.data;
+      shelfItem.review = bookReference.review.data;
+      return shelfItem;
+    })
+    
     const shelfData = {
       name: shelf.name,
-      user: userOwnsShelf ? null : shelf.getUser(),
-    }
+      user,
+      shelfItems,
+    };
+
+    return shelfData;
   }
 }
 
