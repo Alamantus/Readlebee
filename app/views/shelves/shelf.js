@@ -67,7 +67,12 @@ export const shelfView = (shelvesController, emit) => {
       <div class="flex two">
         <div class="two-third three-fourth-700">
           <h2>${shelf.name}</h2>
-          <span>${__('shelves.owned_by')} ${shelf.user === null ? __('shelves.you') : `<a href="/profile?user=${shelf.user.handle}" title=${shelf.user.handle}>${shelf.user.name}</a>`}</span>
+          <span>
+            ${__('shelves.owned_by')}
+            ${shelf.user === null
+              ? __('shelves.you')
+              : `<a href="/profile?user=${shelf.user.handle}" title=${shelf.user.handle}>${shelf.user.name}</a>`}
+            </span>
         </div>
         <div class="third sixth-700">
           <button class="pseudo" onclick=${() => {
@@ -86,7 +91,7 @@ export const shelfView = (shelvesController, emit) => {
                 <img src=${shelfItem.coverURL} alt="cover ${shelfItem.coverEdition}" />
               </div>
               <div class="full half-700">
-                <h3>${shelfItem.name}</h3>
+                <h3>${shelfItem.title}</h3>
                 <span>${shelfItem.author}</span>
               </div>
               <div class="full third-700">
@@ -94,7 +99,7 @@ export const shelfView = (shelvesController, emit) => {
                 ${shelfItem.review !== null
                 ? modal(`itemModal${index}`, shelvesController, html`<article>${shelfItem.review}</article>`, {
                   buttonText: 'My Review',
-                  headerText: `${__('review.review_of')} ${shelfItem.name}`,
+                  headerText: `${__('review.review_of')} ${shelfItem.title}`,
                 })
                 : null}
               </div>
