@@ -1,3 +1,5 @@
+import fetch from 'node-fetch';
+
 class ShelfController {
   constructor (shelfModel, shelfItemModel) {
     this.model = shelfModel;
@@ -20,6 +22,12 @@ class ShelfController {
     }
 
     return true;
+  }
+
+  async static CheckExternalDomainForShelf (domain, shelfId) {
+    const response = await fetch(`https://${domain}/api/shelf/get/${shelfId}/`).then(response => response.json());
+    // validate response somehow
+    return response;
   }
 
   async createDefaultShelves (user) {

@@ -37,7 +37,7 @@ export class ShelvesController extends ViewController {
   }
 
   getTargetShelf () {
-    const target = this.targetShelf + (this.targetDomain !== null ? `/${this.targetDomain}` : '');
+    const target = this.targetShelf + '/' + (this.targetDomain !== null ? `${this.targetDomain}` : '');
     return fetch('/api/shelf/get/' + target).then(response => response.json()).then(shelf => {
       this.state.loadedShelves[this.targetShelf] = shelf;
     });

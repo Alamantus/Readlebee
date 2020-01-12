@@ -34,6 +34,16 @@ async function routes(fastify, options) {
         message: 'api.shelf.get.missing_id',
       });
     }
+    if (isNaN(parseInt(request.params.shelfId))) {
+      return reply.code(400).send({
+        error: true,
+        message: 'api.shelf.get.invalid_id',
+      });
+    }
+
+    if (request.params.domain.trim() !== '') {
+      return ShelfController.CheckExternalDomainForShelf(request.params.domain.trim(), request.params.shelfId);
+    }
 
     const shelfController = new ShelfController(fastify.models.Shelf, fastify.models.ShelfItem);
 
