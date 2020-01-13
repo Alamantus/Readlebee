@@ -61,21 +61,10 @@ if (!force) {
   }
 }
 
-const Models = require('./getModels')(sequelize);
-
 console.log(`Installing database tables${force ? ', dropping existing ones first' : ''}...`);
 sequelize.sync({ force }).then(() => {
-  console.log('Tables installed! Adding Status Types...')
-  const promises = [ // Default status types to use in Statuses
-    { name: 'update' },
-    { name: 'progress' },
-    { name: 'rating' },
-    { name: 'review' },
-  ].map(statusType => Models.StatusType.create(statusType).catch(() => console.log(statusType.name, 'already exists')));
-  return Promise.all(promises);
-}).then(() => {
   sequelize.close();
-  console.log(`Status Types installed! Writing database version to ${dbVersionPath}...`);
+  console.log(`Tables installed! Writing database version to ${dbVersionPath}...`);
   fs.writeFile(dbVersionPath, migration.dbVersion, err => {
     if (err) {
       console.error(err);

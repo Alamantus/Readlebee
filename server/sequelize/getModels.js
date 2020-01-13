@@ -178,6 +178,11 @@ function getModels (sequelize) {
         deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE,
       }
     },
+    bookEdition: {
+      type: Sequelize.JSON,
+      allowNull: true,
+      comment: 'An object with properties `source` and `id`',
+    },
     order: {
       type: Sequelize.INTEGER,
       defaultValue: 0,
@@ -195,29 +200,14 @@ function getModels (sequelize) {
       defaultValue: Sequelize.NOW,
     },
   });
+  Shelf.hasMany(ShelfItem);
   ShelfItem.belongsTo(Shelf, {
     foreignKey: 'shelfId',
     onDelete: 'CASCADE',
   });
-  Shelf.hasMany(ShelfItem);
   ShelfItem.belongsTo(BookReference, {
     foreignKey: 'bookId',
     onDelete: 'CASCADE',
-  });
-
-  const StatusType = sequelize.define('statusType', {
-    id: {
-      type: Sequelize.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
-    name: {
-      type: Sequelize.STRING,
-      unique: true,
-      allowNull: false,
-    },
-  }, {
-    timestamps: false,
   });
 
   const Status = sequelize.define('status', {
@@ -225,14 +215,6 @@ function getModels (sequelize) {
       type: Sequelize.INTEGER,
       primaryKey: true,
       autoIncrement: true,
-    },
-    typeId: {
-      type: Sequelize.INTEGER,
-      references: {
-        model: StatusType,
-        key: 'id',
-        deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE,
-      }
     },
     userId: {
       type: Sequelize.INTEGER,
@@ -246,17 +228,17 @@ function getModels (sequelize) {
       type: Sequelize.TEXT,
       allowNull: true,
     },
-    book: {
+    shelfItemId: {
       type: Sequelize.INTEGER,
       allowNull: true,
       references: {
-        model: BookReference,
+        model: ShelfItem,
         key: 'id',
         deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE,
       }
     },
-    data: {
-      type: Sequelize.JSON,
+    progress: {
+      type: Sequelize.INTEGER,
       allowNull: true,
     },
 
@@ -272,31 +254,77 @@ function getModels (sequelize) {
       defaultValue: Sequelize.NOW,
     },
   });
-  Status.belongsTo(StatusType, {
-    foreignKey: 'typeId',
-    onDelete: 'CASCADE',
-  });
+  User.hasMany(Status);
   Status.belongsTo(User, {
     foreignKey: 'userId',
     onDelete: 'CASCADE',
   });
-  User.hasMany(Status);
+  ShelfItem.hasMany(Status);
+  Status.belongsTo(ShelfItem, {
+    foreignKey: 'shelfItemId',
+    // onDelete: 'IGNORE'
+  });
+
+  const Review = sequelize.define('review', {
+    id: {
+      type: Sequelize.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    userId: {
+      type: Sequelize.INTEGER,
+      references: {
+        model: User,
+        key: 'id',
+        deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE,
+      }
+    },
+    text: {
+      type: Sequelize.TEXT,
+      allowNull: true,
+    },
+    bookReferenceId: {
+      type: Sequelize.INTEGER,
+      allowNull: true,
+      references: {
+        model: BookReference,
+        key: 'id',
+        deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE,
+      }
+    },
+    rating: {
+      type: Sequelize.INTEGER,
+      allowNull: true,
+    },
+
+    // Timestamps
+    createdAt: {
+      type: Sequelize.DATE,
+      allowNull: false,
+      defaultValue: Sequelize.NOW,
+    },
+    updatedAt: {
+      type: Sequelize.DATE,
+      allowNull: false,
+      defaultValue: Sequelize.NOW,
+    },
+  });
+  User.hasMany(Review);
+  Review.belongsTo(User, {
+    foreignKey: 'userId',
+    onDelete: 'CASCADE',
+  });
+  BookReference.hasMany(Review);
+  Review.belongsTo(BookReference, {
+    foreignKey: 'shelfItemId',
+    // onDelete: 'IGNORE'
+  });
 
   const Recommendation = sequelize.define('recommendation', {
     id: {
       type: Sequelize.INTEGER,
       primaryKey: true,
       autoIncrement: true,
-    },
-    fromUser: {
-      type: Sequelize.INTEGER,
-      allowNull: true,
-      references: {
-        model: User,
-        key: 'id',
-        deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE,
-      },
-      comment: 'If null, check data for arbitrary from user text.',
     },
     toUser: {
       type: Sequelize.INTEGER,
@@ -356,6 +384,7 @@ function getModels (sequelize) {
     ShelfItem,
     StatusType,
     Status,
+    Review,
     Recommendation,
   }
 }
