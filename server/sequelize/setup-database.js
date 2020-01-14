@@ -37,6 +37,7 @@ switch (siteConfig.db_engine) {
 }
 
 const sequelize = new Sequelize(sequelizeConfig);
+const models = require('./models')(sequelize);
 
 const migration = require('./migration');
 const dbVersionPath = path.resolve(__dirname, './.dbversion');
@@ -45,7 +46,7 @@ if (!force) {
     const installedDbVersion = fs.readFileSync(dbVersionPath);
     if (installedDbVersion < migration.dbVersion) {
       console.log(`Migrating from ${installedDbVersion} to ${migration.dbVersion}...`);
-      migration.migrateDb(installedDbVersion, sequelize);
+      migration.migrateDb(installedDbVersion, sequelize, models);
       return fs.writeFile(dbVersionPath, migration.dbVersion, err => {
         if (err) {
           console.error(err);
@@ -63,8 +64,34 @@ if (!force) {
 
 console.log(`Installing database tables${force ? ', dropping existing ones first' : ''}...`);
 sequelize.sync({ force }).then(() => {
+  console.log(`Tables installed! Creating Permission Levels...`);
+  return models.PermissionLevel.bulkCreate([
+    {
+      id: 100,
+      name: 'db.privacyLevel.private',
+      description: 'db.privacyLevel.privateDescription',
+    },
+    {
+      id: 66,
+      name: 'db.privacyLevel.friends',
+      description: 'db.privacyLevel.friendsDescription',
+    },
+    {
+      id: 33,
+      name: 'db.privacyLevel.followers',
+      description: 'db.privacyLevel.followersDescription',
+    },
+    {
+      id: 0,
+      name: 'db.privacyLevel.public',
+      description: 'db.privacyLevel.publicDescription',
+    },
+  ]).catch((err) => {
+    console.error('Could not create Permission Levels:\n', err);
+  });
+}).then(() => {
   sequelize.close();
-  console.log(`Tables installed! Writing database version to ${dbVersionPath}...`);
+  console.log(`Permission Levels created! Writing database version to ${dbVersionPath}...`);
   fs.writeFile(dbVersionPath, migration.dbVersion, err => {
     if (err) {
       console.error(err);

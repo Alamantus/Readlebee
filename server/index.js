@@ -102,5 +102,5 @@ fastify.listen(fastify.siteConfig.port, function (err, address) {
   }
 
   fastify.decorate('canEmail', typeof fastify.nodemailer !== 'undefined');
-  fastify.decorate('models', require('./sequelize/getModels')(fastify.sequelize));
+  fastify.decorate('models', require('./sequelize/models')(fastify.sequelize));
 });
