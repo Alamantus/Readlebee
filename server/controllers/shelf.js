@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+const fetch = require('node-fetch');
 
 class ShelfController {
   constructor (shelfModel, shelfItemModel) {
@@ -24,7 +24,7 @@ class ShelfController {
     return true;
   }
 
-  async static CheckExternalDomainForShelf (domain, shelfId) {
+  static async CheckExternalDomainForShelf (domain, shelfId) {
     const response = await fetch(`https://${domain}/api/shelf/get/${shelfId}/`).then(response => response.json());
     // validate response somehow
     return response;
