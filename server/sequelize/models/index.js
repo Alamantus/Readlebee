@@ -10,6 +10,7 @@ module.exports = sequelize => {
     'Status',
     'Review',
     'Recommendation',
+    'Reaction',
   ];
 
   const models = {};

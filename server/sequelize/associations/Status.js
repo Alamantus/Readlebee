@@ -3,6 +3,7 @@ module.exports = models => {
     Status,
     User,
     ShelfItem,
+    Reactions,
   } = models;
 
   Status.belongsTo(User, {
@@ -18,6 +19,12 @@ module.exports = models => {
   Status.belongsTo(ShelfItem, {
     foreignKey: 'shelfItemId',
     onDelete: 'SET NULL',
+  });
+
+  Status.hasMany(Reactions.scope('Status'), {
+    foreignKey: 'targetId',
+    constraints: false,
+    as: 'Reactions',
   });
 
   return Status;
