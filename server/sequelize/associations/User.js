@@ -6,6 +6,7 @@ module.exports = models => {
     Status,
     Review,
     Recommendation,
+    Follow,
   } = models;
 
   User.belongsTo(PermissionLevel, {
@@ -17,6 +18,14 @@ module.exports = models => {
   User.hasMany(Review);
   User.hasMany(Recommendation, {
     foreignKey: 'toUser',
+  });
+  User.hasMany(Follow, {
+    foreignKey: 'follower',
+    as: 'Followers',
+  });
+  User.belongsTo(Follow.scope('internal'), {
+    foreignKey: 'following',
+    as: 'Follows',
   });
 
   return User;
