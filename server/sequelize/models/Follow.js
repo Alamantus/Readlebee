@@ -49,18 +49,22 @@ module.exports = sequelize => sequelize.define('Follow', {
 }, {
   indexes: [
     {
-      fields: ['follower'],
+      fields: ['follower', 'domain'],
     },
     {
       fields: ['following', 'domain'],
     },
   ],
   scopes: {
-    internal: {
+    internalFollowers: {
       where: {
         followerDomain: {
           [Sequelize.Op.is]: null,
         },
+      },
+    },
+    internalFollowing: {
+      where: {
         followingDomain: {
           [Sequelize.Op.is]: null,
         },

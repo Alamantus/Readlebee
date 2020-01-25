@@ -5,7 +5,7 @@ module.exports = models => {
   const associatedModels = {};
   
   Object.keys(models).forEach(modelName => {
-    const associationFileName = path.resolve(__dirname, modelName, '.js');
+    const associationFileName = path.resolve(__dirname, modelName + '.js');
     if (fs.existsSync(associationFileName)) {
       associatedModels[modelName] = require(associationFileName)(models);
     } else {

@@ -23,7 +23,7 @@ module.exports = sequelize => sequelize.define('Shelf', {
     },
   },
   permissionLevel: {
-    type: Sequelize.BOOLEAN,
+    type: Sequelize.NUMBER,
     allowNull: false,
     references: {
       model: sequelize.models.PermissionLevel,

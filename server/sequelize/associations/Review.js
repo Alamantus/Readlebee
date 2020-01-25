@@ -4,7 +4,7 @@ module.exports = models => {
     User,
     PermissionLevel,
     BookReference,
-    Reactions,
+    Reaction,
   } = models;
 
   Review.belongsTo(User, {
@@ -22,7 +22,7 @@ module.exports = models => {
     onDelete: 'SET NULL',
   });
 
-  Review.hasMany(Reactions.scope('Review'), {
+  Review.hasMany(Reaction.scope('Review'), {
     foreignKey: 'targetId',
     constraints: false,
     as: 'Reactions',

@@ -4,7 +4,9 @@ module.exports = models => {
     Review,
   } = models;
 
-  BookReference.hasMany(Review);
+  BookReference.hasMany(Review, {
+    foreignKey: 'bookReferenceId',
+  });
 
   return BookReference;
 }

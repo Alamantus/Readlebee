@@ -21,7 +21,9 @@ module.exports = models => {
     onDelete: 'CASCADE',
   });
 
-  Shelf.hasMany(ShelfItem);
+  Shelf.hasMany(ShelfItem, {
+    foreignKey: 'shelfId',
+  });
 
   return Shelf;
 }

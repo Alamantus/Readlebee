@@ -11,6 +11,7 @@ module.exports = sequelize => {
     'Review',
     'Recommendation',
     'Reaction',
+    'Follow',
   ];
 
   const models = {};

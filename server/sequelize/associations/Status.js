@@ -1,9 +1,10 @@
 module.exports = models => {
   const {
     Status,
+    PermissionLevel,
     User,
     ShelfItem,
-    Reactions,
+    Reaction,
   } = models;
 
   Status.belongsTo(User, {
@@ -21,7 +22,7 @@ module.exports = models => {
     onDelete: 'SET NULL',
   });
 
-  Status.hasMany(Reactions.scope('Status'), {
+  Status.hasMany(Reaction.scope('Status'), {
     foreignKey: 'targetId',
     constraints: false,
     as: 'Reactions',

@@ -13,19 +13,27 @@ module.exports = models => {
     foreignKey: 'permissionLevel',
     onDelete: 'SET NULL',
   });
-  User.hasMany(Shelf);
-  User.hasMany(Status);
-  User.hasMany(Review);
+  User.hasMany(Shelf, {
+    foreignKey: 'userId',
+  });
+  User.hasMany(Status, {
+    foreignKey: 'userId',
+  });
+  User.hasMany(Review, {
+    foreignKey: 'userId',
+  });
   User.hasMany(Recommendation, {
     foreignKey: 'toUser',
   });
-  User.hasMany(Follow, {
-    foreignKey: 'follower',
-    as: 'Followers',
-  });
-  User.belongsTo(Follow.scope('internal'), {
+  User.belongsToMany(User, {
+    through: Follow,
     foreignKey: 'following',
-    as: 'Follows',
+    as: 'following',
+  });
+  User.belongsToMany(User, {
+    through: Follow,
+    foreignKey: 'follower',
+    as: 'follower',
   });
 
   return User;
