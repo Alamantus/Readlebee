@@ -1,70 +1,13 @@
 const fetch = require('node-fetch');
 
-class BooksController {
-  constructor(bookSource, bookURI, language) {
-    this.source = bookSource;
-    this.inventaire = 'https://inventaire.io';
-    this.openLibrary = 'https://openlibrary.org';
-    this.bookBrainz = 'https://bookbrainz.org';
+class Inventaire {
+  constructor(bookURI, language) {
+    this.url = 'https://inventaire.io';
     this.uri = bookURI;
     this.lang = language;
   }
 
-  getBookData() {
-    const bookData = this.getBookDataFromInventaire();
-    const communityData = this.getCommunityData();
-
-    return {
-      ...bookData,
-      ...communityData,
-    }
-  }
-
-  getCommunityData(maxReviews) {
-    if (process.NODE_ENV !== 'production') {
-      return this.getFakeData(maxReviews);
-    }
-
-    return {};
-  }
-
-  getFakeData(maxReviews) {
-    const faker = require('faker');
-    const numberOfReviews = Math.floor(Math.random() * 100);
-    const reviews = [];
-    for (let i = 0; i < numberOfReviews; i++) {
-      const reviewerName = Math.random() < 0.5
-        ? faker.fake('{{name.firstName}} {{name.lastName}}')
-        : faker.fake('{{hacker.adjective}}{{hacker.noun}}');
-      reviews.push({
-        reviewer: {
-          name: reviewerName,
-          handle: faker.fake('@{{internet.userName}}@{{internet.domainName}}'),
-        },
-        date: faker.date.past(),
-        rating: parseFloat((Math.random() * 5).toFixed(1)),
-        review: faker.lorem.paragraph(),
-        hearts: Math.floor(Math.random() * 1000),
-      });
-    }
-
-    const averageRating = parseFloat((reviews.reduce((total, review) => {
-      return total + review.rating;
-    }, 0) / numberOfReviews).toFixed(1));
-
-    reviews.sort((a, b) => {
-      if (a.hearts === b.hearts) return 0;
-      return a.hearts > b.hearts ? -1 : 1;
-    });
-
-    return {
-      averageRating,
-      numberOfReviews,
-      reviews: typeof maxReviews !== 'undefined' ? reviews.slice(0, maxReviews - 1) : reviews,
-    }
-  }
-
-  handleQuickInventaireEntity(entityObject) {
+  handleQuickEntity(entityObject) {
     return {
       name: (
         typeof entityObject.label !== 'undefined'
@@ -78,7 +21,7 @@ class BooksController {
       ),
       link: (
         typeof entityObject.uri !== 'undefined'
-          ? `${this.inventaire}/entity/${entityObject.uri}`
+          ? `${this.url}/entity/${entityObject.uri}`
           : null
       ),
       uri: (
@@ -91,7 +34,7 @@ class BooksController {
           ? entityObject.image.map(imageId => {
             return {
               uri: imageId.toString(),
-              url: `${this.inventaire}/img/entities/${imageId}`,
+              url: `${this.url}/img/entities/${imageId}`,
             }
           })
           : []
@@ -99,7 +42,7 @@ class BooksController {
     };
   }
 
-  handleInventaireEntity(entityObject) {
+  handleEntity(entityObject) {
     const hasLabels = typeof entityObject.labels !== 'undefined';
     const hasDescriptions = typeof entityObject.descriptions !== 'undefined';
 
@@ -124,7 +67,7 @@ class BooksController {
       ),
       link: (
         typeof entityObject.uri !== 'undefined'
-          ? `${this.inventaire}/entity/${entityObject.uri}`
+          ? `${this.url}/entity/${entityObject.uri}`
           : null
       ),
       uri: (
@@ -135,39 +78,9 @@ class BooksController {
     };
   }
 
-  handleOpenLibraryEntity(entityObject) {
-    return {
-      name: (
-        typeof entityObject.title_suggest !== 'undefined'
-          ? entityObject.title_suggest
-          : null
-      ),
-      description: (
-        typeof entityObject.author_name !== 'undefined'
-          ? `${entityObject.type} by ${entityObject.author_name.map(name => name.trim()).join(', ')}`
-          : null
-      ),
-      link: (
-        typeof entityObject.key !== 'undefined'
-          ? `${this.openLibrary}${entityObject.key}`
-          : null
-      ),
-      uri: (
-        typeof entityObject.key !== 'undefined'
-          ? entityObject.key.substr(entityObject.key.lastIndexOf('/') + 1)
-          : null
-      ),
-      coverId: (
-        typeof entityObject.cover_i !== 'undefined'
-          ? entityObject.cover_i.toString()
-          : false
-      ),
-    };
-  }
-
-  async getBookDataFromInventaire() {
-    if (this.uri) {
-      const request = fetch(`${this.inventaire}/api/entities?action=by-uris&uris=${encodeURIComponent(this.uri)}`)
+  async getBookData(uri) {
+    if (uri) {
+      const request = fetch(`${this.url}/api/entities?action=by-uris&uris=${encodeURIComponent(uri)}`)
       request.catch(exception => {
         console.error(exception);
         return {
@@ -186,9 +99,9 @@ class BooksController {
 
       const bookData = await json;
 
-      if (typeof bookData.entities !== 'undefined' && typeof bookData.entities[this.uri] !== 'undefined') {
-        const bookData = this.handleInventaireEntity(bookData.entities[this.uri], this.lang);
-        bookData['covers'] = await this.getInventaireCovers();
+      if (typeof bookData.entities !== 'undefined' && typeof bookData.entities[uri] !== 'undefined') {
+        const bookData = this.handleEntity(bookData.entities[uri], this.lang);
+        bookData['covers'] = await this.getCovers();
 
         return bookData;
       }
@@ -199,18 +112,18 @@ class BooksController {
     };
   }
 
-  async getInventaireCovers() {
-    if (!this.uri) {
+  async getCovers(uri) {
+    if (!uri) {
       return Promise.resolve([]);
     }
 
     // Note: property `wdt:P629` is a given entity (uri)'s list of editions (ISBNs).
-    const editionsRequest = fetch(`${this.inventaire}/api/entities?action=reverse-claims&uri=${encodeURIComponent(this.uri)}&property=wdt:P629`)
+    const editionsRequest = fetch(`${this.url}/api/entities?action=reverse-claims&uri=${encodeURIComponent(uri)}&property=wdt:P629`)
     editionsRequest.catch(exception => {
       console.error(exception);
       return {
         error: exception,
-        message: `An error occurred when trying to reach the Inventaire API for URI ${this.uri}.`,
+        message: `An error occurred when trying to reach the Inventaire API for URI ${uri}.`,
       }
     });
 
@@ -230,12 +143,12 @@ class BooksController {
       return Promise.resolve([]);
     }
 
-    const isbnsRequest = fetch(`${this.inventaire}/api/entities?action=by-uris&uris=${encodeURIComponent(editionURIs)}`);
+    const isbnsRequest = fetch(`${this.url}/api/entities?action=by-uris&uris=${encodeURIComponent(editionURIs)}`);
     isbnsRequest.catch(exception => {
       console.error(exception);
       return {
         error: exception,
-        message: `An error occurred when trying to reach the Inventaire API for URI ${this.uri}.`,
+        message: `An error occurred when trying to reach the Inventaire API for URI ${uri}.`,
       }
     });
 
@@ -260,7 +173,7 @@ class BooksController {
         const entity = responseJSON.entities[key];
         return {
           uri: entity.uri,
-          url: typeof entity.claims['invp:P2'] !== 'undefined' ? `${this.inventaire}/img/entities/${entity.claims['invp:P2'][0]}` : null,
+          url: typeof entity.claims['invp:P2'] !== 'undefined' ? `${this.url}/img/entities/${entity.claims['invp:P2'][0]}` : null,
           publishDate: typeof entity.claims['wdt:P577'] !== 'undefined' ? entity.claims['wdt:P577'][0] : null,
         }
       });
@@ -277,4 +190,4 @@ class BooksController {
   }
 }
 
-module.exports = BooksController;
+module.exports = Inventaire;

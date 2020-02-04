@@ -34,7 +34,7 @@ class SearchController {
         const booksController = new BooksController('inventaire', undefined, this.lang);
         
         return responseJSON.results.map(work => {
-          const bookData = booksController.handleQuickInventaireEntity(work);
+          const bookData = booksController.Inventaire.handleQuickEntity(work);
           booksController.uri = bookData.uri; // Update booksController.uri for each book when fetching community data.
           const communityData = booksController.getCommunityData(5);
           
@@ -68,7 +68,7 @@ class SearchController {
       return json.then(responseJSON => {
         const booksController = new BooksController('inventaire', undefined, this.lang);
         return responseJSON.works.map(work => {
-          const bookData = booksController.handleInventaireEntity(work);
+          const bookData = booksController.Inventaire.handleEntity(work);
           const communityData = booksController.getCommunityData(5);
           
           return {
