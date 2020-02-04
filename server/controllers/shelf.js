@@ -1,9 +1,9 @@
 const fetch = require('node-fetch');
 
 class ShelfController {
-  constructor (shelfModel, shelfItemModel) {
-    this.model = shelfModel;
-    this.itemModel = shelfItemModel;
+  constructor (sequelizeModels) {
+    this.model = sequelizeModels.Shelf;
+    this.itemModel = sequelizeModels.ShelfItem;
   }
 
   static newShelfNameIsValid (name, existingNames = []) {

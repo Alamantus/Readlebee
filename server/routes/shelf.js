@@ -15,7 +15,7 @@ async function routes(fastify, options) {
       });
     }
 
-    const shelfController = new ShelfController(fastify.models.Shelf, fastify.models.ShelfItem);
+    const shelfController = new ShelfController(fastify.models);
 
     const shelves = await request.user.getShelves({
       attributes: ['id', 'name', 'isDeletable', 'isPublic', 'updatedAt'],
@@ -45,7 +45,7 @@ async function routes(fastify, options) {
       return ShelfController.CheckExternalDomainForShelf(request.params.domain.trim(), request.params.shelfId);
     }
 
-    const shelfController = new ShelfController(fastify.models.Shelf, fastify.models.ShelfItem);
+    const shelfController = new ShelfController(fastify.models);
 
     const shelf = await shelfController.getShelfById(request.params.shelfId);
     if (typeof shelf.error !== 'undefined') {
@@ -88,7 +88,7 @@ async function routes(fastify, options) {
       return reply.code(400).send(shelfNameIsValid);
     }
 
-    const shelfController = new ShelfController(fastify.models.Shelf, fastify.models.ShelfItem);
+    const shelfController = new ShelfController(fastify.models);
 
     const newShelf = shelfController.createShelf(request.user, request.body.shelfName);
     if (typeof newShelf.error !== 'undefined' && newShelf.error !== false) {
@@ -136,7 +136,7 @@ async function routes(fastify, options) {
       return reply.code(400).send(shelfNameIsValid);
     }
 
-    const shelfController = new ShelfController(fastify.models.Shelf, fastify.models.ShelfItem);
+    const shelfController = new ShelfController(fastify.models);
 
     const newShelf = shelfController.renameShelf(request.user, request.body.shelfId, request.body.shelfName);
     if (typeof newShelf.error !== 'undefined' && newShelf.error !== false) {
