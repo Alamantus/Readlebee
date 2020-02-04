@@ -7,7 +7,7 @@ async function routes(fastify, options) {
     return false;
   });
 
-  fastify.get('/api/shelves/get', async (request, reply) => {
+  fastify.get('/api/shelf/getAll', async (request, reply) => {
     if (!request.isLoggedInUser) {
       return reply.code(400).send({
         error: true,

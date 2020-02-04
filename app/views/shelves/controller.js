@@ -31,7 +31,7 @@ export class ShelvesController extends ViewController {
   }
 
   getUserShelves () {
-    return fetch('/api/shelves/get').then(response => response.json()).then(shelves => {
+    return fetch('/api/shelf/getAll').then(response => response.json()).then(shelves => {
       this.state.myShelves = shelves;
     });
   }
