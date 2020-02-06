@@ -1,13 +1,16 @@
 const fetch = require('node-fetch');
 
 class Inventaire {
-  constructor(bookURI, language) {
+  constructor(language = 'en') {
     this.url = 'https://inventaire.io';
-    this.uri = bookURI;
     this.lang = language;
   }
 
-  handleQuickEntity(entityObject) {
+  static getURL() { // Use a method instead of `get` to avoid collisions with `this.url`
+    return this.url;
+  }
+
+  static handleQuickEntity(entityObject) {
     return {
       name: (
         typeof entityObject.label !== 'undefined'
@@ -42,14 +45,14 @@ class Inventaire {
     };
   }
 
-  handleEntity(entityObject) {
+  static handleEntity(entityObject, language) {
     const hasLabels = typeof entityObject.labels !== 'undefined';
     const hasDescriptions = typeof entityObject.descriptions !== 'undefined';
 
     return {
       name: (
-        hasLabels && typeof entityObject.labels[this.lang] !== 'undefined'
-          ? entityObject.labels[this.lang]
+        hasLabels && typeof entityObject.labels[language] !== 'undefined'
+          ? entityObject.labels[language]
           : (
             hasLabels && Object.keys(entityObject.labels).length > 0
               ? entityObject.labels[Object.keys(entityObject.labels)[0]]
@@ -57,8 +60,8 @@ class Inventaire {
           )
       ),
       description: (
-        hasDescriptions && typeof entityObject.descriptions[this.lang] !== 'undefined'
-          ? entityObject.descriptions[this.lang]
+        hasDescriptions && typeof entityObject.descriptions[language] !== 'undefined'
+          ? entityObject.descriptions[language]
           : (
             hasDescriptions && Object.keys(entityObject.descriptions).length > 0
               ? entityObject.descriptions[Object.keys(entityObject.descriptions)[0]]
@@ -100,7 +103,7 @@ class Inventaire {
       const bookData = await json;
 
       if (typeof bookData.entities !== 'undefined' && typeof bookData.entities[uri] !== 'undefined') {
-        const bookData = this.handleEntity(bookData.entities[uri], this.lang);
+        const bookData = Inventaire.handleEntity(bookData.entities[uri], this.lang);
         bookData['covers'] = await this.getCovers();
 
         return bookData;
