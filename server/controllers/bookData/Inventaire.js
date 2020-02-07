@@ -2,12 +2,11 @@ const fetch = require('node-fetch');
 
 class Inventaire {
   constructor(language = 'en') {
-    this.url = 'https://inventaire.io';
     this.lang = language;
   }
 
-  static getURL() { // Use a method instead of `get` to avoid collisions with `this.url`
-    return this.url;
+  static get url() {
+    return 'https://inventaire.io';
   }
 
   static handleQuickEntity(entityObject) {

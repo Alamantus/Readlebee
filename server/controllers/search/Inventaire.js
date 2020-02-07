@@ -3,7 +3,7 @@ const fetch = require('node-fetch');
 const Inventaire = require('../bookData/Inventaire');
 
 function quickSearchInventaire(searchTerm, language) {
-  const request = fetch(`${Inventaire.getURL()}/api/search?types=works&search=${encodeURIComponent(searchTerm)}&lang=${encodeURIComponent(language)}&limit=10`)
+  const request = fetch(`${Inventaire.url}/api/search?types=works&search=${encodeURIComponent(searchTerm)}&lang=${encodeURIComponent(language)}&limit=10`)
   request.catch(exception => {
     console.error(exception);
     return {
@@ -27,7 +27,7 @@ function quickSearchInventaire(searchTerm, language) {
 
 function searchInventaire(searchTerm, language) {
   if (this.hasQuery) {
-    const request = fetch(`${Inventaire.getURL()}/api/entities?action=search&search=${encodeURIComponent(searchTerm)}&lang=${encodeURIComponent(language)}`)
+    const request = fetch(`${Inventaire.url}/api/entities?action=search&search=${encodeURIComponent(searchTerm)}&lang=${encodeURIComponent(language)}`)
     request.catch(exception => {
       console.error(exception);
       return {
