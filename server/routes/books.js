@@ -1,4 +1,4 @@
-const BooksController = require('../controllers/books');
+const BooksController = require('../controllers/bookData');
 
 async function routes(fastify, options) {
   fastify.get('/api/books', async (request, reply) => {

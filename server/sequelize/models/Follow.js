@@ -49,10 +49,10 @@ module.exports = sequelize => sequelize.define('Follow', {
 }, {
   indexes: [
     {
-      fields: ['follower', 'domain'],
+      fields: ['follower', 'followerDomain'],
     },
     {
-      fields: ['following', 'domain'],
+      fields: ['following', 'followingDomain'],
     },
   ],
   scopes: {
