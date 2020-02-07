@@ -11,16 +11,8 @@ const defaultSearchOptions = {
 }
 
 class SearchController {
-  constructor(sequelizeModels, searchTerm, options = defaultSearchOptions) {
+  constructor(sequelizeModels) {
     this.models = sequelizeModels;
-    this.searchTerm = searchTerm;
-    this.searchBy = options.searchBy.replace('title', 'name').replace('author', 'description');
-    this.source = options.source;
-    this.lang = options.language;
-  }
-  
-  get hasQuery() {
-    return typeof this.searchTerm !== 'undefined' && this.searchTerm !== '';
   }
 
   get bookReferenceSearchAttributes() {
@@ -59,52 +51,58 @@ class SearchController {
     };
   }
 
-  async search() {
-    const bookReferences = await this.searchReferences();
+  async search(searchTerm, options = defaultSearchOptions) {
+    const searchBy = options.searchBy.replace('title', 'name').replace('author', 'description');
+    const { source, language } = options;
+    
+    const bookReferences = await this.searchReferences(searchTerm, options);
     let searchResults;
-    switch (this.source) {
+    switch (source) {
       case 'openlibrary': {
-        searchResults = await this.searchOpenLibrary(this.searchBy);
+        searchResults = await this.searchOpenLibrary(searchBy);
         break;
       }
       case 'inventaire':
       default: {
-        searchResults = await quickSearchInventaire(this.searchTerm, this.lang);
+        searchResults = await quickSearchInventaire(searchTerm, language);
         break;
       }
     }
 
     // Add any search results that match refs with the same URI and delete from results array
     const urisToCheck = searchResults.filter(
-      result => !bookReferences.some(ref => result.uri === ref.sources[this.source])
+      result => !bookReferences.some(ref => result.uri === ref.sources[source])
     ).map(result => result.uri);
 
+    let extraReferences = [];
     if (urisToCheck.length > 0) {
-      const foundReferences = await this.searchReferencesBySourceCodes(this.source, urisToCheck);
-      return [
-        ...bookReferences,
-        ...foundReferences,
-        ...searchResults.filter(result => !urisToCheck.includes(result.uri)),
-      ];
+      extraReferences = await this.searchReferencesBySourceCodes(source, urisToCheck);
     }
-    
     return [
       ...bookReferences,
-      ...searchResults.filter(result => result !== null),
+      ...extraReferences,
+      ...searchResults.filter(  // Only show the rest of the search results
+        result => !extraReferences.some(
+          ref => result.uri === ref.sources[source]
+        )
+      ),
     ];
   }
 
-  async searchReferences() {
+  async searchReferences(searchTerm, options = defaultSearchOptions) {
+    const searchBy = options.searchBy.replace('title', 'name').replace('author', 'description');
+    const { language } = options;
+
     const { BookReference } = this.models;
 
     const exact = await BookReference.findAll({
       where: {
         [Op.and]: [ // All of the contained cases are true
           {
-            [this.searchBy]: this.searchTerm, // searchBy is exactly searchTerm
+            [searchBy]: searchTerm, // searchBy is exactly searchTerm
           },
           {
-            locale: this.lang,
+            locale: language,
           },
         ]
       },
@@ -122,12 +120,12 @@ class SearchController {
       where: {
         [Op.and]: [ // All of the contained cases are true
           {
-            [this.searchBy]: {  // `name` or `description`
-              [Op.substring]: this.searchTerm, // LIKE '%searchTerm%'
+            [searchBy]: {  // `name` or `description`
+              [Op.substring]: searchTerm, // LIKE '%searchTerm%'
             },
           },
           {
-            locale: this.lang,
+            locale: language,
           },
         ]
       },
@@ -155,7 +153,7 @@ class SearchController {
 
   async searchReferencesBySourceCodes(source, sourceIds) {
     const sourceJSONKey = `"${source}"`;  // Enable searching withing JSON column.
-    return await this.models.BookReference.findOne({
+    return await this.models.BookReference.findAll({
       where: {
         [Op.or]: sourceIds.map(sourceId => ({
           source: {
@@ -218,14 +216,14 @@ class SearchController {
   }
 
   async searchWikiBooks(term) {
-    if (!this.hasQuery) {
+    if (!term) {
       return [];
     }
 
     const query = this.mediaWikiQuery('https://en.wikibooks.org/w/api.php', {
       action: 'query',
       list: 'search',
-      srsearch: this.searchTerm,
+      srsearch: term,
       srprop: '',
     });
     query(response => {
@@ -257,19 +255,19 @@ class SearchController {
     });
   }
 
-  async searchOpenLibrary(searchBy = 'title') {
-    if (!this.hasQuery) {
+  async searchOpenLibrary(searchTerm, searchBy = 'title') {
+    if (!searchTerm) {
       return [];
     }
 
-    return fetch(`https://openlibrary.org/search.json?${searchBy}=${encodeURIComponent(this.searchTerm)}`)
+    return fetch(`https://openlibrary.org/search.json?${searchBy}=${encodeURIComponent(searchTerm)}`)
       .then(res => res.json())
       .then(response => {
         if (!response.hasOwnProperty('docs')) {
           return [];
         }
 
-        const booksController = new BooksController('openLibrary', undefined, this.lang);
+        const booksController = new BooksController('openLibrary');
         
         // Format the response into usable objects
         const docs = response.docs.map(doc => {

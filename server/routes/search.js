@@ -6,9 +6,9 @@ async function routes(fastify, options) {
     const searchBy = typeof request.query.by !== 'undefined' ? request.query.by.trim() : 'title';
     const language = typeof request.query.lang !== 'undefined' ? request.query.lang.trim().split('-')[0] : undefined; // Get base language in cases like 'en-US'
     const source = typeof request.query.source !== 'undefined' ? request.query.source.trim() : undefined; // Get base language in cases like 'en-US'
-    const controller = new SearchController(fastify.models, searchTerm, { searchBy, source, language });
+    const controller = new SearchController(fastify.models);
     
-    return await controller.search();
+    return await controller.search(searchTerm, { searchBy, source, language });
   });
 
   fastify.get('/api/search/cover', async (request, reply) => {
