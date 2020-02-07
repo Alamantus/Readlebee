@@ -9,6 +9,10 @@ class Inventaire {
     return 'https://inventaire.io';
   }
 
+  static getLink(uri) {
+    return `${Inventaire.url}/entity/${uri}`;
+  }
+
   static handleQuickEntity(entityObject) {
     return {
       name: (
@@ -21,9 +25,10 @@ class Inventaire {
           ? entityObject.description
           : null
       ),
+      source: 'inventaire',
       link: (
         typeof entityObject.uri !== 'undefined'
-          ? `${this.url}/entity/${entityObject.uri}`
+          ? `${Inventaire.url}/entity/${entityObject.uri}`
           : null
       ),
       uri: (
@@ -36,7 +41,7 @@ class Inventaire {
           ? entityObject.image.map(imageId => {
             return {
               uri: imageId.toString(),
-              url: `${this.url}/img/entities/${imageId}`,
+              url: `${Inventaire.url}/img/entities/${imageId}`,
             }
           })
           : []
@@ -67,9 +72,10 @@ class Inventaire {
               : null
           )
       ),
+      source: 'inventaire',
       link: (
         typeof entityObject.uri !== 'undefined'
-          ? `${this.url}/entity/${entityObject.uri}`
+          ? `${Inventaire.url}/entity/${entityObject.uri}`
           : null
       ),
       uri: (
@@ -82,7 +88,7 @@ class Inventaire {
 
   async getBookData(uri) {
     if (uri) {
-      const request = fetch(`${this.url}/api/entities?action=by-uris&uris=${encodeURIComponent(uri)}`)
+      const request = fetch(`${Inventaire.url}/api/entities?action=by-uris&uris=${encodeURIComponent(uri)}`)
       request.catch(exception => {
         console.error(exception);
         return {
@@ -103,7 +109,7 @@ class Inventaire {
 
       if (typeof bookData.entities !== 'undefined' && typeof bookData.entities[uri] !== 'undefined') {
         const bookData = Inventaire.handleEntity(bookData.entities[uri], this.lang);
-        bookData['covers'] = await this.getCovers();
+        bookData['covers'] = await this.getCovers(bookData.uri);
 
         return bookData;
       }
@@ -120,7 +126,7 @@ class Inventaire {
     }
 
     // Note: property `wdt:P629` is a given entity (uri)'s list of editions (ISBNs).
-    const editionsRequest = fetch(`${this.url}/api/entities?action=reverse-claims&uri=${encodeURIComponent(uri)}&property=wdt:P629`)
+    const editionsRequest = fetch(`${Inventaire.url}/api/entities?action=reverse-claims&uri=${encodeURIComponent(uri)}&property=wdt:P629`)
     editionsRequest.catch(exception => {
       console.error(exception);
       return {
@@ -145,7 +151,7 @@ class Inventaire {
       return Promise.resolve([]);
     }
 
-    const isbnsRequest = fetch(`${this.url}/api/entities?action=by-uris&uris=${encodeURIComponent(editionURIs)}`);
+    const isbnsRequest = fetch(`${Inventaire.url}/api/entities?action=by-uris&uris=${encodeURIComponent(editionURIs)}`);
     isbnsRequest.catch(exception => {
       console.error(exception);
       return {
@@ -175,7 +181,7 @@ class Inventaire {
         const entity = responseJSON.entities[key];
         return {
           uri: entity.uri,
-          url: typeof entity.claims['invp:P2'] !== 'undefined' ? `${this.url}/img/entities/${entity.claims['invp:P2'][0]}` : null,
+          url: typeof entity.claims['invp:P2'] !== 'undefined' ? `${Inventaire.url}/img/entities/${entity.claims['invp:P2'][0]}` : null,
           publishDate: typeof entity.claims['wdt:P577'] !== 'undefined' ? entity.claims['wdt:P577'][0] : null,
         }
       });
