@@ -1,5 +1,5 @@
 const fetch = require('node-fetch');
-const { Op, fn } = require('sequelize');
+const { Op, fn, col } = require('sequelize');
 
 const BooksController = require('../bookData');
 const { quickSearchInventaire } = require('./Inventaire');
@@ -14,7 +14,7 @@ class SearchController {
   constructor(sequelizeModels, searchTerm, options = defaultSearchOptions) {
     this.models = sequelizeModels;
     this.searchTerm = searchTerm;
-    this.searchBy = options.searchBy;
+    this.searchBy = options.searchBy.replace('title', 'name').replace('author', 'description');
     this.source = options.source;
     this.lang = options.language;
   }
@@ -23,28 +23,40 @@ class SearchController {
     return typeof this.searchTerm !== 'undefined' && this.searchTerm !== '';
   }
 
-  get includeQuery() {
-    return [
-      {
-        model: this.models.Review,
-        where: { text: { [Op.not]: null } },
-        attributes: [[fn('COUNT', 'id'), 'total']],  // Get the total number of text reviews
-        as: 'reviews',
-      },
-      {
-        model: this.models.Review,
-        where: { rating: { [Op.not]: null } },
-        attributes: [[fn('AVG', 'rating'), 'average']], // Get the average star rating
-        as: 'rating',
-      },
-    ]
-  }
-
-  get orderQuery() {
-    return [{
-      model: this.models.Review,
-      attributes: [[fn('COUNT', 'id'), 'total']],  // Get the total number of text reviews
-    }, 'total', 'DESC'];  // Order references from most to least interaction
+  get bookReferenceSearchAttributes() {
+    return {
+      include: [
+        {
+          as: 'Interactions',
+          model: this.models.Review,
+          attributes: ['id'],
+          required: false,
+        },
+        {
+          as: 'Reviews',
+          model: this.models.Review,
+          attributes: ['id'],
+          required: false,
+        },
+        {
+          as: 'Ratings',
+          model: this.models.Review,
+          attributes: ['rating'],
+          required: false,
+        },
+      ],  // These are all subsets of Review model specified in BookReference associations
+      attributes: [
+        [col('BookReference.id'), 'id'],
+        'name',
+        'description',
+        'sources',
+        'covers',
+        [fn('COUNT', col('Interactions.id')), 'totalInteractions'],
+        [fn('COUNT', col('Reviews.id')), 'numReviews'],
+        [fn('AVG', col('Ratings.rating')), 'averageRating'],
+      ],
+      order: [[col('totalInteractions'), 'DESC']],
+    };
   }
 
   async search() {
@@ -63,19 +75,18 @@ class SearchController {
     }
 
     // Add any search results that match refs with the same URI and delete from results array
-    searchResults.forEach((result, i) => {
-      // If the result is not already in bookReferences
-      if (!bookReferences.some(ref => result.uri === ref.sources[this.source])) {
-        // Check if the URI is already in references table
-        const reference = await this.searchReferencesBySourceCode(this.source, result.uri);
-        if (reference) {
-          bookReferences.push(reference);
-          searchResults[i] = null;
-        }
-      } else {  // If the result is already in references, null it out.
-        searchResults[i] = null;
-      }
-    });
+    const urisToCheck = searchResults.filter(
+      result => !bookReferences.some(ref => result.uri === ref.sources[this.source])
+    ).map(result => result.uri);
+
+    if (urisToCheck.length > 0) {
+      const foundReferences = await this.searchReferencesBySourceCodes(this.source, urisToCheck);
+      return [
+        ...bookReferences,
+        ...foundReferences,
+        ...searchResults.filter(result => !urisToCheck.includes(result.uri)),
+      ];
+    }
     
     return [
       ...bookReferences,
@@ -84,24 +95,7 @@ class SearchController {
   }
 
   async searchReferences() {
-    const { BookReference, Review } = this.models;
-
-    // const includeQuery = [{
-    //   model: Review,
-    //   include: [
-    //     {
-    //       model: Reaction.scope('Review'),
-    //       group: ['reactionType'],
-    //       attributes: ['reactionType', [fn('COUNT', 'reactionType'), 'count']]
-    //     },
-    //   ],
-    //   order: [{
-    //     model: Reaction.scope('Review'),
-    //     attributes: [[fn('COUNT', 'id'), 'total']],
-    //     limit: 1,
-    //   }, 'total', 'DESC'],
-    //   limit: 5,
-    // }];
+    const { BookReference } = this.models;
 
     const exact = await BookReference.findAll({
       where: {
@@ -114,14 +108,15 @@ class SearchController {
           },
         ]
       },
-      include: includeQuery(Review),
-      order: orderQuery(Review),
-    });
+      ...this.bookReferenceSearchAttributes,
+    }).then(  // Empty results give 1 empty model in an array, so filter those out
+      references => references.filter(ref => typeof ref.id !== 'undefined' && ref.id !== null)
+    );
 
     if (exact.length > 0) {
       return exact;
     }
-
+    
     // If no exact matches are found, return any approximate ones.
     return await BookReference.findAll({
       where: {
@@ -136,9 +131,10 @@ class SearchController {
           },
         ]
       },
-      include: this.includeQuery,
-      order: this.orderQuery,
-    });
+      ...this.bookReferenceSearchAttributes,
+    }).then(  // Empty results give 1 empty model in an array, so filter those out
+      references => references.filter(ref => typeof ref.id !== 'undefined' && ref.id !== null)
+    );
   }
 
   async searchReferencesBySourceCode(source, sourceId) {
@@ -151,8 +147,26 @@ class SearchController {
           },
         },
       },
-      include: this.includeQuery,
-    });
+      ...this.bookReferenceSearchAttributes,
+    }).then(  // Empty results give 1 empty model in an array, so filter those out
+      references => references.filter(ref => typeof ref.id !== 'undefined' && ref.id !== null)
+    );
+  }
+
+  async searchReferencesBySourceCodes(source, sourceIds) {
+    const sourceJSONKey = `"${source}"`;  // Enable searching withing JSON column.
+    return await this.models.BookReference.findOne({
+      where: {
+        [Op.or]: sourceIds.map(sourceId => ({
+          source: {
+            [sourceJSONKey]: sourceId,
+          },
+        })),
+      },
+      ...this.bookReferenceSearchAttributes,
+    }).then(  // Empty results give 1 empty model in an array, so filter those out
+      references => references.filter(ref => typeof ref.id !== 'undefined' && ref.id !== null)
+    );
   }
 
   /**
