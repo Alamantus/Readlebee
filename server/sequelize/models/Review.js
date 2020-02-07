@@ -67,4 +67,12 @@ module.exports = sequelize => sequelize.define('Review', {
       fields: ['bookReferenceId'],
     },
   ],
+  scopes: {
+    Rating: {
+      where: { rating: { [Sequelize.Op.not]: null } },
+    },
+    Text: {
+      where: { text: { [Sequelize.Op.not]: null } },
+    },
+  },
 });

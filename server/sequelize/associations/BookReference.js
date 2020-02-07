@@ -5,6 +5,17 @@ module.exports = models => {
   } = models;
 
   BookReference.hasMany(Review, {
+    as: 'Interactions',
+    foreignKey: 'bookReferenceId',
+  });
+
+  BookReference.hasMany(Review.scope('Text'), {
+    as: 'Reviews',
+    foreignKey: 'bookReferenceId',
+  });
+  
+  BookReference.hasMany(Review.scope('Rating'), {
+    as: 'Ratings',
     foreignKey: 'bookReferenceId',
   });
 
