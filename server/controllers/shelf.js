@@ -248,6 +248,32 @@ class ShelfController {
 
     return shelfData;
   }
+
+  async addShelfItem(shelf, bookReferenceId, source = null) {
+    const bookReferenceController = new BookReferenceController(this.models, this.lang);
+    
+    let bookId = bookReferenceId;
+    if (source !== null) {
+      const bookReference = await bookReferenceController.createOrUpdateReference(source, bookId);
+      bookId = bookReference.id;
+    }
+
+    if (shelf.ShelfItems.some(shelfItem => shelfItem.bookId === bookId)) {
+      return {
+        error: 'api.shelf.addItem.already_on_shelf',  // This may need to change to account for editions later.
+      }
+    }
+
+    const shelfItem = await shelf.addShelfItem({ bookId }).catch(err => err);
+
+    if (!shelfItem) {
+      return {
+        error: shelfItem,
+      };
+    }
+
+    return shelfItem;
+  }
 }
 
 module.exports = ShelfController;
