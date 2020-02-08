@@ -1,9 +1,17 @@
 const fetch = require('node-fetch');
 
 class ShelfController {
-  constructor (sequelizeModels) {
-    this.model = sequelizeModels.Shelf;
-    this.itemModel = sequelizeModels.ShelfItem;
+  constructor (sequelizeModels, language) { // Language needs to be passed with every request involving books.
+    this.models = sequelizeModels;
+    this.lang = language;
+  }
+
+  static userOwnsShelf(user, shelf) {
+    return typeof user !== 'undefined' && user.id === shelf.userId;
+  }
+
+  static shelfCanBeModified(shelf) {
+    return shelf.isDeletable === true;
   }
 
   static newShelfNameIsValid (name, existingNames = []) {
@@ -32,7 +40,7 @@ class ShelfController {
 
   async createDefaultShelves (user) {
     try {
-      const defaultShelvesCreated = await this.model.bulkCreate([
+      const defaultShelvesCreated = await this.models.Shelf.bulkCreate([
         {
           userId: user.id,
           name: 'Reading',
@@ -82,17 +90,9 @@ class ShelfController {
     }
   }
   
-  async renameShelf (userId, id, name) {
+  async renameShelf (user, shelf, name) {
     try {
-      return await this.model.update({
-        name,
-      }, {
-        where: {
-          id,
-          userId,
-          isDeletable: true,  // You can only rename shelves not created by the system
-        }
-      });
+      return await shelf.update({ name });
     } catch(error) {
       return {
         error,
@@ -186,10 +186,10 @@ class ShelfController {
 
     return shelf;
   }
-
+  
   async userCanViewShelf (user, shelf) {
     // This needs work when permissions are added.
-    const userOwnsShelf = typeof user !== 'undefined' && user.id === shelf.userId;
+    const userOwnsShelf = ShelfController.userOwnsShelf(user, shelf);
     console.log('owned?', userOwnsShelf);
     console.log('isPublic?', shelf.isPublic);
     return userOwnsShelf || shelf.isPublic;

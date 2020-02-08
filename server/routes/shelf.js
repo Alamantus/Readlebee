@@ -104,7 +104,7 @@ async function routes(fastify, options) {
 
   fastify.post('/api/shelf/rename', async (request, reply) => {
     if (!request.isLoggedInUser) {
-      return reply.code(400).send({
+      return reply.code(401).send({
         error: true,
         message: 'api.not_logged_in',
       });
@@ -136,9 +136,25 @@ async function routes(fastify, options) {
       return reply.code(400).send(shelfNameIsValid);
     }
 
+    const shelf = await fastify.models.Shelf.findByPk(request.body.shelfId);
+
+    if (!ShelfController.userOwnsShelf(request.user, shelf)) {
+      return reply.code(403).send({
+        error: true,
+        message: 'api.shelf.not_owner',
+      });
+    }
+    
+    if (!ShelfController.shelfCanBeModified(shelf)) {
+      return reply.code(403).send({
+        error: true,
+        message: 'api.shelf.not_editable',
+      });
+    }
+
     const shelfController = new ShelfController(fastify.models);
 
-    const newShelf = shelfController.renameShelf(request.user, request.body.shelfId, request.body.shelfName);
+    const newShelf = shelfController.renameShelf(request.user, shelf, request.body.shelfName);
     if (typeof newShelf.error !== 'undefined' && newShelf.error !== false) {
       newShelf.message = 'api.shelf.rename.fail';
       return reply.code(400).send(newShelf);
