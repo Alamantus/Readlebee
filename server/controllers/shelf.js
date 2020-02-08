@@ -274,6 +274,18 @@ class ShelfController {
 
     return shelfItem;
   }
+
+  async moveShelfItem(shelfItem, toShelf) {
+    const success = await toShelf.addShelfItem(shelfItem);
+
+    if (!success) {
+      return {
+        error: shelfItem,
+      };
+    }
+
+    return success;
+  }
 }
 
 module.exports = ShelfController;
