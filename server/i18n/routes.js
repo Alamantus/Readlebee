@@ -11,7 +11,12 @@ async function routes(fastify, options) {
       response.locale = fastify.i18n[request.params.locale];
     }
 
-    return response;
+    return reply.setCookie('lang', request.params.locale, {
+      path: '/',
+      expires: new Date('December 31, 9999'), // Don't expire
+      maxAge: new Date('December 31, 9999'),  // Both are set as a "just in case"
+      sameSite: true, // Prevents the cookie from being used outside of this site
+    }).send(response);
   });
 
   fastify.get('/locales/:locale/page/:page', async (request, reply) => {

@@ -82,6 +82,9 @@ fastify.addHook('onRequest', async (request, reply) => {
       request.user = user;
     }
   }
+  if (typeof request.cookies.lang !== 'undefined') {
+    request.language = request.cookies.lang;
+  }
 });
 
 // Store i18n files in fastify object and register locales routes
