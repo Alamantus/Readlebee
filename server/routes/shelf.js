@@ -18,7 +18,7 @@ async function routes(fastify, options) {
     const shelfController = new ShelfController(fastify.models);
 
     const shelves = await request.user.getShelves({
-      attributes: ['id', 'name', 'isDeletable', 'isPublic', 'updatedAt'],
+      attributes: ['id', 'name', 'isDeletable', 'permissionLevel', 'updatedAt'],
     });
 
     return shelves.map(shelf => {
