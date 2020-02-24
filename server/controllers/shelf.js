@@ -286,6 +286,25 @@ class ShelfController {
 
     return success;
   }
+
+  async deleteShelfItem(shelfItem) {
+    // Only fully remove if no statuses are associated
+    const statuses = await shelfItem.getStatuses();
+    const options = {};
+    if (statuses.length < 1) {
+      options.force = true;
+    }
+
+    const success = await shelfItem.destroy(options);
+
+    if (!success) {
+      return {
+        error: shelfItem,
+      };
+    }
+
+    return success;
+  }
 }
 
 module.exports = ShelfController;

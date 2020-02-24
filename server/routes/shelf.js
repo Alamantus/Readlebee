@@ -258,11 +258,11 @@ async function routes(fastify, options) {
 
     const shelfController = new ShelfController(fastify.models, request.language);
     
-    const shelfItem = await shelfController.moveShelfItem(shelfItem, toShelf);
+    const moveSuccess = await shelfController.moveShelfItem(shelfItem, toShelf);
 
-    if (typeof shelfItem.error !== 'undefined') {
+    if (typeof moveSuccess.error !== 'undefined') {
       return reply.code(400).send({
-        error: shelfItem.error,
+        error: moveSuccess.error,
         message: 'api.shelf.moveItem.could_not_move',
       });
     }
@@ -270,6 +270,49 @@ async function routes(fastify, options) {
     return reply.send({
       error: false,
       message: 'api.shelf.moveItem.success',
+    });
+  });
+
+  fastify.post('/api/shelf/deleteItem', async (request, reply) => {
+    if (!request.isLoggedInUser) {
+      return reply.code(401).send({
+        error: true,
+        message: 'api.not_logged_in',
+      });
+    }
+
+    if (typeof request.body.itemId === 'undefined') {
+      return reply.code(400).send({
+        error: true,
+        message: 'api.shelf.deleteItem.missing_item_id',
+      });
+    }
+
+    const shelfItem = await fastify.models.ShelfItem.findByPk(request.body.itemId, {
+      include: [ fastify.models.Shelf ],
+    });
+
+    if (!ShelfController.userOwnsShelf(request.user, shelfItem.Shelf)) {
+      return reply.code(403).send({
+        error: true,
+        message: 'api.shelf.not_owner',
+      });
+    }
+
+    const shelfController = new ShelfController(fastify.models, request.language);
+    
+    const deleteSuccess = await shelfController.deleteShelfItem(shelfItem);
+
+    if (typeof deleteSuccess.error !== 'undefined') {
+      return reply.code(400).send({
+        error: deleteSuccess.error,
+        message: 'api.shelf.deleteItem.could_not_delete',
+      });
+    }
+
+    return reply.send({
+      error: false,
+      message: 'api.shelf.deleteItem.success',
     });
   });
 }

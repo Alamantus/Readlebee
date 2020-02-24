@@ -51,4 +51,5 @@ module.exports = sequelize => sequelize.define('ShelfItem', {
       fields: ['shelfId'],
     },
   ],
+  paranoid: true, // Keep shelfItems in database just in case there are Statuses associated
 });
