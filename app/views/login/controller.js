@@ -13,6 +13,7 @@ export class LoginController extends ViewController {
         createDisplayName: '',
         createPassword: '',
         createConfirm: '',
+        createPermission: 100,
       },
       loginError: '',
       createError: '',
@@ -146,7 +147,8 @@ export class LoginController extends ViewController {
       createEmail,
       createUsername,
       createDisplayName,
-      createPassword
+      createPassword,
+      createPermission
     } = this.state.fieldValues;
 
     fetch('/api/account/create', {
@@ -159,6 +161,7 @@ export class LoginController extends ViewController {
         username: createUsername,
         displayName: createDisplayName,
         password: createPassword,
+        permissionLevel: createPermission,
       }),
     }).then(response => response.json())
     .then(response => {

@@ -27,6 +27,7 @@ class AccountController {
     if (typeof createAccountData.email === 'undefined'
       || typeof createAccountData.username === 'undefined'
       || typeof createAccountData.password === 'undefined'
+      || typeof createAccountData.permissionLevel === 'undefined'
       || createAccountData.password === '') {
       return {
         error: true,
@@ -43,6 +44,12 @@ class AccountController {
       return {
         error: true,
         message: 'api.account.create.invalid_username',
+      };
+    }
+    if (![100, 33, 0].includes(createAccountData.permissionLevel)) {
+      return {
+        error: true,
+        message: 'api.account.create.invalid_permissionLevel',
       };
     }
 
@@ -75,6 +82,7 @@ class AccountController {
       username: formData.username.toString().trim(),
       displayName: displayName.length > 0 ? displayName : 'A Bee',
       password: formData.password,
+      permissionLevel: formData.permissionLevel,
     }
   }
 
@@ -130,7 +138,7 @@ class AccountController {
     return true;
   }
 
-  async createUser (email, username, displayName, password, needsConfirmation) {
+  async createUser (email, username, displayName, permissionLevel, password, needsConfirmation) {
     const hashData = AccountController.hashPassword(password);
     // The data should already have gone through AccountController.cleanCreateAccountFormData()
     try {
@@ -138,6 +146,7 @@ class AccountController {
         email,
         username,
         displayName,
+        permissionLevel,
         passwordHash: hashData.hash,
         passwordSalt: hashData.salt,
         accountConfirm: needsConfirmation ? crypto.randomBytes(32).toString('hex') : null,

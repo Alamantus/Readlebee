@@ -30,14 +30,14 @@ async function routes(fastify, options) {
       return reply.code(400).send(canCreateUser);
     }
 
-    const newUser = await account.createUser(formData.email, formData.username, formData.displayName, formData.password, fastify.canEmail);
-
+    const newUser = await account.createUser(formData.email, formData.username, formData.displayName, formData.permissionLevel, formData.password, fastify.canEmail);
+    
     if (typeof newUser.error !== 'undefined' && newUser.error !== false) {
       newUser.message = 'api.account.create.fail';
       return reply.code(400).send(newUser);
     }
 
-    const shelf = new ShelfController(fastify.models.Shelf, fastify.models.ShelfItem);
+    const shelf = new ShelfController(fastify.models, null);
     const defaultShelvesCreated = await shelf.createDefaultShelves(newUser);
 
     // If some of the default shelves are not created successfully, delete the user and send an error

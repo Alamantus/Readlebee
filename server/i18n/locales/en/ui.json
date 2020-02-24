@@ -41,6 +41,12 @@
     "confirm_password": "Confirm Password",
     "username": "Username",
     "display_name": "Display Name",
+    "permissions": {
+      "label": "Profile Visibility",
+      "public": "Public (anyone can see you)",
+      "following": "Following (only accounts you follow can see you)",
+      "private": "Private (nobody can see you)"
+    },
     "create_account_button": "Create Account!",
     "login_required_field_blank": "You must enter both a valid email address and password.",
     "create_required_field_blank": "You must complete all required fields.",
@@ -93,7 +99,8 @@
         "fail": "Something went wrong and the account could not be created. Please try again later.",
         "required_data_missing": "Could not create account because required data is missing.",
         "invalid_email": "The email address entered is not valid.",
-        "invalid_username": "The username entered is not valid. Usernames must be at least 2 characters long and can only contain letters a–z, numbers 0–9, and underscores",
+        "invalid_username": "The username entered is not valid. Usernames must be at least 2 characters long and can only contain letters a–z, numbers 0–9, and underscores.",
+        "invalid_permissionLevel": "The permissionLevel entered is not valid. PermissionLevel must be one 100, 33, or 0. Contact the front-end developer and ask them to fix their permission selector.",
         "success": "Account created successfully! You may now log in using the email address and password you provided."
       },
       "confirm": {

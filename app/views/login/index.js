@@ -127,6 +127,22 @@ export const loginView = (state, emit, i18n) => {
                 onkeyup=${e => { if (e.key === 'Enter') controller.validateCreateAccount() }}
               >
             </label>
+            <label>
+              <span>${__('login.permissions.label')}</span>
+              <select name="new_visibility"
+                onchange=${e => controller.state.fieldValues.createPermission = e.target.value.trim()}
+              >
+                <option value="100" ${controller.state.fieldValues.createPermission === 100 ? 'selected' : null}>
+                  ${__('login.permissions.public')}
+                </option>
+                <option value="33" ${controller.state.fieldValues.createPermission === 33 ? 'selected' : null}>
+                  ${__('login.permissions.following')}
+                </option>
+                <option value="0" ${controller.state.fieldValues.createPermission === 0 ? 'selected' : null}>
+                  ${__('login.permissions.private')}
+                </option>
+              </select>
+            </label>
             ${
               controller.state.createError === ''
               ? null
