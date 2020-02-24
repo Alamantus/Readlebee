@@ -25,6 +25,7 @@ module.exports = sequelize => sequelize.define('Shelf', {
   permissionLevel: {
     type: Sequelize.NUMBER,
     allowNull: false,
+    defaultValue: 0,
     references: {
       model: sequelize.models.PermissionLevel,
       key: 'id',

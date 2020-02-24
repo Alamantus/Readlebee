@@ -34,6 +34,7 @@ module.exports = sequelize => sequelize.define('User', {
   permissionLevel: {
     type: Sequelize.INTEGER,
     allowNull: false,
+    defaultValue: 0,
     references: {
       model: sequelize.models.PermissionLevel,
       key: 'id',
