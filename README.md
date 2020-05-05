@@ -10,7 +10,7 @@ An attempt at a viable alternative to Goodreads
   - Features we feel are essential to the project. Anything beyond the scope should be discussed for later and not prioritized.
 - [Dependencies Stack](https://gitlab.com/Alamantus/Readlebee/wikis/Dependencies-Stack)
   - A list of dependencies used in the project and a short explanation of what each of them are for.
-- [Contrubution Guidelines](./CONTRIBUTING.md)
+- [Contribution Guidelines](./CONTRIBUTING.md)
   - Subject to change but important to follow. Includes a basic code of conduct.
 - [Project chat via Gitter](https://gitter.io/Readlebee)
   - Real-time discussion about the project.
