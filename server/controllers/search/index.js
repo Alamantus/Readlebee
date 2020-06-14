@@ -76,7 +76,8 @@ class SearchController {
 
     let extraReferences = [];
     if (urisToCheck.length > 0) {
-      extraReferences = await this.searchReferencesBySourceCodes(source, urisToCheck);
+      // Need to figure this out
+      // extraReferences = await this.searchReferencesBySourceCodes(source, urisToCheck);
     }
     return [
       ...bookReferences,

@@ -16,7 +16,6 @@ export const searchView = (state, emit, i18n) => {
   }
 
   // Returning an array in a view allows non-shared parent HTML elements.
-  // This one doesn't have the problem right now, but it's good to remember.
   return [
     html`<h1 class="title">${__('search.header')}</h1>`,
 
@@ -45,7 +44,7 @@ export const searchView = (state, emit, i18n) => {
 
     // Search Options Section
     html`<section class="flex one two-700">
-      <div>
+      ${/*<div>
         ${modal('searchSourceInfo', controller, [
           html`<p>
             ${__('search.search_source.help.text')}
@@ -91,7 +90,8 @@ export const searchView = (state, emit, i18n) => {
             </option>
           </select>
         </label>
-      </div>
+      </div>*/'' // Temporarily comment out the source chooser so I can focus on just Inventaire
+      }
       <div>
           ${__('search.search_by.label')}<br>
 
