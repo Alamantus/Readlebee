@@ -7,9 +7,10 @@
   "author": "Robbie Antenesse <dev@alamantus.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "concurrently --kill-others \"npm run watch-js\" \"npm run serve\"",
+    "dev": "concurrently --kill-others \"npm run watch-app\" \"npm run watch-server\"",
     "start": "npm run build && cross-env NODE_ENV=production npm run serve",
-    "watch-js": "parcel watch app/index.html --out-dir public --no-hmr --no-cache",
+    "watch-app": "parcel watch app/index.html --out-dir public --no-hmr --no-cache",
+    "watch-server": "onchange -i -k \"server/**/*.js*\" -- npm run serve",
     "serve": "node server/index.js",
     "build": "npm run process-images && npm run bundle",
     "bundle": "parcel build app/index.html --out-dir public --no-source-maps --no-cache",
@@ -21,6 +22,7 @@
     "choo-devtools": "^3.0.3",
     "concurrently": "^5.1.0",
     "faker": "^4.1.0",
+    "onchange": "^7.0.2",
     "rimraf": "^3.0.1",
     "sequelize-erd": "https://github.com/Alamantus/sequelize-erd.git"
   },
