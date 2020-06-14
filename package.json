@@ -38,18 +38,18 @@
     "fastify-plugin": "^1.6.0",
     "fastify-static": "^2.6.0",
     "make-promises-safe": "^5.1.0",
-    "marked": "^0.8.0",
+    "marked": "^1.1.0",
     "mysql2": "^2.1.0",
     "node-fetch": "^2.6.0",
     "nodemailer": "^6.4.2",
     "parcel-bundler": "^1.12.4",
     "parcel-plugin-goodie-bag": "^2.0.0",
-    "pg": "^7.18.1",
+    "pg": "^8.2.1",
     "pg-hstore": "^2.3.3",
     "picnic": "^6.5.2",
     "sass": "^1.25.0",
     "sequelize": "^5.21.3",
-    "sharp": "^0.24.0",
-    "sqlite": "^3.0.3"
+    "sharp": "^0.25.4",
+    "sqlite3": "^4.2.0"
   }
 }
