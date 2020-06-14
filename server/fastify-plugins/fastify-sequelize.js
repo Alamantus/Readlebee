@@ -21,13 +21,14 @@ const fp = require('fastify-plugin');
 const Sequelize = require('sequelize');
 
 function plugin (fastify, options) {
-  const instance = options.instance || 'sequelize';
-  const autoConnect = options.autoConnect || true;
+  const { config, registerModels } = options;
+  const instance = config.instance || 'sequelize';
+  const autoConnect = config.autoConnect || true;
 
-  delete options.instance;
-  delete options.autoConnect;
+  delete config.instance;
+  delete config.autoConnect;
 
-  const sequelize = new Sequelize(options);
+  const sequelize = new Sequelize(config);
 
   if (autoConnect) {
     return sequelize.authenticate().then(decorate);
@@ -39,6 +40,7 @@ function plugin (fastify, options) {
 
   function decorate () {
     fastify.decorate(instance, sequelize);
+    fastify.decorate('models', registerModels(sequelize));
     fastify.addHook('onClose', (fastifyInstance, done) => {
       sequelize.close()
         .then(done)
