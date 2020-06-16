@@ -86,10 +86,13 @@ export const resultDetails = (searchController, result, emit = () => {}) => {
     </div>
     <div class="sixth-700">
       <p>
-        <button class="success">
+        <button class="success" onclick=${() => searchController.showShelves()}>
           <i class="icon-plus"></i> <span>${__('interaction.add')}</span>
         </button>
       </p>
+      ${!searchController.showShelves ? null : html`<ul>${searchController.shelves.map(shelf => {
+        return html`<li><a href="javascript:void(0)">${shelf.name}</a></li>`;
+      })}</ul>`}
       <p>
         <a class="small button" href=${result.link} target="_blank">
           ${__('search.see_book_details')}

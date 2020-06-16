@@ -1,4 +1,5 @@
 import { ViewController } from '../controller';
+import { ShelvesController } from '../shelves/controller';
 
 export class SearchController extends ViewController {
   constructor(state, emit, i18n) {
@@ -13,6 +14,7 @@ export class SearchController extends ViewController {
       done: true,
       results: [],
       openModal: null,
+      showShelves: false,
     });
 
     this.emit = emit;
@@ -42,6 +44,19 @@ export class SearchController extends ViewController {
 
   get openModal() {
     return this.state.openModal;
+  }
+
+  get hasFetchedShelves() {
+    return typeof this.appState.viewStates.shelves !== 'undefined'
+    && typeof this.appState.viewStates.shelves.myShelves !== 'undefined'
+    && this.appState.viewStates.shelves.myShelves.length > 0;
+  }
+
+  get shelves() {
+    if (this.hasFetchedShelves) {
+      return this.appState.viewStates.shelves.myShelves;
+    }
+    return [];
   }
 
   set openModal(modalId) {
@@ -84,5 +99,17 @@ export class SearchController extends ViewController {
     }
 
     return Promise.resolve();
+  }
+
+  async showShelves () {
+    const shelfController = new ShelvesController(this.appState, this.i18n);
+    if (!this.hasFetchedShelves) {
+      console.log('getting');
+      await shelfController.getUserShelves();
+      console.log('got');
+    }
+    console.log(shelfController.myShelves);
+    this.showShelves = true;
+    this.emit('render');
   }
 }
