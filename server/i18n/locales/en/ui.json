@@ -7,9 +7,11 @@
     "menu_login": "Log In / Create Account",
     "menu_account": "My Profile",
     "menu_logout": "Log Out",
+    "menu_shelves": "My Shelves",
     "footer_repo": "Repo",
     "footer_chat": "Chat",
-    "change_language": "Language"
+    "change_language": "Language",
+    "error": "Oops, something went wrong!"
   },
   "home": {
     "logged_out": {
@@ -91,6 +93,17 @@
     "average_rating": "Average Rating",
     "reviews_written": "Total Reviews Written"
   },
+  "shelves": {
+    "title": "My Shelves",
+    "loading": "Loading Shelf...",
+    "you": "You",
+    "owned_by": "Owned By",
+    "no_shelf_selected": "No shelf selected.",
+    "not_logged_in": "You're not logged in."
+  },
+  "review": {
+    "review_of": "Review of"
+  },
   "api": {
     "not_logged_in": "You are not logged in.",
     "already_logged_in": "You are already logged in! You cannot create an account or log in again.",
@@ -126,6 +139,11 @@
         "missing_token": "User not logged in: There is no login token to validate.",
         "invalid_token": "User not logged in: The stored token is not a valid token.",
         "renewed_token": "User logged in, and the token has been renewed."
+      }
+    },
+    "shelf": {
+      "get": {
+        "invalid_id": "Invalid ID specified"
       }
     }
   }
