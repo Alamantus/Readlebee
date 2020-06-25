@@ -101,15 +101,28 @@ export class SearchController extends ViewController {
     return Promise.resolve();
   }
 
-  async showShelves () {
+  showShelves () {
     const shelfController = new ShelvesController(this.appState, this.i18n);
-    if (!this.hasFetchedShelves) {
+    let shelvesPromise;
+    if (shelfController.state.myShelves.length < 1) {
       console.log('getting');
-      await shelfController.getUserShelves();
-      console.log('got');
+      shelvesPromise = shelfController.getUserShelves();
+    } else {
+      shelvesPromise = Promise.resolve();
     }
-    console.log(shelfController.myShelves);
-    this.showShelves = true;
-    this.emit('render');
+    shelvesPromise.then(() => {
+      console.log(shelfController.state.myShelves);
+      this.showShelves = true;
+      this.emit('render');
+    });
+  }
+
+  addToShelf(bookData, shelfId) {
+    const shelfController = new ShelvesController(this.appState, this.i18n);
+    shelfController.addItemToShelf(bookData, shelfId).then(result => {
+      console.log(result);
+      this.showShelves = false;
+      this.emit('render');
+    });
   }
 }

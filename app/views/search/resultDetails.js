@@ -91,7 +91,11 @@ export const resultDetails = (searchController, result, emit = () => {}) => {
         </button>
       </p>
       ${!searchController.showShelves ? null : html`<ul>${searchController.shelves.map(shelf => {
-        return html`<li><a href="javascript:void(0)">${shelf.name}</a></li>`;
+        return html`<li>
+          <button class="pseudo" onclick=${() => searchController.addToShelf({source: 'inventaire', uri: result.uri}, shelf.id)}>
+            ${shelf.name}
+          </button>
+        </li>`;
       })}</ul>`}
       <p>
         <a class="small button" href=${result.link} target="_blank">

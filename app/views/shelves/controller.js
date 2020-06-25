@@ -42,4 +42,37 @@ export class ShelvesController extends ViewController {
       this.state.loadedShelves[this.targetShelf] = shelf;
     });
   }
+
+  async addItemToShelf (book, shelfId) {
+    let bookId;
+    if (typeof book.source !== 'undefined' && typeof book.uri !== 'undefined') {
+      const bookSearchResult = await fetch('/api/books/getId', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(book),
+      }).then(response => response.json());
+      
+      if (typeof bookSearchResult.error !== 'undefined') {
+        console.error(bookSearchResult);
+        return bookSearchResult;
+      }
+
+      bookId = bookSearchResult;
+    } else {
+      bookId = book.id;
+    }
+
+    return fetch('/api/shelf/addItem', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        shelfId,
+        bookId,
+      }),
+    })
+  }
 }
