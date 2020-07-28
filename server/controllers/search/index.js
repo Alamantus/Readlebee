@@ -76,6 +76,7 @@ class SearchController {
 
     let extraReferences = [];
     if (urisToCheck.length > 0) {
+      // Need to figure this out
       extraReferences = await this.searchReferencesBySourceCodes(source, urisToCheck);
     }
     return [
@@ -139,7 +140,7 @@ class SearchController {
     const sourceJSONKey = `"${source}"`;  // Enable searching withing JSON column.
     return await this.models.BookReference.findOne({
       where: {
-        source: {
+        sources: {
           [sourceJSONKey]: {  // Where the object key is the source
             [Op.eq]: sourceId,
           },
@@ -156,7 +157,7 @@ class SearchController {
     return await this.models.BookReference.findAll({
       where: {
         [Op.or]: sourceIds.map(sourceId => ({
-          source: {
+          sources: {
             [sourceJSONKey]: sourceId,
           },
         })),

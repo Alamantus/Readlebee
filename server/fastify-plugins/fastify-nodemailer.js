@@ -26,11 +26,13 @@ const fastifyNodemailer = (fastify, options, next) => {
   try {
     transporter = createTransport(options);
   } catch (err) {
+    fastify.decorate('canEmail', false);
     return next(err);
   }
 
   fastify
     .decorate('nodemailer', transporter)
+    .decorate('canEmail', true)
     .addHook('onClose', close);
 
   next();

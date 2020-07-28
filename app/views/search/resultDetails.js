@@ -8,21 +8,28 @@ export const resultDetails = (searchController, result, emit = () => {}) => {
   const { __ } = searchController.i18n;
   const modalId = `result_${result.uri}`;
 
+  const hasReviews = typeof result.averageRating !== 'undefined' && typeof result.numberOfReviews !== 'undefined';
+
   const buttonHTML = html`<label for=${modalId} class="pseudo button">
-    <span data-tooltip="${__('interaction.average_rating')}: ${result.averageRating}">
-      ${starRating(result.averageRating)}
-    </span>  
-    <span style="margin-left:10px;" data-tooltip=${__('interaction.reviews_written')}>
-      <span style="margin-right:8px;"><i class="icon-chat"></i></span>
-      <span>${result.numberOfReviews}</span>
-    </span>
+    ${!hasReviews
+      ? __('search.no_reviews')
+      : html`<span data-tooltip="${__('interaction.average_rating')}: ${result.averageRating}">
+        ${starRating(result.averageRating)}
+      </span>  
+      <span style="margin-left:10px;" data-tooltip=${__('interaction.reviews_written')}>
+        <span style="margin-right:8px;"><i class="icon-chat"></i></span>
+        <span>${result.numberOfReviews}</span>
+      </span>`
+    }
+    <br />
+    <small>${__('search.click_for_details')}</small>
   </label>`;
   
   const tabNames = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty'];
   
   const modalContent = html`<article class="flex">
     <div class="sixth-700" style="text-align:center;">
-      <h4>Covers</h4>
+      <h4>${__('search.covers')}</h4>
       ${typeof result.covers === 'undefined'
         ? html`<span style="font-size:3em;"><i class="icon-loading animate-spin"></i></span>`
         : html`<div class="tabs ${typeof tabNames[result.covers.length - 1] !== 'undefined' ? tabNames[result.covers.length - 1] : null}">
@@ -55,33 +62,41 @@ export const resultDetails = (searchController, result, emit = () => {}) => {
       }
     </div>
     <div class="two-third-700">
-      <h4>${__('interaction.average_rating')}</h4>
-      <span data-tooltip="${result.averageRating}">${starRating(result.averageRating)}</span>
+      ${!hasReviews
+        ? html`<h4>${__('search.no_reviews')}</h4>`
+        : html`<h4>${__('interaction.average_rating')}</h4>
+        <span data-tooltip="${result.averageRating}">${starRating(result.averageRating)}</span>
 
-      <div class="flex">
-        <div>
-          <h4>Top Reviews</h4>
+        <div class="flex">
+          <div>
+            <h4>Top Reviews</h4>
+          </div>
+          <div>
+            <a href="/book/${result.uri}" class="small button">
+              <span style="margin-right:8px;"><i class="icon-chat"></i></span>
+              <span>${result.numberOfReviews}</span>
+              <span>${__('search.see_interaction_details')}</span>
+            </a>
+          </div>
         </div>
-        <div>
-          <a href="/book/${result.uri}" class="small button">
-            <span style="margin-right:8px;"><i class="icon-chat"></i></span>
-            <span>${result.numberOfReviews}</span>
-            <span>${__('search.see_interaction_details')}</span>
-          </a>
-        </div>
-      </div>
-      ${result.reviews.map(review => {
-        return reviewCard(searchController, review);
-      })}
+        ${(typeof result.reviews !== 'undefined' && Array.isArray(result.reviews) ? result.reviews : []).map(review => {
+          return reviewCard(searchController, review);
+        })}`
+      }
     </div>
     <div class="sixth-700">
       <p>
-        <span data-tooltip=${__('interaction.add')}>
-          <button class="success">
-            <i class="icon-plus"></i>
-          </button>
-        </span>
+        <button class="success" onclick=${() => searchController.showShelves()}>
+          <i class="icon-plus"></i> <span>${__('interaction.add')}</span>
+        </button>
       </p>
+      ${!searchController.showShelves ? null : html`<ul>${searchController.shelves.map(shelf => {
+        return html`<li>
+          <button class="pseudo" onclick=${() => searchController.addToShelf({source: 'inventaire', uri: result.uri}, shelf.id)}>
+            ${shelf.name}
+          </button>
+        </li>`;
+      })}</ul>`}
       <p>
         <a class="small button" href=${result.link} target="_blank">
           ${__('search.see_book_details')}

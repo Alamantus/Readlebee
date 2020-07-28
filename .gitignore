@@ -9,3 +9,4 @@ config.json
 *.sqlite*
 *.db
 .dbversion
+.DS_Store

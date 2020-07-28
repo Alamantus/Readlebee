@@ -1,4 +1,5 @@
 import { ViewController } from '../controller';
+import { ShelvesController } from '../shelves/controller';
 
 export class SearchController extends ViewController {
   constructor(state, emit, i18n) {
@@ -13,6 +14,7 @@ export class SearchController extends ViewController {
       done: true,
       results: [],
       openModal: null,
+      showShelves: false,
     });
 
     this.emit = emit;
@@ -42,6 +44,19 @@ export class SearchController extends ViewController {
 
   get openModal() {
     return this.state.openModal;
+  }
+
+  get hasFetchedShelves() {
+    return typeof this.appState.viewStates.shelves !== 'undefined'
+    && typeof this.appState.viewStates.shelves.myShelves !== 'undefined'
+    && this.appState.viewStates.shelves.myShelves.length > 0;
+  }
+
+  get shelves() {
+    if (this.hasFetchedShelves) {
+      return this.appState.viewStates.shelves.myShelves;
+    }
+    return [];
   }
 
   set openModal(modalId) {
@@ -84,5 +99,30 @@ export class SearchController extends ViewController {
     }
 
     return Promise.resolve();
+  }
+
+  showShelves () {
+    const shelfController = new ShelvesController(this.appState, this.i18n);
+    let shelvesPromise;
+    if (shelfController.state.myShelves.length < 1) {
+      console.log('getting');
+      shelvesPromise = shelfController.getUserShelves();
+    } else {
+      shelvesPromise = Promise.resolve();
+    }
+    shelvesPromise.then(() => {
+      console.log(shelfController.state.myShelves);
+      this.showShelves = true;
+      this.emit('render');
+    });
+  }
+
+  addToShelf(bookData, shelfId) {
+    const shelfController = new ShelvesController(this.appState, this.i18n);
+    shelfController.addItemToShelf(bookData, shelfId).then(result => {
+      console.log(result);
+      this.showShelves = false;
+      this.emit('render');
+    });
   }
 }

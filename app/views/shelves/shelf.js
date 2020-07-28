@@ -71,7 +71,7 @@ export const shelfView = (shelvesController, emit) => {
             ${__('shelves.owned_by')}
             ${shelf.user === null
               ? __('shelves.you')
-              : `<a href="/profile?user=${shelf.user.handle}" title=${shelf.user.handle}>${shelf.user.name}</a>`}
+              : html`<a href="/profile?user=${shelf.user.handle}" title="${shelf.user.handle}">${shelf.user.name}</a>`}
             </span>
         </div>
         <div class="third sixth-700">
@@ -87,9 +87,7 @@ export const shelfView = (shelvesController, emit) => {
         return html`<article class="card">
           <footer>
             <div class="flex one twelve-700">
-              <div class="full sixth-700">
-                <img src=${shelfItem.coverURL} alt="cover ${shelfItem.coverEdition}" />
-              </div>
+              <img class="full sixth-700" src=${shelfItem.coverURL} alt="cover ${shelfItem.coverEdition}" />
               <div class="full half-700">
                 <h3>${shelfItem.title}</h3>
                 <span>${shelfItem.author}</span>
