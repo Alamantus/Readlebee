@@ -23,7 +23,7 @@ module.exports = sequelize => sequelize.define('Shelf', {
     },
   },
   permissionLevel: {
-    type: Sequelize.NUMBER,
+    type: Sequelize.INTEGER,
     allowNull: false,
     defaultValue: 0,
     references: {
