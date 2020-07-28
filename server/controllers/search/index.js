@@ -48,6 +48,12 @@ class SearchController {
         [fn('AVG', col('Ratings.rating')), 'averageRating'],
       ],
       order: [[col('totalInteractions'), 'DESC']],
+      group: [
+        col('BookReference.id'),
+        col('Interactions.id'),
+        col('Reviews.id'),
+        col('Ratings.id'),
+      ],
     };
   }
 
