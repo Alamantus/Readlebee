@@ -1,5 +1,6 @@
 const BooksController = require('../controllers/bookData');
 const SearchController = require('../controllers/search');
+const BookReferenceController = require('../controllers/bookReference');
 
 async function routes(fastify, options) {
   fastify.get('/api/books', async (request, reply) => {
@@ -39,9 +40,8 @@ async function routes(fastify, options) {
       return existingBookReferences[0].id;
     }
 
-    const books = new BooksController(request.body.source, request.body.uri, request.language);
-    const newBookReference = await books.createBookReference(fastify.models.BookReference, request.body.source, request.body.uri);
-    console.log('created new bookreference', newBookReference);
+    const bookReference = new BookReferenceController(fastify.models, request.language);
+    const newBookReference = await bookReference.createOrUpdateReference(request.body.source, request.body.uri, true);
     return newBookReference.id;
   });
 }

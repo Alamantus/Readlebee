@@ -168,15 +168,11 @@ class SearchController {
     );
   }
 
-  async searchReferencesBySourceCode(source, sourceId) {
-    const sourceJSONKey = `"${source}"`;  // Enable searching withing JSON column.
-    return await this.models.BookReference.findOne({
+  async searchReferencesForExactMatch(name, description) {
+    return await this.models.BookReference.findAll({
       where: {
-        sources: {
-          [sourceJSONKey]: {  // Where the object key is the source
-            [Op.eq]: sourceId,
-          },
-        },
+        name,
+        description,
       },
       ...this.bookReferenceSearchAttributes,
     }).then(  // Empty results give 1 empty model in an array, so filter those out

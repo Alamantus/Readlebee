@@ -202,10 +202,7 @@ class Inventaire {
         return a.publishDate < b.publishDate ? -1 : 1;
       });
 
-      return covers.map(cover => {
-        delete cover.publishDate;
-        return cover;
-      });
+      return covers;
     });
   }
 }

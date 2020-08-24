@@ -188,10 +188,11 @@ async function routes(fastify, options) {
       });
     }
 
-    const shelf = await request.user.getShelf({
+    const shelf = (await request.user.getShelves({
       where: { id: request.body.shelfId },
       include: [ fastify.models.ShelfItem ],
-    });
+      limit: 1,
+    }))[0];
 
     if (!ShelfController.userOwnsShelf(request.user, shelf)) {
       return reply.code(403).send({

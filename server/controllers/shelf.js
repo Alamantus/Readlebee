@@ -1,4 +1,5 @@
 const fetch = require('node-fetch');
+const BookReferenceController = require('./bookReference');
 
 class ShelfController {
   constructor (sequelizeModels, language) { // Language needs to be passed with every request involving books.

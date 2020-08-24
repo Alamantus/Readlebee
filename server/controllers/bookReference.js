@@ -7,12 +7,14 @@ class BookReferenceController {
     this.lang = language;
   }
 
-  async createOrUpdateReference(source, sourceId) {
+  async createOrUpdateReference(source, sourceId, skipSearchBySourceCodes = false) {
     const searchController = new SearchController(this.models);
-    const existingReference = searchController.searchReferencesBySourceCode(source, sourceId);
+    if (!skipSearchBySourceCodes) {
+      const existingReferences = await searchController.searchReferencesBySourceCodes(source, [sourceId]);
 
-    if (existingReference.id !== null) {
-      return existingReference;
+      if (existingReferences.length > 0) {
+        return existingReferences[0];
+      }
     }
 
     let dataClass;
@@ -30,13 +32,13 @@ class BookReferenceController {
     // Get formatted book data from source
     const bookData = await dataClass.getBookData(sourceId);
 
-    if (typeof bookData.uri !== 'undefined') {
+    if (typeof bookData.sources[0].uri !== 'undefined') {
       // Check for references by exact name and author from source
-      const matchingReference = await searchController.searchReferencesForExactMatch(bookData.name, bookData.description);
+      const matchingReferences = await searchController.searchReferencesForExactMatch(bookData.name, bookData.description);
 
-      if (matchingReference.id !== null) {
+      if (matchingReferences.length > 0) {
         // If a match is found, update the sources of reference in the database and return it.
-        return await this.addSourceToReference(matchingReference, source, sourceId);
+        return await this.addSourceToReference(matchingReferences[0], source, sourceId);
       }
 
       return await this.createReference(bookData, source, sourceId);
@@ -57,12 +59,12 @@ class BookReferenceController {
       covers: bookData.covers,
       locale: this.lang,
     });
-    newReference.totalInteractions = 0;
-    newReference.numReviews = 0;
-    newReference.averageRating = null;
-    newReference.Interactions = [];
-    newReference.Reviews = [];
-    newReference.Ratings = [];
+    // newReference.totalInteractions = 0;
+    // newReference.numReviews = 0;
+    // newReference.averageRating = null;
+    // newReference.Interactions = [];
+    // newReference.Reviews = [];
+    // newReference.Ratings = [];
     return newReference;
   }
 

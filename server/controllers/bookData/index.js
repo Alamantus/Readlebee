@@ -93,25 +93,6 @@ class BooksController {
       ),
     };
   }
-
-  async createBookReference (bookReferencesModel, source, uri) {
-    const inventaire = new Inventaire(this.language);
-    const bookData = await inventaire.getBookData(uri);
-    return await bookReferencesModel.create({
-      name: bookData.name,
-      description: bookData.description,
-      sources: {
-        [source]: uri,
-      },
-      covers: (bookData.covers ? bookData.covers : []).map(cover => {
-        return {
-          sourceId: uri,
-          url: cover.url,
-        };
-      }),
-      locale: this.language,
-    });
-  }
 }
 
 module.exports = BooksController;
