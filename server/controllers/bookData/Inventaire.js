@@ -15,6 +15,7 @@ class Inventaire {
 
   static handleQuickEntity(entityObject) {
     return {
+      id: null,
       name: (
         typeof entityObject.label !== 'undefined'
           ? entityObject.label
@@ -25,22 +26,26 @@ class Inventaire {
           ? entityObject.description
           : null
       ),
-      source: 'inventaire',
-      link: (
-        typeof entityObject.uri !== 'undefined'
-          ? `${Inventaire.url}/entity/${entityObject.uri}`
-          : null
-      ),
-      uri: (
-        typeof entityObject.uri !== 'undefined'
-          ? entityObject.uri
-          : null
-      ),
+      sources: [
+        {
+          source: 'inventaire',
+          uri: (
+            typeof entityObject.uri !== 'undefined'
+              ? entityObject.uri
+              : null
+          ),
+          link: (
+            typeof entityObject.uri !== 'undefined'
+              ? `${Inventaire.url}/entity/${entityObject.uri}`
+              : null
+          ),
+        },
+      ],
       covers: (
         typeof entityObject.image !== 'undefined'
           ? entityObject.image.map(imageId => {
             return {
-              uri: imageId.toString(),
+              sourceId: imageId.toString(),
               url: `${Inventaire.url}/img/entities/${imageId}`,
             }
           })
@@ -72,17 +77,21 @@ class Inventaire {
               : null
           )
       ),
-      source: 'inventaire',
-      link: (
-        typeof entityObject.uri !== 'undefined'
-          ? `${Inventaire.url}/entity/${entityObject.uri}`
-          : null
-      ),
-      uri: (
-        typeof entityObject.uri !== 'undefined'
-          ? entityObject.uri
-          : null
-      ),
+      sources: [
+        {
+          source: 'inventaire',
+          uri: (
+            typeof entityObject.uri !== 'undefined'
+              ? entityObject.uri
+              : null
+          ),
+          link: (
+            typeof entityObject.uri !== 'undefined'
+              ? `${Inventaire.url}/entity/${entityObject.uri}`
+              : null
+          ),
+        },
+      ],
     };
   }
 
@@ -109,7 +118,7 @@ class Inventaire {
 
       if (typeof bookData.entities !== 'undefined' && typeof bookData.entities[uri] !== 'undefined') {
         bookData = Inventaire.handleEntity(bookData.entities[uri], this.lang);
-        bookData['covers'] = await this.getCovers(bookData.uri);
+        bookData['covers'] = await this.getCovers(bookData.sources[0].uri);
 
         return bookData;
       }
@@ -126,7 +135,7 @@ class Inventaire {
     }
 
     // Note: property `wdt:P629` is a given entity (uri)'s list of editions (ISBNs).
-    const editionsRequest = fetch(`${Inventaire.url}/api/entities?action=reverse-claims&uri=${encodeURIComponent(uri)}&property=wdt:P629`)
+    const editionsRequest = fetch(`${Inventaire.url}/api/entities?action=reverse-claims&value=${encodeURIComponent(uri)}&property=wdt:P629`)
     editionsRequest.catch(exception => {
       console.error(exception);
       return {
@@ -180,7 +189,7 @@ class Inventaire {
       }).map(key => {
         const entity = responseJSON.entities[key];
         return {
-          uri: entity.uri,
+          sourceId: entity.uri,
           url: typeof entity.claims['invp:P2'] !== 'undefined' ? `${Inventaire.url}/img/entities/${entity.claims['invp:P2'][0]}` : null,
           publishDate: typeof entity.claims['wdt:P577'] !== 'undefined' ? entity.claims['wdt:P577'][0] : null,
         }
@@ -193,7 +202,10 @@ class Inventaire {
         return a.publishDate < b.publishDate ? -1 : 1;
       });
 
-      return covers;
+      return covers.map(cover => {
+        delete cover.publishDate;
+        return cover;
+      });
     });
   }
 }

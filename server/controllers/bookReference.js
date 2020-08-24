@@ -28,7 +28,7 @@ class BookReferenceController {
     }
 
     // Get formatted book data from source
-    const bookData = dataClass.getBookData(sourceId);
+    const bookData = await dataClass.getBookData(sourceId);
 
     if (typeof bookData.uri !== 'undefined') {
       // Check for references by exact name and author from source

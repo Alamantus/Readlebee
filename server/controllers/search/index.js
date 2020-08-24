@@ -3,6 +3,7 @@ const { Op, fn, col } = require('sequelize');
 
 const BooksController = require('../bookData');
 const { quickSearchInventaire } = require('./Inventaire');
+const Inventaire = require('../bookData/Inventaire');
 
 const defaultSearchOptions = {
   searchBy: 'name', // A column name in the BookReference model, mainly 'name' or 'description'
@@ -57,6 +58,30 @@ class SearchController {
     };
   }
 
+  static formatReferenceSources(reference) {
+    const referenceSources = Object.keys(reference.sources);
+    const reformattedSources = referenceSources.map(source => {
+      const uri = reference.sources[source];
+      let link;
+      switch (source) {
+        default:
+        case 'inventaire': {
+          link = `${Inventaire.url}/entity/${uri}`
+          break;
+        }
+      }
+      return {
+        source,
+        uri,
+        link,
+      }
+    });
+
+    reference.sources = reformattedSources;
+
+    return reference;
+  }
+
   async search(searchTerm, options = defaultSearchOptions) {
     const searchBy = options.searchBy.replace('title', 'name').replace('author', 'description');
     const { source, language } = options;
@@ -77,22 +102,23 @@ class SearchController {
 
     // Add any search results that match refs with the same URI and delete from results array
     const urisToCheck = searchResults.filter(
-      result => !bookReferences.some(ref => result.uri === ref.sources[source])
-    ).map(result => result.uri);
+      result => !bookReferences.some(ref => result.sources[0].uri === ref.sources[source])
+    ).map(result => result.sources[0].uri);
 
     let extraReferences = [];
     if (urisToCheck.length > 0) {
       // Need to figure this out
       extraReferences = await this.searchReferencesBySourceCodes(source, urisToCheck);
     }
+    searchResults = searchResults.filter(  // Only show the rest of the search results
+      result => !extraReferences.some(
+        ref => result.sources[0].uri === ref.sources[source]
+      )
+    );
     return [
-      ...bookReferences,
-      ...extraReferences,
-      ...searchResults.filter(  // Only show the rest of the search results
-        result => !extraReferences.some(
-          ref => result.uri === ref.sources[source]
-        )
-      ),
+      ...bookReferences.map(match => SearchController.formatReferenceSources(match)),
+      ...extraReferences.map(match => SearchController.formatReferenceSources(match)),
+      ...searchResults,
     ];
   }
 

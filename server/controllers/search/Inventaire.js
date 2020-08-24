@@ -43,7 +43,14 @@ function searchInventaire(searchTerm, language) {
         message: 'An error occurred when trying read the response from Inventaire as JSON.',
       }
     });
-    return json.then(responseJSON => responseJSON.results.map(work => Inventaire.handleEntity(work, language)));
+    return json.then(responseJSON => {
+      return responseJSON.results.map(async work => {
+        const inventaire = new Inventaire(langauge);
+        const bookData = Inventaire.handleEntity(work, language);
+        bookData['covers'] = await inventaire.getCovers(bookData.sources[0].uri);
+        return bookData;
+      });
+    });
   }
 }
 

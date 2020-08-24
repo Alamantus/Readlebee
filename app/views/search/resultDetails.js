@@ -6,7 +6,8 @@ import { modal } from '../partials/modal';
 
 export const resultDetails = (searchController, result, emit = () => {}) => {
   const { __ } = searchController.i18n;
-  const modalId = `result_${result.uri}`;
+  const source = result.sources[0];
+  const modalId = `result_${source.uri}`;
 
   const hasReviews = typeof result.averageRating !== 'undefined' && typeof result.numberOfReviews !== 'undefined';
 
@@ -27,37 +28,41 @@ export const resultDetails = (searchController, result, emit = () => {}) => {
   
   const tabNames = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty'];
   
+  const coversHTMLArray = result.covers.map((cover, index, allCovers) => {
+    return html`<div>
+        <img src=${cover.url} alt="${cover.sourceId.replace(':', ' ').toUpperCase()}, Published: ${cover.publishDate}">
+        ${typeof allCovers[index - 1] === 'undefined'
+        ? null
+        : html`<label class="button" for="cover_${allCovers[index - 1].sourceId}" style="margin-right:8px;">
+            ${'<'}
+          </label>`
+      }
+        ${typeof allCovers[index + 1] === 'undefined'
+        ? null
+        : html`<label class="button" for="cover_${allCovers[index + 1].sourceId}">
+            ${'>'}
+          </label>`
+      }
+      </div>`;
+  });
+  
   const modalContent = html`<article class="flex">
     <div class="sixth-700" style="text-align:center;">
       <h4>${__('search.covers')}</h4>
       ${typeof result.covers === 'undefined'
         ? html`<span style="font-size:3em;"><i class="icon-loading animate-spin"></i></span>`
-        : html`<div class="tabs ${typeof tabNames[result.covers.length - 1] !== 'undefined' ? tabNames[result.covers.length - 1] : null}">
+        : html`<div class="tabs ${typeof tabNames[result.covers.length - 1] !== 'undefined' ? tabNames[result.covers.length - 1] : tabNames[19]}">
           ${result.covers.map((cover, index) => {
             return [
-              html`<input id="cover_${cover.uri}" type="radio" name="${modalId}_covers" ${index === 0 ? 'checked' : null} />`,
-              // html`<label class="small pseudo button toggle" for="cover_${cover.uri}">•</label>`,
+              html`<input id="cover_${cover.sourceId}" type="radio" name="${modalId}_covers" ${index === 0 ? 'checked' : null} />`,
+              // html`<label class="small pseudo button toggle" for="cover_${cover.sourceId}">•</label>`,
             ];
           })}
-          <div class="row">
-          ${result.covers.map((cover, index, allCovers) => {
-            return html`<div>
-              <img src=${cover.url} alt="${cover.uri.replace(':', ' ').toUpperCase()}, Published: ${cover.publishDate}">
-              ${typeof allCovers[index - 1] === 'undefined'
-                ? null
-                : html`<label class="button" for="cover_${allCovers[index - 1].uri}" style="margin-right:8px;">
-                  ${'<'}
-                </label>`
-              }
-              ${typeof allCovers[index + 1] === 'undefined'
-                ? null
-                : html`<label class="button" for="cover_${allCovers[index + 1].uri}">
-                  ${'>'}
-                </label>`
-              }
-            </div>`;
-          })}
-          </div>
+          <div class="row" id="covers_${modalId}">${
+            searchController.openModal === modalId
+            ? coversHTMLArray
+            : '' /* Leave the covers column empty until opened to prevent loading too many images */
+          }</div>
         </div>`
       }
     </div>
@@ -72,7 +77,7 @@ export const resultDetails = (searchController, result, emit = () => {}) => {
             <h4>Top Reviews</h4>
           </div>
           <div>
-            <a href="/book/${result.uri}" class="small button">
+            <a href="/book/${source.uri}" class="small button">
               <span style="margin-right:8px;"><i class="icon-chat"></i></span>
               <span>${result.numberOfReviews}</span>
               <span>${__('search.see_interaction_details')}</span>
@@ -92,27 +97,29 @@ export const resultDetails = (searchController, result, emit = () => {}) => {
       </p>
       ${!searchController.showShelves ? null : html`<ul>${searchController.shelves.map(shelf => {
         return html`<li>
-          <button class="pseudo" onclick=${() => searchController.addToShelf({source: 'inventaire', uri: result.uri}, shelf.id)}>
+          <button class="pseudo" onclick=${() => searchController.addToShelf({ id: result.id, ...source }, shelf.id)}>
             ${shelf.name}
           </button>
         </li>`;
       })}</ul>`}
       <p>
-        <a class="small button" href=${result.link} target="_blank">
+        <a class="small button" href=${source.link} target="_blank">
           ${__('search.see_book_details')}
         </a>
       </p>
     </div>
   </article>`;
   
+  const onShow = () => {
+    const coversColumn = document.getElementById(`covers_${modalId}`);
+    coversColumn.innerHTML = '';
+    coversHTMLArray.forEach(element => coversColumn.appendChild(element));
+  };
+  
   return modal(modalId, searchController, modalContent, {
     styles: "width:90%;",
     buttonHTML, // This should be replaced with buttonHTML containing the ratings and number of reviews etc.
     headerText: result.name,
-    onShow: () => {
-      if (typeof result.covers === 'undefined') {
-        searchController.getCovers(result.uri).then(() => emit('render'));
-      }
-    },
+    onShow,
   });
 }
