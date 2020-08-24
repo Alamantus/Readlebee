@@ -15,7 +15,21 @@ const fastify = require('fastify')({
   logger: process.env.NODE_ENV !== 'production',
 });
 fastify.decorate('siteConfig', siteConfig); // Insert siteConfig into global fastify instance
-fastify.register(require('fastify-helmet'));  // Add security stuff
+fastify.register(require('fastify-helmet'), {  // Add security stuff
+  contentSecurityPolicy: {  // Modify Content Security Policy headers to allow content from specific domains
+    directives: {
+      'default-src': ["'self'"],  // Default value
+      'base-uri': ["'self'"],  // Default value
+      'block-all-mixed-content': [],  // Default value
+      'frame-ancestors': ["'self'"],  // Default value
+      'style-src': ["'self'", "https: 'unsafe-inline'"],  // Default value
+      'upgrade-insecure-requests': [],  // Default value
+      'object-src': ["'none'"],  // Default value
+      'script-src': ["'self'", 'polyfill.io', "https: 'unsafe-inline'"],  // Allow loading scripts inline (required for Choo) and from polyfill.io
+      'img-src': ["'self'", siteConfig.inventaireDomain, 'openlibrary.org', 'covers.openlibrary.org', "data:"], // Allow images from Inventaire, Open Library, and raw `data:` hashes
+    }
+  }
+});
 fastify.register(require('fastify-compress'));  // Compress output data for smaller packet delivery
 fastify.register(require('fastify-static'), { // Enable delivering static content efficiently
   root: path.resolve(__dirname, '../public'), // all static content will be delivered from the public/ folder
