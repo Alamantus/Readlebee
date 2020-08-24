@@ -40,7 +40,7 @@ async function routes(fastify, options) {
     }
 
     const books = new BooksController(request.body.source, request.body.uri, request.language);
-    const newBookReference = await books.createBookReference(request.body.source, request.body.uri);
+    const newBookReference = await books.createBookReference(fastify.models.BookReference, request.body.source, request.body.uri);
     console.log('created new bookreference', newBookReference);
     return newBookReference.id;
   });

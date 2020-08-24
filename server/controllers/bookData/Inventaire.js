@@ -105,10 +105,10 @@ class Inventaire {
         }
       });
 
-      const bookData = await json;
+      let bookData = await json;
 
       if (typeof bookData.entities !== 'undefined' && typeof bookData.entities[uri] !== 'undefined') {
-        const bookData = Inventaire.handleEntity(bookData.entities[uri], this.lang);
+        bookData = Inventaire.handleEntity(bookData.entities[uri], this.lang);
         bookData['covers'] = await this.getCovers(bookData.uri);
 
         return bookData;
