@@ -26,20 +26,18 @@ export const resultDetails = (searchController, result, emit = () => {}) => {
     <small>${__('search.click_for_details')}</small>
   </label>`;
   
-  const tabNames = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty'];
-  
   const coversHTMLArray = result.covers.map((cover, index, allCovers) => {
     return html`<div>
         <img src=${cover.url} alt="${cover.sourceId.replace(':', ' ').toUpperCase()}, Published: ${cover.publishDate}">
         ${typeof allCovers[index - 1] === 'undefined'
         ? null
-        : html`<label class="button" for="cover_${allCovers[index - 1].sourceId}" style="margin-right:8px;">
+        : html`<label class="button" for="cover_${allCovers[index - 1].sourceId}" style="margin-right:8px;" aria-label="View Previous Cover">
             ${'<'}
           </label>`
       }
         ${typeof allCovers[index + 1] === 'undefined'
         ? null
-        : html`<label class="button" for="cover_${allCovers[index + 1].sourceId}">
+        : html`<label class="button" for="cover_${allCovers[index + 1].sourceId}" aria-label="View Next Cover">
             ${'>'}
           </label>`
       }
@@ -51,10 +49,10 @@ export const resultDetails = (searchController, result, emit = () => {}) => {
       <h4>${__('search.covers')}</h4>
       ${typeof result.covers === 'undefined'
         ? html`<span style="font-size:3em;"><i class="icon-loading animate-spin"></i></span>`
-        : html`<div class="tabs ${typeof tabNames[result.covers.length - 1] !== 'undefined' ? tabNames[result.covers.length - 1] : tabNames[19]}">
+        : html`<div class="tabs ${result.covers.length}">
           ${result.covers.map((cover, index) => {
             return [
-              html`<input id="cover_${cover.sourceId}" type="radio" name="${modalId}_covers" ${index === 0 ? 'checked' : null} />`,
+              html`<input id="cover_${cover.sourceId}" type="radio" name="${modalId}_covers" ${index === 0 ? 'checked' : null} aria-hidden="true" />`,
               // html`<label class="small pseudo button toggle" for="cover_${cover.sourceId}">•</label>`,
             ];
           })}

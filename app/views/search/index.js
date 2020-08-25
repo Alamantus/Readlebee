@@ -17,6 +17,8 @@ export const searchView = (state, emit, i18n) => {
 
   // Returning an array in a view allows non-shared parent HTML elements.
   return [
+    html`<style>${controller.generateTabsCSS()}</style>`,
+    
     html`<h1 class="title">${__('search.header')}</h1>`,
 
     html`<section class="flex">
