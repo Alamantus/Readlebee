@@ -252,7 +252,7 @@ class ShelfController {
 
   async addShelfItem(shelf, bookReferenceId, source = null) {
     const bookReferenceController = new BookReferenceController(this.models, this.lang);
-    
+
     let bookId = bookReferenceId;
     if (source !== null) {
       const bookReference = await bookReferenceController.createOrUpdateReference(source, bookId);
@@ -265,7 +265,7 @@ class ShelfController {
       }
     }
 
-    const shelfItem = await shelf.addShelfItem({ bookId }).catch(err => err);
+    const shelfItem = await shelf.createShelfItem({ bookId }).catch(err => err);
 
     if (!shelfItem) {
       return {
