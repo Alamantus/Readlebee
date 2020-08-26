@@ -2,8 +2,8 @@ const fetch = require('node-fetch');
 const { Op, fn, col } = require('sequelize');
 
 const BooksController = require('../bookData');
+const BookReferenceController = require('../bookReference');
 const { quickSearchInventaire } = require('./Inventaire');
-const Inventaire = require('../bookData/Inventaire');
 
 const defaultSearchOptions = {
   searchBy: 'name', // A column name in the BookReference model, mainly 'name' or 'description'
@@ -58,30 +58,6 @@ class SearchController {
     };
   }
 
-  static formatReferenceSources(reference) {
-    const referenceSources = Object.keys(reference.sources);
-    const reformattedSources = referenceSources.map(source => {
-      const uri = reference.sources[source];
-      let link;
-      switch (source) {
-        default:
-        case 'inventaire': {
-          link = `${Inventaire.url}/entity/${uri}`
-          break;
-        }
-      }
-      return {
-        source,
-        uri,
-        link,
-      }
-    });
-
-    reference.sources = reformattedSources;
-
-    return reference;
-  }
-
   async search(searchTerm, options = defaultSearchOptions) {
     const searchBy = options.searchBy.replace('title', 'name').replace('author', 'description');
     const { source, language } = options;
@@ -116,8 +92,8 @@ class SearchController {
       )
     );
     return [
-      ...bookReferences.map(match => SearchController.formatReferenceSources(match)),
-      ...extraReferences.map(match => SearchController.formatReferenceSources(match)),
+      ...bookReferences.map(match => BookReferenceController.formatReferenceSources(match)),
+      ...extraReferences.map(match => BookReferenceController.formatReferenceSources(match)),
       ...searchResults,
     ];
   }

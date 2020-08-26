@@ -7,6 +7,30 @@ class BookReferenceController {
     this.lang = language;
   }
 
+  static formatReferenceSources(reference) {
+    const referenceSources = Object.keys(reference.sources);
+    const reformattedSources = referenceSources.map(source => {
+      const uri = reference.sources[source];
+      let link;
+      switch (source) {
+        default:
+        case 'inventaire': {
+          link = `${Inventaire.url}/entity/${uri}`
+          break;
+        }
+      }
+      return {
+        source,
+        uri,
+        link,
+      }
+    });
+
+    reference.sources = reformattedSources;
+
+    return reference;
+  }
+
   async createOrUpdateReference(source, sourceId, skipSearchBySourceCodes = false) {
     const searchController = new SearchController(this.models);
     if (!skipSearchBySourceCodes) {
