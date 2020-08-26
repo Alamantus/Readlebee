@@ -1,4 +1,6 @@
 const fetch = require('node-fetch');
+const { Op, fn, col } = require('sequelize');
+
 const BookReferenceController = require('./bookReference');
 
 class ShelfController {
@@ -126,9 +128,79 @@ class ShelfController {
       };
     }
 
-    return this.getFakeShelf();
+    // REMINDER: Factor in privacy levels
 
-    const shelf = await this.shelfModel.findByPk(shelfId);
+    const shelf = await this.models.Shelf.findByPk(shelfId, {
+      include: [
+        {
+          as: 'User',
+          model: this.models.User,
+          attributes: ['id', 'username', 'displayName'],
+          required: true,
+        },
+        {
+          as: 'ShelfItems',
+          model: this.models.ShelfItem,
+          attributes: [
+            'id',
+            'bookEdition',
+            'order'
+          ],
+          required: false,
+          include: [
+            {
+              as: 'Statuses',
+              model: this.models.Status,
+              attributes: ['text', 'progress', 'createdAt', 'updatedAt'],
+              required: false,
+            },
+            {
+              as: 'BookReference',
+              model: this.models.BookReference,
+              attributes: ['name', 'description', 'sources', 'covers'],
+              required: true,
+              // include: [
+              //   {
+              //     as: 'Interactions',
+              //     model: this.models.Review,
+              //     attributes: ['id'],
+              //     required: false,
+              //   },
+              //   {
+              //     as: 'Reviews',
+              //     model: this.models.Review,
+              //     attributes: ['id'],
+              //     required: false,
+              //   },
+              //   {
+              //     as: 'Ratings',
+              //     model: this.models.Review,
+              //     attributes: ['rating'],
+              //     required: false,
+              //   },
+              // ],
+              // group: [
+              //   col('BookReference.id'),
+              //   col('Interactions.id'),
+              //   col('Reviews.id'),
+              //   col('Ratings.id'),
+              // ],
+            },
+          ],
+          orderBy: [[col('ShelfItems.order'), 'ASC']],
+        },
+      ],
+      attributes: [
+        [col('Shelf.id'), 'id'],
+        'name',
+        'userId',
+        'permissionLevel',
+        'isDeletable',
+        'createdAt',
+        'updatedAt',
+        [fn('COUNT', col('ShelfItems.id')), 'numShelfItems'],
+      ],
+    });
     if (shelf === null) {
       return {
         error: `Shelf with ID ${shelfId} not found.`,
@@ -136,6 +208,8 @@ class ShelfController {
     }
 
     shelf.updatedAt = this.getLastUpdatedTimestamp(shelf);
+    shelf.isPublic = shelf.permissionLevel === 0;
+
     return shelf;
   }
 
@@ -198,7 +272,7 @@ class ShelfController {
 
   async scrubShelfData (shelf, currentUser) {
     const userOwnsShelf = currentUser.id === shelf.userId;
-    const shelfUser = userOwnsShelf ? null : await shelf.getUser({ attributes: ['username, displayName'] });
+    const shelfUser = userOwnsShelf ? null : shelf.User;
     let user = {};
     if (shelfUser !== null) {
       user.name = shelfUser.displayName;
@@ -206,40 +280,25 @@ class ShelfController {
     } else {
       user = null;
     }
-    const rawShelfItems = await shelf.getShelfItems({
-      attributes: ['bookId', 'createdAt', 'updatedAt'],
-      order: [['order', 'ASC']],
-    })
-    const bookReferenceMap = await Promise.all(shelfItems.map(shelfItem => {
-      return shelfItem.getBookReference({
-        attributes: ['name', 'description', 'sources', 'covers'],
-      });
-    }));
-    const bookReferenceStatuses = await Promise.all(bookReferenceMap.map(bookReference => {
-      return bookReference.getStatuses({
+    
+    // Untested
+    const shelfItems = await Promise.all(shelf.ShelfItems.map(async (shelfItem) => {
+      const bookReference = BookReferenceController.formatReferenceSources(shelfItem.BookReference);
+      const reviews = await bookReference.getInteractions({
         where: {
           userId: shelf.userId,
-        },
-        order: [['updatedAt', 'DESC']],
+        }, // Return all reviews for any bookEdition so they can be filtered on frontend.
+        attributes: ['text', 'rating', 'bookEdition'],
       });
+      return {
+        title: bookReference.name,
+        author: bookReference.description,
+        sources: bookReference.sources,
+        covers: bookReference.covers,
+        updates: shelfItem.Statuses,
+        reviews,
+      };
     }));
-    const bookReferences = bookReferenceMap.map(bookReference => {
-      bookReference.updates = bookReferenceStatuses.findAll(status => status.type === 1);
-      bookReference.rating = bookReferenceStatuses.find(status => status.type === 3);
-      bookReference.review = bookReferenceStatuses.find(status => status.type === 4);
-      return bookReference;
-    });
-    const shelfItems = rawShelfItems.map(shelfItem => {
-      const bookReference = bookReferences.find(bookData => bookData.id === shelfItem.bookId);
-      shelfItem.title = bookReference.name;
-      shelfItem.author = bookReference.description;
-      shelfItem.sources = bookReference.sources;
-      shelfItem.covers = bookReference.covers;
-      shelfItem.updates = bookReference.updates;
-      shelfItem.rating = bookReference.rating.data;
-      shelfItem.review = bookReference.review.data;
-      return shelfItem;
-    })
     
     const shelfData = {
       name: shelf.name,
