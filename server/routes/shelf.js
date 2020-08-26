@@ -62,9 +62,8 @@ async function routes(fastify, options) {
       });
     }
 
-    // const shelfData = await shelfController.scrubShelfData(shelf, request.user);
-    // return reply.send(shelfData);
-    return reply.send(shelf);
+    const shelfData = await shelfController.scrubShelfData(shelf, request.user);
+    return reply.send(shelfData);
   });
 
   fastify.post('/api/shelf/create', async (request, reply) => {

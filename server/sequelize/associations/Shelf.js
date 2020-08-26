@@ -16,11 +16,6 @@ module.exports = models => {
     onDelete: 'SET NULL',
   });
 
-  Shelf.belongsTo(User, {
-    foreignKey: 'permissionLevel',
-    onDelete: 'CASCADE',
-  });
-
   Shelf.hasMany(ShelfItem, {
     foreignKey: 'shelfId',
   });

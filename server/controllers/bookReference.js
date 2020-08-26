@@ -1,5 +1,4 @@
 const Inventaire = require('./bookData/Inventaire');
-const SearchController = require('./search');
 
 class BookReferenceController {
   constructor(sequelizeModels, language) {
@@ -32,9 +31,10 @@ class BookReferenceController {
   }
 
   async createOrUpdateReference(source, sourceId, skipSearchBySourceCodes = false) {
-    const searchController = new SearchController(this.models);
+    const SearchController = require('./search');
+    const search = new SearchController(this.models);
     if (!skipSearchBySourceCodes) {
-      const existingReferences = await searchController.searchReferencesBySourceCodes(source, [sourceId]);
+      const existingReferences = await search.searchReferencesBySourceCodes(source, [sourceId]);
 
       if (existingReferences.length > 0) {
         return existingReferences[0];
@@ -58,7 +58,7 @@ class BookReferenceController {
 
     if (typeof bookData.sources[0].uri !== 'undefined') {
       // Check for references by exact name and author from source
-      const matchingReferences = await searchController.searchReferencesForExactMatch(bookData.name, bookData.description);
+      const matchingReferences = await search.searchReferencesForExactMatch(bookData.name, bookData.description);
 
       if (matchingReferences.length > 0) {
         // If a match is found, update the sources of reference in the database and return it.
