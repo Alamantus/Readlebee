@@ -42,7 +42,7 @@
     "make-promises-safe": "^5.1.0",
     "marked": "^1.1.1",
     "mysql2": "^2.1.0",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "nodemailer": "^6.4.11",
     "parcel-bundler": "^1.12.4",
     "parcel-plugin-goodie-bag": "^2.0.0",
