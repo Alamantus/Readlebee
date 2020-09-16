@@ -66,7 +66,7 @@ export class SearchController extends ViewController {
   search() {
     if (this.hasQuery) {
       this.state.done = false;
-      this.emit('render', () => {
+      this.emit(this.appState.events.RENDER, () => {
         this.state.lastSearch = this.appState.query.for;
         this.state.lastSource = this.state.searchSource;
         this.state.lastBy = this.state.searchBy;
@@ -79,7 +79,7 @@ export class SearchController extends ViewController {
             this.state.results = responseJSON;
             this.state.done = true;
           })
-          .then(() => this.emit('render'));
+          .then(() => this.emit(this.appState.events.RENDER));
       });
     }
   }
@@ -143,7 +143,7 @@ export class SearchController extends ViewController {
     shelvesPromise.then(() => {
       console.log(shelfController.state.myShelves);
       this.showShelves = true;
-      this.emit('render');
+      this.emit(this.appState.events.RENDER);
     });
   }
 
@@ -152,7 +152,7 @@ export class SearchController extends ViewController {
     shelfController.addItemToShelf(bookData, shelfId).then(result => {
       console.log(result);
       this.showShelves = false;
-      this.emit('render');
+      this.emit(this.appState.events.RENDER);
     });
   }
 }

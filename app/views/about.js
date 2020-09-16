@@ -13,7 +13,7 @@ export const aboutView = (state, emit, i18n) => {
     community.innerHTML = i18n.pages.community;
   }
   if (promises.length > 0) {
-    Promise.all(promises).then(fulfilled => emit('render'));
+    Promise.all(promises).then(fulfilled => emit(state.events.RENDER));
   }
   return [
     content,

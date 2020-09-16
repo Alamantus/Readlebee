@@ -24,7 +24,7 @@ export const shelfView = (shelvesController, emit) => {
 
   if (typeof shelvesController.state.loadedShelves[shelvesController.targetShelf] === 'undefined') {
     shelvesController.getTargetShelf().then(() => {
-      emit('render');
+      emit(shelvesController.appState.events.RENDER);
     });
   }
 
@@ -77,7 +77,7 @@ export const shelfView = (shelvesController, emit) => {
         <div class="third sixth-700">
           <button class="pseudo" onclick=${() => {
             delete shelvesController.state.loadedShelves[shelvesController.targetShelf];
-            emit('render');
+            emit(shelvesController.appState.events.RENDER);
           }}>
             Reload <i class="icon-reload"></i>
           </button>

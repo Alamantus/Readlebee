@@ -34,7 +34,7 @@ export class LoginController extends ViewController {
     this.state.fieldValues.loginEmail = '';
     this.state.fieldValues.loginPassword = '';
     
-    this.emit('render');
+    this.emit(this.appState.events.RENDER);
   }
 
   clearCreateAccountForm () {
@@ -44,7 +44,7 @@ export class LoginController extends ViewController {
     this.state.fieldValues.createPassword = '';
     this.state.fieldValues.createConfirm = '';
     
-    this.emit('render');
+    this.emit(this.appState.events.RENDER);
   }
 
   validateLogin () {
@@ -52,7 +52,7 @@ export class LoginController extends ViewController {
     this.state.loginError = '';
     this.state.isChecking = true;
 
-    this.emit('render', () => {
+    this.emit(this.appState.events.RENDER, () => {
       const {
         loginEmail,
         loginPassword
@@ -64,7 +64,7 @@ export class LoginController extends ViewController {
       ].includes('')) {
         this.state.loginError = __('login.login_required_field_blank');
         this.state.isChecking = false;
-        this.emit('render');
+        this.emit(this.appState.events.RENDER);
         return;
       }
 
@@ -77,7 +77,7 @@ export class LoginController extends ViewController {
     this.state.createError = '';
     this.state.isChecking = true;
 
-    this.emit('render', () => {
+    this.emit(this.appState.events.RENDER, () => {
       const {
         createEmail,
         createUsername,
@@ -93,14 +93,14 @@ export class LoginController extends ViewController {
       ].includes('')) {
         this.state.createError = __('login.create_required_field_blank');
         this.state.isChecking = false;
-        this.emit('render');
+        this.emit(this.appState.events.RENDER);
         return;
       }
 
       if (createPassword !== createConfirm) {
         this.state.createError = __('login.create_password_confirm_mismatch');
         this.state.isChecking = false;
-        this.emit('render');
+        this.emit(this.appState.events.RENDER);
         return;
       }
 
@@ -130,7 +130,7 @@ export class LoginController extends ViewController {
         console.error(response);
         this.state.loginError = __(response.message);
         this.state.isChecking = false;
-        this.emit('render');
+        this.emit(this.appState.events.RENDER);
         return;
       }
 
@@ -169,7 +169,7 @@ export class LoginController extends ViewController {
         console.error(response);
         this.state.createError = __(response.message);
         this.state.isChecking = false;
-        this.emit('render');
+        this.emit(this.appState.events.RENDER);
         return;
       }
 

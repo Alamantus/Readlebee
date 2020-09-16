@@ -22,7 +22,7 @@ export const userShelvesView = (shelvesController, emit) => {
 
   if (shelvesController.state.myShelves.length <= 0) {
     shelvesController.getUserShelves().then(() => {
-      emit('render');
+      emit(shelvesController.appState.events.RENDER);
     });
   }
   

@@ -1,9 +1,9 @@
 export const appListeners = (app, state, emitter) => {
-  emitter.on('DOMContentLoaded', () => {
-    emitter.emit('DOMTitleChange', app.siteConfig.siteName);
+  emitter.on(state.events.DOMCONTENTLOADED, () => {
+    emitter.emit(state.events.DOMTITLECHANGE, app.siteConfig.siteName);
     
     // Emitter listeners
-    emitter.on('render', callback => {
+    emitter.on(state.events.RENDER, callback => {
       // This is a dirty hack to get the callback to call *after* re-rendering.
       if (callback && typeof callback === "function") {
         setTimeout(() => {
@@ -12,17 +12,17 @@ export const appListeners = (app, state, emitter) => {
       }
     });
 
-    emitter.on('set-language', newLanguage => {
+    emitter.on(state.events.SET_LANGUAGE, newLanguage => {
       app.setSettingsItem('lang', newLanguage);
       state.language = newLanguage;
       state.i18n.fetchLocaleUI().then(() => {
-        emitter.emit('render');
+        emitter.emit(state.events.RENDER);
       });
     });
 
     state.i18n.fetchLocaleUI().then(() => {
       app.checkIfLoggedIn(state).then(isLoggedIn => {
-        emitter.emit('render'); // This should hopefully only run once after the DOM is loaded. It prevents routing issues where 'render' hasn't been defined yet
+        emitter.emit(state.events.RENDER); // This should hopefully only run once after the DOM is loaded. It prevents routing issues where 'render' hasn't been defined yet
       });
     })
   });
