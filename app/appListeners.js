@@ -1,6 +1,7 @@
 export const appListeners = (app, state, emitter) => {
   emitter.on('DOMContentLoaded', () => {
-    document.title = app.siteConfig.siteName;
+    emitter.emit('DOMTitleChange', app.siteConfig.siteName);
+    
     // Emitter listeners
     emitter.on('render', callback => {
       // This is a dirty hack to get the callback to call *after* re-rendering.
