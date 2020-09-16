@@ -148,11 +148,11 @@ export class SearchController extends ViewController {
   }
 
   addToShelf(bookData, shelfId) {
-    const shelfController = new ShelvesController(this.appState, this.i18n);
-    shelfController.addItemToShelf(bookData, shelfId).then(result => {
+    const { ADD_TO_SHELF, RENDER } = this.appState.events;
+    this.emit(ADD_TO_SHELF, bookData, shelfId, (result) => {
       console.log(result);
       this.showShelves = false;
-      this.emit(this.appState.events.RENDER);
+      this.emit(RENDER);
     });
   }
 }
