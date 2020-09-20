@@ -1,4 +1,4 @@
-export const appListeners = (app, state, emitter) => {
+const appListeners = (app, state, emitter) => {
   emitter.on(state.events.DOMCONTENTLOADED, () => {
     emitter.emit(state.events.DOMTITLECHANGE, app.siteConfig.siteName);
     
@@ -53,10 +53,14 @@ export const appListeners = (app, state, emitter) => {
       }).then(result => callback(result));
     });
 
-    state.i18n.fetchLocaleUI().then(() => {
-      app.checkIfLoggedIn(state).then(isLoggedIn => {
-        emitter.emit(state.events.RENDER); // This should hopefully only run once after the DOM is loaded. It prevents routing issues where 'render' hasn't been defined yet
+    if (typeof window !== 'undefined') {
+      state.i18n.fetchLocaleUI().then(() => {
+        app.checkIfLoggedIn(state).then(isLoggedIn => {
+          emitter.emit(state.events.RENDER); // This should hopefully only run once after the DOM is loaded. It prevents routing issues where 'render' hasn't been defined yet
+        });
       });
-    })
+    }
   });
 }
+
+module.exports = { appListeners };

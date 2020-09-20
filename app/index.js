@@ -1,33 +1,43 @@
-import 'babel-polyfill';
+require('babel-polyfill');
 
-import choo from 'choo';
+const choo = require('choo');
 
-import config from './config.json';
-import { appRoutes } from './appRoutes';
-import { appListeners } from './appListeners';
-import { appState } from './appState.js';
-import { appUtilities } from './appUtilities.js';
+const config = require('./config.json');
+const { appRoutes } = require('./appRoutes');
+const { appListeners } = require('./appListeners');
+const { appState } = require('./appState.js');
+const { appUtilities } = require('./appUtilities.js');
 
-const app = choo();
+function frontend() {
+  const app = choo();
 
-if (process.env.NODE_ENV !== 'production') {
-  // Only runs in development and will be stripped from production build.
-  app.use(require('choo-devtools')());  // Exposes `choo` to the console for debugging!
+  if (process.env.NODE_ENV !== 'production') {
+    // Only runs in development and will be stripped from production build.
+    app.use(require('choo-devtools')());  // Exposes `choo` to the console for debugging!
+  }
+
+  app.use((state, emitter) => {
+    app.siteConfig = config;
+    appUtilities(app);
+  });
+
+  app.use((state, emitter) => {
+    appState(app, state);
+
+    // Listeners
+    appListeners(app, state, emitter);
+  });
+
+  // Routes
+  appRoutes(app);
+
+  app.mount('body');  // Overwrite the `<body>` tag with the content of the Choo app
+
+  return app;
 }
 
-app.use((state, emitter) => {
-  app.siteConfig = config;
-  appUtilities(app);
-});
+if (typeof window !== 'undefined') {
+  frontend();
+}
 
-app.use((state, emitter) => {
-  appState(app, state);
-
-  // Listeners
-  appListeners(app, state, emitter);
-});
-
-// Routes
-appRoutes(app);
-
-app.mount('body');  // Overwrite the `<body>` tag with the content of the Choo app
+module.exports = frontend;

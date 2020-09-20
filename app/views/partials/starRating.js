@@ -1,6 +1,6 @@
-import html from 'choo/html';
+const html = require('choo/html');
 
-export const starRating = (rating) => {
+const starRating = (rating) => {
   const wholeStars = Math.floor(rating);
   const hasPartial = rating - wholeStars > 0;
   const emptyStars = 5 - wholeStars - (hasPartial ? 1 : 0);
@@ -17,3 +17,5 @@ export const starRating = (rating) => {
 
   return stars;
 }
+
+module.exports = { starRating };

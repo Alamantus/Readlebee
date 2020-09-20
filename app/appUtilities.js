@@ -1,6 +1,6 @@
-export const appUtilities = (app) => {
+const appUtilities = (app) => {
   app.getSettingsItem = settingsKey => {
-    let savedSettings = window.localStorage.getItem('settings');
+    let savedSettings = typeof window !== 'undefined' && window.localStorage.getItem('settings');
     if (savedSettings) {
       savedSettings = JSON.parse(savedSettings);
       if (typeof savedSettings[settingsKey] !== 'undefined') {
@@ -10,6 +10,8 @@ export const appUtilities = (app) => {
     return null;
   }
   app.setSettingsItem = (settingsKey, value) => {
+    if (typeof window === 'undefined') return null;
+
     let savedSettings = window.localStorage.getItem('settings');
     if (savedSettings) {
       savedSettings = JSON.parse(savedSettings);
@@ -21,6 +23,7 @@ export const appUtilities = (app) => {
   }
 
   app.checkIfLoggedIn = (appState) => {
+    if (typeof window === 'undefined') return false;
     return fetch('/api/account/validate', { method: 'post' })
       .then(response => response.json())
       .then(response => {
@@ -35,3 +38,5 @@ export const appUtilities = (app) => {
       });
   }
 }
+
+module.exports = { appUtilities };

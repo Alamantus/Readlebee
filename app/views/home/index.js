@@ -1,19 +1,21 @@
-import html from 'choo/html';
+const html = require('choo/html');
 
-import { HomeController } from './controller';  // The controller for this view, where processing should happen.
-import { loggedOutView } from './loggedOut';
-import { loggedInView } from './loggedIn';
+const { HomeController } = require('./controller');  // The controller for this view, where processing should happen.
+const { loggedOutView } = require('./loggedOut');
+const { loggedInView } = require('./loggedIn');
 
 // This is the view function that is exported and used in the view manager.
-export const homeView = (state, emit, i18n) => {
+const homeView = (state, emit, i18n) => {
   const controller = new HomeController(state, i18n);
 
   // Returning an array in a view allows non-shared parent HTML elements.
   // This one doesn't have the problem right now, but it's good to remember.
   return [
-    (!controller.isLoggedIn
+    (!controller.isLoggedIn || typeof window === 'undefined'
       ? loggedOutView(controller, emit)
       : loggedInView(controller, emit)
     ),
   ];
 }
+
+module.exports = { homeView };

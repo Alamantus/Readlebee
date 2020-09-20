@@ -1,11 +1,15 @@
-import { I18n } from "./i18n";
+const { I18n } = require("./i18n");
 
-export const appState = (app, state, emitter) => {
+const appState = (app, state, emitter) => {
   state.events.SET_LANGUAGE = 'setLanguage';
   state.events.ADD_TO_SHELF = 'addToShelf';
   
-  state.language = app.getSettingsItem('lang') ? app.getSettingsItem('lang') : (navigator.language || navigator.userLanguage).split('-')[0];
+  if (typeof window !== 'undefined') {
+    state.language = app.getSettingsItem('lang') ? app.getSettingsItem('lang') : (window.navigator.language || window.navigator.userLanguage).split('-')[0];
+    state.isLoggedIn = false;
+    state.i18n = new I18n(state); // Global I18n class passed to all views
+  }
   state.viewStates = {};
-  state.isLoggedIn = false;
-  state.i18n = new I18n(state); // Global I18n class passed to all views
 }
+
+module.exports = { appState };

@@ -1,6 +1,6 @@
-import html from 'choo/html';
+const html = require('choo/html');
 
-export const aboutView = (state, emit, i18n) => {
+const aboutView = (state, emit, i18n) => {
   const content = html`<section class="content"><i class="icon-loading animate-spin"></i></section>`;
   const community = html`<section class="content"></section>`;
 
@@ -20,3 +20,5 @@ export const aboutView = (state, emit, i18n) => {
     community,
   ];
 }
+
+module.exports = { aboutView };

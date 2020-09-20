@@ -1,10 +1,10 @@
-import html from 'choo/html';
+const html = require('choo/html');
 
-import { reviewCard } from '../partials/reviewCard';
-import { starRating } from '../partials/starRating';
-import { modal } from '../partials/modal';
+const { reviewCard } = require('../partials/reviewCard');
+const { starRating } = require('../partials/starRating');
+const { modal } = require('../partials/modal');
 
-export const resultDetails = (searchController, result, emit = () => {}) => {
+const resultDetails = (searchController, result, emit = () => {}) => {
   const { __ } = searchController.i18n;
   const source = result.sources[0];
   const modalId = `result_${source.uri}`;
@@ -121,3 +121,5 @@ export const resultDetails = (searchController, result, emit = () => {}) => {
     onShow,
   });
 }
+
+module.exports = { resultDetails };

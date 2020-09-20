@@ -1,11 +1,11 @@
-import html from 'choo/html';
+const html = require('choo/html');
 
-import { ShelvesController } from './controller';  // The controller for this view, where processing should happen.
-import { shelfView } from './shelf';
-import { userShelvesView } from './userShelves';
+const { ShelvesController } = require('./controller');  // The controller for this view, where processing should happen.
+const { shelfView } = require('./shelf');
+const { userShelvesView } = require('./userShelves');
 
 // This is the view function that is exported and used in the view manager.
-export const shelvesView = (state, emit, i18n) => {
+const shelvesView = (state, emit, i18n) => {
   const controller = new ShelvesController(state, i18n);
 
   // Returning an array in a view allows non-shared parent HTML elements.
@@ -17,3 +17,5 @@ export const shelvesView = (state, emit, i18n) => {
     ),
   ];
 }
+
+module.exports = { shelvesView };

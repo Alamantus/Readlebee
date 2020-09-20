@@ -1,8 +1,8 @@
-import html from 'choo/html';
+const html = require('choo/html');
 
-import { LoginController } from './controller';
+const { LoginController } = require('./controller');
 
-export const loginView = (state, emit, i18n) => {
+const loginView = (state, emit, i18n) => {
   const controller = new LoginController(state, emit, i18n);
   const { __ } = controller.i18n;
 
@@ -165,3 +165,5 @@ export const loginView = (state, emit, i18n) => {
     
   </section>`;
 }
+
+module.exports = { loginView };

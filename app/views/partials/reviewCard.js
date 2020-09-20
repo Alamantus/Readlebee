@@ -1,8 +1,8 @@
-import html from 'choo/html';
+const html = require('choo/html');
 
-import { starRating } from './starRating';
+const { starRating } = require('./starRating');
 
-export const reviewCard = (controller, review) => {
+const reviewCard = (controller, review) => {
   const { __ } = controller.i18n;
 
   return html`<article class="card">
@@ -27,3 +27,5 @@ export const reviewCard = (controller, review) => {
     </footer>
   </article>`;
 }
+
+module.exports = { reviewCard };

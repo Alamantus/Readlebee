@@ -1,8 +1,8 @@
-import html from 'choo/html';
+const html = require('choo/html');
 
-import { modal } from '../../partials/modal';
+const { modal } = require('../../partials/modal');
 
-export const editModal = (shelf, shelvesController) => {
+const editModal = (shelf, shelvesController) => {
   const { __ } = shelvesController.i18n;
 
   const modalId = `editShelf${shelf.id}`;
@@ -27,3 +27,5 @@ export const editModal = (shelf, shelvesController) => {
     </footer>`,
   });
 }
+
+module.exports = { editModal };

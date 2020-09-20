@@ -1,11 +1,11 @@
-import html from 'choo/html';
+const html = require('choo/html');
 
-import { SearchController } from './controller';  // The controller for this view, where processing should happen.
-import { resultDetails } from './resultDetails';
-import { modal } from '../partials/modal';
+const { SearchController } = require('./controller');  // The controller for this view, where processing should happen.
+const { resultDetails } = require('./resultDetails');
+const { modal } = require('../partials/modal');
 
 // This is the view function that is exported and used in the view manager.
-export const searchView = (state, emit, i18n) => {
+const searchView = (state, emit, i18n) => {
   const controller = new SearchController(state, emit, i18n);
   const { __ } = controller.i18n;
 
@@ -157,3 +157,5 @@ export const searchView = (state, emit, i18n) => {
     </section>`,
   ];
 }
+
+module.exports = { searchView };

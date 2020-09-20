@@ -1,6 +1,6 @@
-import { ViewController } from '../controller';
+const { ViewController } = require('../controller');
 
-export class HomeController extends ViewController {
+class HomeController extends ViewController {
   constructor(state, i18n) {
     // Super passes state, view name, and default state to ViewController,
     // which stores state in this.appState and the view controller's state to this.state
@@ -20,3 +20,5 @@ export class HomeController extends ViewController {
     // or use `onclick=${() => controller.submit()}` to maintain the 'this' of the class instead.
   }
 }
+
+module.exports = { HomeController }

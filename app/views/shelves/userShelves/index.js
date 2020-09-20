@@ -1,7 +1,7 @@
-import html from 'choo/html';
-import { editModal } from './editModal';
+const html = require('choo/html');
+const { editModal } = require('./editModal');
 
-export const userShelvesView = (shelvesController, emit) => {
+const userShelvesView = (shelvesController, emit) => {
   const { __ } = shelvesController.i18n;
 
   if (!shelvesController.isLoggedIn) {
@@ -53,3 +53,5 @@ export const userShelvesView = (shelvesController, emit) => {
     </section>`,
   ];
 }
+
+module.exports = { userShelvesView };

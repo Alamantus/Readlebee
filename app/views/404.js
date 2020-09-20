@@ -1,6 +1,6 @@
-import html from 'choo/html';
+const html = require('choo/html');
 
-export const errorView = (state, emit, i18n) => {
+const errorView = (state, emit, i18n) => {
   return html`<section class="error card">
     <header>
       <h1>${i18n.__('404.header')}</h1>
@@ -10,3 +10,5 @@ export const errorView = (state, emit, i18n) => {
     </footer>
   </section>`;
 }
+
+module.exports = { errorView };

@@ -1,6 +1,6 @@
-import { ViewController } from '../controller';
+const { ViewController } = require('../controller');
 
-export class LoginController extends ViewController {
+class LoginController extends ViewController {
   constructor(state, emit, i18n) {
     // Super passes state, view name, and default state to ViewController,
     // which stores state in this.appState and the view controller's state to this.state
@@ -179,3 +179,5 @@ export class LoginController extends ViewController {
     })
   }
 }
+
+module.exports = { LoginController };

@@ -1,9 +1,9 @@
-import html from 'choo/html';
+const html = require('choo/html');
 
-import { starRating } from '../partials/starRating';
-import { modal } from '../partials/modal';
+const { starRating } = require('../partials/starRating');
+const { modal } = require('../partials/modal');
 
-export const shelfView = (shelvesController, emit) => {
+const shelfView = (shelvesController, emit) => {
   const { __ } = shelvesController.i18n;
 
   if (shelvesController.targetShelf === null) {
@@ -108,3 +108,5 @@ export const shelfView = (shelvesController, emit) => {
     </section>`,
   ];
 }
+
+module.exports = { shelfView };

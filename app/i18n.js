@@ -1,4 +1,4 @@
-export class I18n {
+class I18n {
   constructor(appState) {
     this.appState = appState;
     this.availableLanguages = null;
@@ -56,6 +56,7 @@ export class I18n {
     }, Object.assign({}, language));
 
     if (translation === false) {
+      console.log(this);
       if (language.locale !== this.default.locale) {
         console.warn(`The translation for "${target}" is not set in the ${this.language.locale} locale. Using ${this.default.name} (${this.default.locale}) instead.`);
         return this.translate(target, true);
@@ -71,3 +72,5 @@ export class I18n {
     return this.translate(translation);
   }
 }
+
+module.exports = { I18n };

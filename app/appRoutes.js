@@ -1,12 +1,12 @@
-import { globalView } from './views/global';
-import { homeView } from './views/home';
-import { aboutView } from './views/about';
-import { loginView } from './views/login';
-import { searchView } from './views/search';
-import { shelvesView } from './views/shelves';
-import { errorView } from './views/404';
+const { globalView } = require('./views/global');
+const { homeView } = require('./views/home');
+const { aboutView } = require('./views/about');
+const { loginView } = require('./views/login');
+const { searchView } = require('./views/search');
+const { shelvesView } = require('./views/shelves');
+const { errorView } = require('./views/404');
 
-export const appRoutes = (app) => {
+const appRoutes = (app) => {
   app.route('/', (state, emit) => globalView(state, emit, homeView));
 
   app.route('/about', (state, emit) => globalView(state, emit, aboutView));
@@ -21,3 +21,5 @@ export const appRoutes = (app) => {
 
   app.route('/404', (state, emit) => globalView(state, emit, errorView));
 }
+
+module.exports = { appRoutes };

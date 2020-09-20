@@ -1,7 +1,7 @@
-import { ViewController } from '../controller';
-import { ShelvesController } from '../shelves/controller';
+const { ViewController } = require('../controller');
+const { ShelvesController } = require('../shelves/controller');
 
-export class SearchController extends ViewController {
+class SearchController extends ViewController {
   constructor(state, emit, i18n) {
     // Super passes state, view name, and default state to ViewController,
     // which stores state in this.appState and the view controller's state to this.state
@@ -156,3 +156,5 @@ export class SearchController extends ViewController {
     });
   }
 }
+
+module.exports = { SearchController };

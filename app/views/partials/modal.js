@@ -1,6 +1,6 @@
-import html from 'choo/html';
+const html = require('choo/html');
 
-export const modal = (modalId, controller, contentHTML, options = {}) => {
+const modal = (modalId, controller, contentHTML, options = {}) => {
   /* Options:
    * controller <class>: Pass the controller class with state; Requires get/set for openModal in state.
    * buttonHTML <choo/html>: Displayed in place of the default button to open the modal
@@ -77,3 +77,5 @@ export const modal = (modalId, controller, contentHTML, options = {}) => {
     </div>`,
   ];
 }
+
+module.exports = { modal };

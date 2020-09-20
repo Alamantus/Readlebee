@@ -1,4 +1,4 @@
-export class ViewController {
+class ViewController {
   constructor(state, i18n, viewName, defaultState = {}) {
     // Store the global app state so it's accessible but out of the way.
     this.appState = state;
@@ -16,3 +16,5 @@ export class ViewController {
     return this.appState.isLoggedIn;
   }
 }
+
+module.exports = { ViewController };

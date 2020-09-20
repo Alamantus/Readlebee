@@ -1,6 +1,6 @@
-import html from 'choo/html';
+const html = require('choo/html');
 
-export const loggedOutView = (homeController, emit) => {
+const loggedOutView = (homeController, emit) => {
   const { __ } = homeController.i18n;
 
   return [
@@ -81,3 +81,5 @@ export const loggedOutView = (homeController, emit) => {
     </section>`,
   ];
 }
+
+module.exports = { loggedOutView };

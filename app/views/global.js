@@ -1,10 +1,23 @@
-import html from 'choo/html';
+const html = require('choo/html');
 
-import headerImage from '../../dev/images/header.png';
+let headerImage;
 
-export const globalView = (state, emit, view) => {
+if (typeof window !== 'undefined') {
+  // Make Parcel bundler process image
+  headerImage = require('../../dev/images/header.png');
+} else {
+  // Make server get processed image path
+  const fs = require('fs');
+  const path = require('path');
+  const publicPath = path.resolve('public');
+  const publicFiles = fs.readdirSync(publicPath);
+  const headerImageFileName = publicFiles.find(fileName => /header\..+?\.png/.test(fileName));
+  headerImage = path.relative(publicPath, path.resolve(publicPath, headerImageFileName));
+}
+
+const globalView = (state, emit, view) => {
   const { i18n } = state;
-  if (i18n.needsFetch) {
+  if (typeof window !== 'undefined' && i18n.needsFetch) {
     return html`<body><i class="icon-loading animate-spin"></i></body>`;
   }
   // Create a wrapper for view content that includes global header/footer
@@ -71,3 +84,5 @@ export const globalView = (state, emit, view) => {
   </footer>
 </body>`;
 }
+
+module.exports = { globalView };
