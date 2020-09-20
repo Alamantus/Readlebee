@@ -33,7 +33,8 @@ class SearchController extends ViewController {
   }
 
   get hasQuery() {
-    return this.appState.query.hasOwnProperty('for') && this.appState.query.for.trim() !== '';
+    return typeof window !== 'undefined'
+      && this.appState.query.hasOwnProperty('for') && this.appState.query.for.trim() !== '';
   }
 
   get queryIsNew() {
