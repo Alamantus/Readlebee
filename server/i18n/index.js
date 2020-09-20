@@ -36,6 +36,7 @@ async function plugin (fastify, opts, done) {
 
     // Set the default language to English after parsing locales because it has the most coverage.
     i18n.default = i18n.en;
+    i18n.pages.default = i18n.pages.en;
   } catch (ex) {
     console.error('Could not get locales folder.\n', ex);
   }
