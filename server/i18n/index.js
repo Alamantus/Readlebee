@@ -47,4 +47,4 @@ async function plugin (fastify, opts, done) {
   done();
 }
 
-module.exports = plugin;
+module.exports = fp(plugin);
