@@ -17,7 +17,7 @@ if (typeof window !== 'undefined') {
 
 const globalView = (state, emit, view) => {
   const { i18n } = state;
-  if (typeof window !== 'undefined' && i18n.needsFetch) {
+  if (state.isFrontend && i18n.needsFetch) {
     return html`<body><i class="icon-loading animate-spin"></i></body>`;
   }
   // Create a wrapper for view content that includes global header/footer

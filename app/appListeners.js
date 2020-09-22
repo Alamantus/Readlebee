@@ -53,7 +53,7 @@ const appListeners = (app, state, emitter) => {
       }).then(result => callback(result));
     });
 
-    if (typeof window !== 'undefined') {
+    if (state.isFrontend) {
       state.i18n.fetchLocaleUI().then(() => {
         app.checkIfLoggedIn(state).then(isLoggedIn => {
           emitter.emit(state.events.RENDER); // This should hopefully only run once after the DOM is loaded. It prevents routing issues where 'render' hasn't been defined yet

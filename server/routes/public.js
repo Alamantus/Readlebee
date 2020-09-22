@@ -11,19 +11,19 @@ async function routes(fastify, options) {
       return reply.sendFile(request.params.chooRoute);
     }
     // Otherwise, send allow Choo to route it.
-    // const state = Object.assign({}, chooApp.state);
-    chooApp.state.language = request.language;
-    chooApp.state.isLoggedIn = request.isLoggedInUser;
+    const state = Object.assign({}, chooApp.state);
+    state.language = request.language;
+    state.isLoggedIn = request.isLoggedInUser;
 
-    chooApp.state.i18n = new chooI18n(chooApp.state);
-    chooApp.state.i18n.availableLanguages = fastify.i18n.available.slice();
-    chooApp.state.i18n.default = Object.assign({}, fastify.i18n.default);
+    state.i18n = new chooI18n(state);
+    state.i18n.availableLanguages = fastify.i18n.available.slice();
+    state.i18n.default = Object.assign({}, fastify.i18n.default);
 
-    const locale = typeof fastify.i18n[chooApp.state.language] !== 'undefined' ? chooApp.state.language : 'default';
-    chooApp.state.i18n.language = Object.assign({}, fastify.i18n[locale]);
-    chooApp.state.i18n.pages = Object.assign({}, fastify.i18n.pages[locale]);
+    const locale = typeof fastify.i18n[state.language] !== 'undefined' ? state.language : 'default';
+    state.i18n.language = Object.assign({}, fastify.i18n[locale]);
+    state.i18n.pages = Object.assign({}, fastify.i18n.pages[locale]);
 
-    const html = htmlContainer.toString().replace(/\<body\>.+?\<\/body\>/, chooApp.toString('/' + request.params.chooRoute, chooApp.state));
+    const html = htmlContainer.toString().replace(/\<body\>(.|\n)+?\<\/body\>/, chooApp.toString('/' + request.params.chooRoute, state));
     return reply.type('text/html').send(html);
   });
 }

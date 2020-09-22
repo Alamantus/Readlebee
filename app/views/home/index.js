@@ -11,7 +11,7 @@ const homeView = (state, emit, i18n) => {
   // Returning an array in a view allows non-shared parent HTML elements.
   // This one doesn't have the problem right now, but it's good to remember.
   return [
-    (!controller.isLoggedIn || typeof window === 'undefined'
+    (!controller.isLoggedIn
       ? loggedOutView(controller, emit)
       : loggedInView(controller, emit)
     ),

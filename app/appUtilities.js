@@ -1,6 +1,6 @@
 const appUtilities = (app) => {
   app.getSettingsItem = settingsKey => {
-    let savedSettings = typeof window !== 'undefined' && window.localStorage.getItem('settings');
+    let savedSettings = app.state.isFrontend && window.localStorage.getItem('settings');
     if (savedSettings) {
       savedSettings = JSON.parse(savedSettings);
       if (typeof savedSettings[settingsKey] !== 'undefined') {
@@ -10,7 +10,7 @@ const appUtilities = (app) => {
     return null;
   }
   app.setSettingsItem = (settingsKey, value) => {
-    if (typeof window === 'undefined') return null;
+    if (!app.state.isFrontend) return null;
 
     let savedSettings = window.localStorage.getItem('settings');
     if (savedSettings) {
@@ -23,7 +23,8 @@ const appUtilities = (app) => {
   }
 
   app.checkIfLoggedIn = (appState) => {
-    if (typeof window === 'undefined') return false;
+    if (!app.state.isFrontend) return false;
+
     return fetch('/api/account/validate', { method: 'post' })
       .then(response => response.json())
       .then(response => {

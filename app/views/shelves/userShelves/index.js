@@ -20,7 +20,7 @@ const userShelvesView = (shelvesController, emit) => {
     ];
   }
 
-  if (shelvesController.state.myShelves.length <= 0) {
+  if (shelvesController.appState.isFrontend && shelvesController.state.myShelves.length <= 0) {
     shelvesController.getUserShelves().then(() => {
       emit(shelvesController.appState.events.RENDER);
     });
