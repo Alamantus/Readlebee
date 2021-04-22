@@ -36,11 +36,15 @@ class ShelvesController extends ViewController {
     });
   }
 
+  getShelf (target) {
+    return fetch('/api/shelf/get/' + target).then(response => response.json()).then(shelf => {
+      this.state.loadedShelves[target] = shelf;
+    });
+  }
+
   getTargetShelf () {
     const target = this.targetShelf + '/' + (this.targetDomain !== null ? `${this.targetDomain}` : '');
-    return fetch('/api/shelf/get/' + target).then(response => response.json()).then(shelf => {
-      this.state.loadedShelves[this.targetShelf] = shelf;
-    });
+    return this.getShelf(target);
   }
 }
 

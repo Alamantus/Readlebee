@@ -10,6 +10,7 @@ class HomeController extends ViewController {
         recentUpdates: [],
       },
       loggedIn: {
+        readingShelfId: null,
         updates: [],  // statuses, ratings, and reviews from people you follow.
         interactions: [], // likes, comments, recommendations, etc.
       },
