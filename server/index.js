@@ -81,7 +81,7 @@ if (!fastify.siteConfig.email_host || !fastify.siteConfig.email_username) {
 }
 
 // Every request, check to see if a valid token exists
-fastify.addHook('onRequest', async (request, reply, done) => {
+fastify.addHook('onRequest', async (request, reply) => {
   request.isLoggedInUser = false;
   if (typeof request.cookies.token !== 'undefined' && fastify.jwt.verify(request.cookies.token)) {
     const { id } = fastify.jwt.verify(request.cookies.token);
@@ -105,8 +105,6 @@ fastify.addHook('onRequest', async (request, reply, done) => {
   // Opt out of Google Chrome tracking everything you do.
   // For more info, see: https://plausible.io/blog/google-floc
   reply.header('Permissions-Policy', 'interest-cohort=()');
-
-  done();
 });
 
 // Store i18n files in fastify object and register locales routes
